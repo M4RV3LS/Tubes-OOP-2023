@@ -1,6 +1,8 @@
 package Inventory;
 import java.util.*;
 
+// blm ada coordinate sama interact
+
 public enum Furniture {
     KASUR_SINGLE("Kasur Single", new Dimension(4, 1), 50, "Tidur"),
     KASUR_QUEEN_SIZE("Kasur Queen Size", new Dimension(4, 2), 100, "Tidur"),
