@@ -1,7 +1,5 @@
-package Bagian;
-
 import java.util.concurrent.ThreadLocalRandom;
-import java.awt.*;
+import java.util.*;
 
 public class SIM {
     private String nama;
@@ -13,7 +11,7 @@ public class SIM {
     private int kesehatan;
     private String status;
     private House rumah;
-    private simLoc lokasiSIM;
+    // private simLoc lokasiSIM;
     
     // Reset saat ganti kerja
     private int totalWaktuKerja = 0;
@@ -43,7 +41,7 @@ public class SIM {
         this.status = null;
         this.inventory = new Inventory();
         this.rumah = new House(new Coordinate(21, 21));
-        this.lokasiSIM = new simLoc(rumah);
+        // this.lokasiSIM = new simLoc(rumah);
     }
 
     // Getter & Setter
@@ -121,16 +119,6 @@ public class SIM {
         this.rumah = rumah;
     }
 
-    // public Integer getWaktu()
-    // {
-    //     return waktu;
-    // }
-
-    // public void setWaktu(Integer waktu)
-    // {
-    //     this.waktu = waktu;
-    // }
-
     // View sims stats
     public void viewStats()
     {
@@ -189,6 +177,7 @@ public class SIM {
             totalWaktuKerja += lamaKerja;
 
             // print stats
+            System.out.println("=========SIM SEDANG BEKERJA=========");
             System.out.println("Anda bekerja selama " + lamaKerja + " detik");
             System.out.println("Kekenyangan anda sekarang: " + getKekenyangan());
             System.out.println("Mood anda sekarang: " + getMood());
@@ -213,7 +202,8 @@ public class SIM {
         setStatus("Olahraga");
 
         // print stats
-        System.out.println("Anda olahraga selama " + lamaOlahraga + " detik");
+        System.out.println("=========SIM SEDANG OLAHRAGA=========");
+        System.out.println("SIM berolahraga selama " + lamaOlahraga + " detik");
         System.out.println("Kekenyangan anda sekarang: " + getKekenyangan());
         System.out.println("Mood anda sekarang: " + getMood());
         System.out.println("Kesehatan anda sekarang: " + getKesehatan());
@@ -231,6 +221,7 @@ public class SIM {
         waktuTidakTidur = 0;
 
         // print stats
+        System.out.println("=========SIM SEDANG TIDUR=========");
         System.out.println("Anda tidur selama " + lamaTidur + " detik");
         System.out.println("Mood anda sekarang: " + getMood());
         System.out.println("Kesehatan anda sekarang: " + getKesehatan());
@@ -247,15 +238,45 @@ public class SIM {
         }
 
         // print stats
+        System.out.println("=========SIM BUTUH TIDUR=========");
         System.out.println("Anda tidak tidur selama " + waktuTidakTidur + " detik");
         System.out.println("Mood anda sekarang: " + getMood());
         System.out.println("Kesehatan anda sekarang: " + getKesehatan());
     }
 
-    public void memasak(BahanMakanan bahanMakanan)
-    {
-        this.kekenyangan = this.kekenyangan + 10;
-        this.mood = this.mood + 10;
+    public static void masak(Masakan masakan, Inventory inventory) {
+        List<BahanMakanan> bahanMakanan = masakan.getBahanMakanan();
+        HashMap<BahanMakanan, Integer> stockBahanMakanan = inventory.getStockBahanMakanan();
+        for (BahanMakanan bahan : bahanMakanan) {
+            if (stockBahanMakanan.containsKey(bahan)) {
+                int jumlah = stockBahanMakanan.get(bahan);
+                if (jumlah <= 0) {
+                    System.out.println("Maaf, stock bahan makanan " + bahan.getName() + " habis");
+                    return;
+                }
+            } else {
+                System.out.println("Maaf, stock bahan makanan " + bahan.getName() + " tidak ada");
+                return;
+            }
+        }
+
+        for (BahanMakanan bahan : bahanMakanan) {
+            inventory.kurangiStock(bahan, 1);
+        }
+
+        inventory.tambahStock(masakan, 1);
+        System.out.println("Masakan " + masakan.getNama() + " berhasil dimasak");
+    }
+
+    public static void printDaftarMasakan(List<Masakan> daftarMasakan) {
+        System.out.println("Daftar Masakan:");
+        for (Masakan masakan : daftarMasakan) {
+            System.out.println(" - " + masakan.getNama());
+            System.out.println("   Bahan Makanan:");
+            for (BahanMakanan bahan : masakan.getBahanMakanan()) {
+                System.out.println("   - " + bahan.getName());
+            }
+        }
     }
 
     public double makan(Masakan masakan)
@@ -270,12 +291,20 @@ public class SIM {
             // Remove masakan from inventory
             inventory.kurangiStock(masakan, 1);
 
+            // Jika belum 4 menit tapi udah makan lagi
+            if (!isBuangAir) {
+                isBuangAir = false;
+                waktuTidakBuangAir = 0;
+            }
             // print stats
+            System.out.println("=========SIM SEDANG MAKAN=========");
             System.out.println("Anda makan " + masakan.getNama());
             System.out.println("Kekenyangan anda sekarang: " + getKekenyangan());
+            System.out.println("==================================");
         }
         else
         {
+
             System.out.println("Tidak ada masakan tersebut di inventory");
         }
 
@@ -321,33 +350,36 @@ public class SIM {
         isBuangAir = true;
 
         setStatus("Buang Air");
-        System.out.println("Uhhh lega... udah buang air");
+        System.out.println("=========SIM SEDANG BUANG AIR=========");
+        System.out.println("Uhhh lega... SIM sudah buang air");
         
         // return waktu yang digunakan untuk buang air
         return 10;
     }
 
-    // public void efekTidakBuangAir()
-    // {
-    //     if(waktuTidakBuangAir > 600 && isBuangAir == false)
-    //     {
-    //         int moodTurun = getMood() - 5;
-    //         setMood(moodTurun);
-    //         int kenyangTurun = getKekenyangan() - 5;
-    //         setKekenyangan(kenyangTurun);
-    //     }
+    public void efekTidakBuangAir()
+    {
+        if(waktuTidakBuangAir >= 240 && isBuangAir == false)
+        {
+            int moodTurun = getMood() - 5;
+            setMood(moodTurun);
+            int kenyangTurun = getKekenyangan() - 5;
+            setKekenyangan(kenyangTurun);
+        }
 
-    //     // print stats
-    //     System.out.println("Anda tidak buang air selama " + waktuTidakBuangAir + " detik");
-    //     System.out.println("Mood anda sekarang: " + getMood());
-    //     System.out.println("Kekenyangan anda sekarang: " + getKekenyangan());
-    // }
+        // print stats
+        System.out.println("Anda tidak buang air selama " + waktuTidakBuangAir + " detik");
+        System.out.println("Mood anda sekarang: " + getMood());
+        System.out.println("Kekenyangan anda sekarang: " + getKekenyangan());
+    }
 
+
+    // AKSI BISA DITINGGAL
     public void pembelian(String item, int jumlah) { 
         // tambahkan item ke inventory
         for (BahanMakanan bahan : BahanMakanan.values()) 
         {
-            if (bahan.getName().equalsIgnoreCase(item.replaceAll("\\s+",""))) 
+            if (bahan.getName().equalsIgnoreCase(item)) 
             {   
                 double totalHarga = bahan.getHarga() * jumlah;
                 if (uang >= totalHarga) 
@@ -355,43 +387,97 @@ public class SIM {
                     // kurangi uangVirtual dengan totalHarga
                     uang -= totalHarga;
                     setUang(uang);
-                    inventory.tambahStock(bahan, jumlah);
-                    System.out.println("Pembelian berhasil!");    
+
+                    // Tunggu waktu pengiriman
+                    Random random = new Random();
+                    int nilaiAcak = random.nextInt(5) + 1; // menghasilkan nilai acak antara 1 hingga 5
+                    int durasiDetik = nilaiAcak * 30;                    
+                    
+                    System.out.println("Menunggu waktu pengiriman...");
+                    try {
+                        Thread.sleep(10000);
+                        System.out.println("Barang Telah Diantar");
+                        // tambahkan stock bahan makanan ke inventory
+                        inventory.tambahStock(bahan, jumlah);
+                        System.out.println("Pembelian berhasil!");   
+                    } 
+                    
+                    catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } 
                 }
 
                 else 
                 {
-                    System.out.println("Maaf, uangVirtual Anda tidak mencukupi untuk melakukan pembelian.");
+                    System.out.println("Maaf, uang Anda tidak mencukupi untuk melakukan pembelian.");
                 }
             }
         } 
         
         for(Furniture furniture : Furniture.values())
         {
-            if(furniture.getName().equalsIgnoreCase(item.replaceAll("\\s+","")))
+            if(furniture.getName().equalsIgnoreCase(item))
             {
                 double totalHarga = furniture.getHarga() * jumlah;
                 if (uang >= totalHarga) 
-                {       
+                {     
+                    // kurangi uangVirtual dengan totalHarga
                     uang -= totalHarga;
                     setUang(uang);
-                    inventory.tambahStock(furniture, jumlah);
-                    System.out.println("Pembelian berhasil!");    
-                }
 
+                    // Tunggu waktu pengiriman
+                    Random random = new Random();
+                    int nilaiAcak = random.nextInt(5) + 1; // menghasilkan nilai acak antara 1 hingga 5
+                    int durasiDetik = nilaiAcak * 30;                    
+                    
+                    System.out.println("Menunggu waktu pengiriman...");
+                    try {
+                        Thread.sleep(10000);
+                        System.out.println("Barang Telah Diantar");
+                        // tambahkan stock bahan makanan ke inventory
+                        inventory.tambahStock(furniture, jumlah);
+                        System.out.println("Pembelian berhasil!");   
+                    } 
+                    
+                    catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }   
+                }
                 else 
                 {
-                    System.out.println("Maaf, uangVirtual Anda tidak mencukupi untuk melakukan pembelian.");
+                    System.out.println("Maaf, uang Anda tidak mencukupi untuk melakukan pembelian.");
                 }
             }
+        }
+    }
+    
+    public void showSaledItem() 
+    {
+        System.out.println("===== SELAMAT DATANG =====");
+        System.out.println("=========== DI ============");
+        System.out.println("==== PASAR SIMPLICITY ====");
+        System.out.println(" ");
+
+        System.out.println("List Furniture yang Dijual:");
+        for (Furniture furniture : Furniture.values()) {
+            System.out.println("Nama: " + furniture.getName() +
+                               ", Harga: " + furniture.getHarga());
+            System.out.println();
+        }
+
+        System.out.println("List Bahan Makanan yang Dijual:");
+        for (BahanMakanan bahanMakanan : BahanMakanan.values()) {
+            System.out.println("Nama: " + bahanMakanan.getName() +
+                               ", Harga: " + bahanMakanan.getHarga());
+            System.out.println();
         }
     }
     
     // Aksi tidak menggunakan waktu
     public void berpindahRuangan(Room newRoom)
     {
-        Ruangan ruangan = getRumah().getRuangan(newRoom);
-        setRuangan(newRoom);
+        // Ruangan ruangan = getRumah().getRuangan(newRoom);
+        // setRuangan(newRoom);
     }
 
     public void lihatInventory()
