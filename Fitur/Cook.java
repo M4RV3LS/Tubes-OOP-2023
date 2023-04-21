@@ -42,14 +42,12 @@ public class Cook {
         System.out.println("Masakan " + masakan.getNama() + " berhasil dimasak");
     }
     
-    public static void printDaftarMasakan(List<Masakan> daftarMasakan) {
-        System.out.println("Daftar Masakan:");
-        for (Masakan masakan : daftarMasakan) {
-            System.out.println(" - " + masakan.getNama());
-            System.out.println("   Bahan Makanan:");
-            for (BahanMakanan bahan : masakan.getBahanMakanan()) {
-                System.out.println("   - " + bahan.getName());
-            }
+    public static void showMasakan() {
+        System.out.println("List Bahan Makanan yang Dijual:");
+        for (Masakan masakan : Masakan.values()) {
+            System.out.println("Nama: " + masakan.getNama() +
+                               ", Kekenyangan: " + masakan.getKekenyangan());
+            System.out.println();
         }
     }
     
