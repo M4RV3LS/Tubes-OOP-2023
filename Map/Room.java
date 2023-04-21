@@ -1,6 +1,6 @@
 package Map;
 import java.util.ArrayList;
-
+import java.util.*;
 public class Room {
     private int width = 6;
     private int height = 6;
@@ -10,9 +10,15 @@ public class Room {
     private Room roomDown;
     private Room roomLeft;
     private Room roomRight;
+    private char[][] layout;
+
 
     public Room(String roomName) {
         this.roomName = roomName;
+        layout = new char[6][6];
+        for (int i = 0; i < layout.length; i++) {
+            Arrays.fill(layout[i], '-');
+        }
     }
 
     public boolean addObject(MyObject obj) {
@@ -76,5 +82,40 @@ public class Room {
             return true;
         }
         return false;
+    }
+
+    public void printRoom() {
+        for (int i = 0; i < layout.length; i++) {
+            for (int j = 0; j < layout[i].length; j++) {
+                if (layout[i][j] != '-') {
+                    System.out.print(layout[i][j] + " ");
+                } else {
+                    System.out.print("- ");
+                }
+            }
+            System.out.println();
+        }
+    }
+
+    public boolean placeFurniture(int startX, int startY, int lengthX, int lengthY, char furniture) {
+        if (startX < 0 || startX >= layout.length || startY < 0 || startY >= layout[0].length) {
+            return false;
+        }
+        if (startX + lengthX > layout.length || startY + lengthY > layout[0].length) {
+            return false;
+        }
+        for (int i = startX; i < startX + lengthX; i++) {
+            for (int j = startY; j < startY + lengthY; j++) {
+                if (layout[i][j] != '-') {
+                    return false;
+                }
+            }
+        }
+        for (int i = startX; i < startX + lengthX; i++) {
+            for (int j = startY; j < startY + lengthY; j++) {
+                layout[i][j] = furniture;
+            }
+        }
+        return true;
     }
 }

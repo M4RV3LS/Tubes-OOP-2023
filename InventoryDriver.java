@@ -2,10 +2,12 @@ import Inventory.Furniture;
 import Inventory.BahanMakanan;
 import Inventory.Inventory;
 import Inventory.Masakan;
+import Sim.*;
 
 public class InventoryDriver {
     public static void main(String[] args) {
         // membuat objek Inventory
+        // Sim sim = new Sim("Marvel");
         Inventory inventory = new Inventory();
         
         // menambahkan stock bahan makanan
