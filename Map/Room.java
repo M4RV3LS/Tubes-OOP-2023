@@ -1,6 +1,8 @@
 package Map;
 import java.util.ArrayList;
 import java.util.*;
+import Inventory.*;
+
 public class Room {
     private int width = 6;
     private int height = 6;
@@ -97,13 +99,16 @@ public class Room {
         }
     }
 
-    public boolean placeFurniture(int startX, int startY, int lengthX, int lengthY, char furniture) {
+    public boolean placeFurniture(int startX, int startY, Dimension dimension, char furniture , Boolean horizontal) {
         if (startX < 0 || startX >= layout.length || startY < 0 || startY >= layout[0].length) {
             return false;
         }
-        if (startX + lengthX > layout.length || startY + lengthY > layout[0].length) {
-            return false;
+        if(horizontal){
+            if (startX + dimension.getLength() > layout.length || startY + dimension.getWidth() > layout[0].length) {
+                return false;
+            }
         }
+        
         for (int i = startX; i < startX + lengthX; i++) {
             for (int j = startY; j < startY + lengthY; j++) {
                 if (layout[i][j] != '-') {

@@ -11,9 +11,22 @@ import Sim.*;
 public class Main {
 
     private static List<Sim> simList = new ArrayList<>();
+    private Sim sim;
 
+    public void addSim(String nama){
+        Sim sim = new Sim(nama);
+        simList.add(sim);
+    }
 
-    
+    public void changeSim(String nama){
+        Sim sim = null;
+        for(Sim s : simList){
+            if(s.getNamaLengkap().equals(nama)){
+                sim = s;
+                break;
+            }
+        }
+    }    
 
     public void exit(){
         System.out.println("Program telah di-close.");
