@@ -4,14 +4,16 @@ import java.util.*;
 public class SIM {
     private String nama;
     private Job pekerjaan;
-    private int uang;
+    private Double uang;
     private Inventory inventory;
     private int kekenyangan;
     private int mood;
     private int kesehatan;
     private String status;
+    
+    // Indikasi Lokasi rumah dan ruangan dari sim saat ini
     private House rumah;
-    // private simLoc lokasiSIM;
+    private String ruangan;
     
     // Reset saat ganti kerja
     private int totalWaktuKerja = 0;
@@ -34,14 +36,14 @@ public class SIM {
         Job randomElem = daftarPekerjaan[randIdx];
         this.pekerjaan = randomElem;
         
-        this.uang = 100;
+        this.uang = 100.0;
         this.mood = 80;
         this.kesehatan = 80;
         this.kekenyangan = 80;
         this.status = null;
         this.inventory = new Inventory();
-        this.rumah = new House(new Coordinate(21, 21));
-        // this.lokasiSIM = new simLoc(rumah);
+        this.rumah = new House(12, 12);
+        this.ruangan = rumah.getNamaRuangan(0);
     }
 
     // Getter & Setter
@@ -49,8 +51,8 @@ public class SIM {
         return nama;
     }
 
-    public String getPekerjaan() {
-        return pekerjaan.getName();
+    public Job getPekerjaan() {
+        return this.pekerjaan;
     }
 
     public void setPekerjaan(Job pekerjaan) {
@@ -63,11 +65,11 @@ public class SIM {
         }
     }
 
-    public int getUang() {
+    public Double getUang() {
         return uang;
     }
 
-    public void setUang(int uang) {
+    public void setUang(Double uang) {
         this.uang = uang;
     }
 
@@ -84,7 +86,11 @@ public class SIM {
     }
 
     public void setKekenyangan(int kekenyangan) {
-        this.kekenyangan += kekenyangan;
+        this.kekenyangan = kekenyangan;
+        if(this.kekenyangan >= 100)
+        {
+            this.kekenyangan = 100;
+        }
     }
 
     public int getMood() {
@@ -92,7 +98,11 @@ public class SIM {
     }
 
     public void setMood(int mood) {
-        this.mood += mood;
+        this.mood = mood;
+        if(this.mood >= 100)
+        {
+            this.mood = 100;
+        }
     }
 
     public int getKesehatan() {
@@ -100,7 +110,11 @@ public class SIM {
     }
 
     public void setKesehatan(int kesehatan) {
-        this.kesehatan += kesehatan;
+        this.kesehatan = kesehatan;
+        if(this.kesehatan >= 100)
+        {
+            this.kesehatan = 100;
+        }
     }
 
     public String getStatus() {
@@ -119,9 +133,18 @@ public class SIM {
         this.rumah = rumah;
     }
 
+    public String getRuangan() {
+        return ruangan;
+    }
+
+    public void setRuangan(String ruangan) {
+        this.ruangan = ruangan;
+    }
+
     // View sims stats
     public void viewStats()
     {
+        System.out.println("===========STATS===========");
         System.out.println("Nama: " + getNamaLengkap());
         System.out.println("Pekerjaan: " + getPekerjaan());
         System.out.println("Uang: " + getUang());
@@ -136,11 +159,22 @@ public class SIM {
         totalWaktuTidur = 0;
     }
 
+    // Lokasi SIM
+    public void lokasiSIM()
+    {
+        System.out.println("===========LOKASI SIM===========");
+        System.out.println("SIM berada pada rumah dengan koordinate: "); 
+        System.out.println("X: " + getRumah().getX());
+        System.out.println("Y: " + getRumah().getY());
+        System.out.println("SIM berada di dalam ruangan: " + getRuangan());
+        
+    }
+
 
     // Aksi yang bisa dilakukan
-    public void kerja(int lamaKerja)
+    public double kerja(int lamaKerja)
     {   
-        if(jedaGantiKerja >= 720)
+        if(jedaGantiKerja >= 720 && lamaKerja%120 == 0)
         {
             int kenyangTurun = getKekenyangan()+lamaKerja/30*(-10);
             setKekenyangan(kenyangTurun);
@@ -148,33 +182,40 @@ public class SIM {
             setMood(moodTurun);
             setStatus("Sedang bekerja");
 
-            if(pekerjaan.getName().equalsIgnoreCase("Badut Sulap"))
-            {
-                uang += lamaKerja/240*pekerjaan.getGaji();
-                setUang(uang);
-            }
-            else if(pekerjaan.getName().equalsIgnoreCase("Koki"))
-            {
-                uang += lamaKerja/240*pekerjaan.getGaji();
-                setUang(uang);
-            }
-            else if(pekerjaan.getName().equalsIgnoreCase("Polisi"))
-            {
-                uang += lamaKerja/240*pekerjaan.getGaji();
-                setUang(uang);
-            }
-            else if(pekerjaan.getName().equalsIgnoreCase("Programmer"))
-            {
-                uang += lamaKerja/240*pekerjaan.getGaji();
-                setUang(uang);
-            }
-            else if(pekerjaan.getName().equalsIgnoreCase("Dokter"))
-            {
-                uang += lamaKerja/240*pekerjaan.getGaji();
-                setUang(uang);
-            }
-
             totalWaktuKerja += lamaKerja;
+
+
+            if(totalWaktuKerja >= 240)
+            {
+                if(pekerjaan.getName().equalsIgnoreCase("Badut Sulap"))
+                {
+                    Double tambahGaji = getUang() + (240/240.0) * getPekerjaan().getGaji();
+                    setUang(tambahGaji);
+                }
+                else if(pekerjaan.getName().equalsIgnoreCase("Koki"))
+                {
+                    Double tambahGaji = getUang() + (240/240.0) * getPekerjaan().getGaji();
+                    setUang(tambahGaji);
+                }
+                else if(pekerjaan.getName().equalsIgnoreCase("Polisi"))
+                {
+                    Double tambahGaji = getUang() + (240/240.0) *getPekerjaan().getGaji();
+                    setUang(tambahGaji);
+                }
+                else if(pekerjaan.getName().equalsIgnoreCase("Programmer"))
+                {
+                    Double tambahGaji = getUang() + (240/240.0) * getPekerjaan().getGaji();
+                    setUang(tambahGaji);
+                }
+                else if(pekerjaan.getName().equalsIgnoreCase("Dokter"))
+                {
+                    Double tambahGaji = getUang() + (240/240.0) *getPekerjaan().getGaji();
+                    setUang(tambahGaji);
+                }
+
+                int temp = totalWaktuKerja-240;
+                totalWaktuKerja = temp;
+            }
 
             // print stats
             System.out.println("=========SIM SEDANG BEKERJA=========");
@@ -182,31 +223,44 @@ public class SIM {
             System.out.println("Kekenyangan anda sekarang: " + getKekenyangan());
             System.out.println("Mood anda sekarang: " + getMood());
             System.out.println("Uang anda sekarang: " + getUang());
+            System.out.println(" ");
         }
 
         else
         {
-            System.out.println("Belum ada jeda satu hari saat anda pindah kerja");
+            System.out.println("Belum ada jeda satu hari saat anda pindah kerja atau waktu kerja salah");
         }
+
+        return lamaKerja;
     }
 
     public void olahraga(int lamaOlahraga)
     {
-        int kenyangTurun = getKekenyangan() + lamaOlahraga/20*(-5);
-        setKekenyangan(kenyangTurun);
-        int moodNaik = getMood() + lamaOlahraga/20*10;
-        setMood(moodNaik);
-        int kesehatanNaik = getKesehatan() + lamaOlahraga/20*10;
-        setKesehatan(kesehatanNaik);
+        if(lamaOlahraga%20 == 0)
+        {
+            int kenyangTurun = getKekenyangan() + lamaOlahraga/20*(-5);
+            setKekenyangan(kenyangTurun);
+            int moodNaik = getMood() + lamaOlahraga/20*10;
+            setMood(moodNaik);
+            int kesehatanNaik = getKesehatan() + lamaOlahraga/20*5;
+            setKesehatan(kesehatanNaik);
 
-        setStatus("Olahraga");
+            setStatus("Olahraga");
 
-        // print stats
-        System.out.println("=========SIM SEDANG OLAHRAGA=========");
-        System.out.println("SIM berolahraga selama " + lamaOlahraga + " detik");
-        System.out.println("Kekenyangan anda sekarang: " + getKekenyangan());
-        System.out.println("Mood anda sekarang: " + getMood());
-        System.out.println("Kesehatan anda sekarang: " + getKesehatan());
+            // print stats
+            System.out.println("=========SIM SEDANG OLAHRAGA=========");
+            System.out.println("SIM berolahraga selama " + lamaOlahraga + " detik");
+            System.out.println("Kekenyangan anda sekarang: " + getKekenyangan());
+            System.out.println("Mood anda sekarang: " + getMood());
+            System.out.println("Kesehatan anda sekarang: " + getKesehatan());
+            System.out.println(" ");
+        }
+
+        else
+        {
+            System.out.println("Waktu olahraga salah");
+        }
+        
     }
 
     public void tidur(int lamaTidur)
@@ -315,26 +369,24 @@ public class SIM {
     public double Berkunjung(House visitedHouse)
     {   
         House house = getRumah();
-        Coordinate houseLoc = house.getCoordinate();
-        Coordinate visitedHouseLoc = visitedHouse.getCoordinate();
-
-        int selisihX = visitedHouseLoc.getX()- houseLoc.getX();
-        int selisihY = visitedHouseLoc.getY()- houseLoc.getY();
-        int kuadratX = selisihX*selisihX;
-        int kuadratY = selisihY*selisihY;
-
-        int waktuPerjalanan = kuadratX - kuadratY;
+        int selisihX = Math.abs(visitedHouse.getX()-house.getX());
+        int selisihY = Math.abs(visitedHouse.getY()-house.getY());
         
-        int moodNaik = getMood() + waktuPerjalanan/30*10;
+        double waktuPerjalanan = Math.sqrt(Math.pow(selisihX,2) + Math.pow(selisihY,2) );
+        
+        int moodNaik = getMood() + (int)waktuPerjalanan/30*10;
         setMood(moodNaik);
-        int kenyangTurun = getKekenyangan() + waktuPerjalanan/30*(-10);
+        int kenyangTurun = getKekenyangan() + (int)waktuPerjalanan/30*(-10);
         setKekenyangan(kenyangTurun);
 
         setStatus("Berkunjung");
+        setRumah(visitedHouse);
+        setRuangan(visitedHouse.getNamaRuangan(0));
 
         // Print hasil
-        System.out.println("Waktu perjalanan: " + waktuPerjalanan);
-        System.out.println("posisi anda sekarang: " + visitedHouseLoc.getX() + " " + visitedHouseLoc.getY());
+        System.out.println("=========SIM SEDANG BERKUNJUNG=========");
+        System.out.println("Waktu perjalanan: " + waktuPerjalanan + " detik");
+        System.out.println("posisi anda sekarang: X " + visitedHouse.getX() + ", Y " + visitedHouse.getY());
 
         // return waktu yang digunakan untuk perjalanan
         return waktuPerjalanan;
@@ -473,11 +525,24 @@ public class SIM {
         }
     }
     
-    // Aksi tidak menggunakan waktu
-    public void berpindahRuangan(Room newRoom)
+    public void upgradeRumah(String namaRuangan)
     {
-        // Ruangan ruangan = getRumah().getRuangan(newRoom);
-        // setRuangan(newRoom);
+        rumah.ugradeRumah(namaRuangan);
+    }
+
+    // Aksi tidak menggunakan waktu
+    public void berpindahRuangan(String ruangan)
+    {   
+        ArrayList<Room> ruanganRumah = rumah.getRooms();
+        
+        for(Room room : ruanganRumah)
+        {
+            if(room.getRoomName().equalsIgnoreCase(ruangan))
+            {
+                setRuangan(ruangan);
+                System.out.println("Berhasil pindah ke ruangan " + ruangan);
+            }
+        }
     }
 
     public void lihatInventory()
