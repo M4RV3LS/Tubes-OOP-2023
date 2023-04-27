@@ -47,18 +47,22 @@ public class House {
                     case "up" :
                         if (simLocation.getRoomUp() == null) {
                             simLocation.setRoomUp(newRoom);
+                            newRoom.setRoomDown(simLocation);
                         } break;
                     case "down" :
                         if (simLocation.getRoomDown() == null) {
                             simLocation.setRoomDown(newRoom);
+                            newRoom.setRoomUp(simLocation);
                         } break;
                     case "left" :
                         if (simLocation.getRoomLeft() == null) {
                             simLocation.setRoomLeft(newRoom);
+                            newRoom.setRoomRight(simLocation);
                         } break;
                     case "right" :
                         if (simLocation.getRoomRight() == null) {
                             simLocation.setRoomRight(newRoom);
+                            newRoom.setRoomLeft(simLocation);
                         } break;
                     default :
                         System.out.println("Gagal menambahkan ruangan baru.");
