@@ -10,7 +10,9 @@ public class ShopDriver {
         ascii.printShop();
         Sim sim = new Sim("Marvel");
         Shop shop = new Shop(sim);
-        Inventory inventory = sim.getInventory();
+        Inventory<BahanMakanan> inventoryBahanMakanan = sim.getInventoryBahanMakanan();
+        Inventory<Furniture> inventoryFurniture = sim.getInventoryFurniture();
+        Inventory<Masakan> inventoryMasakan = sim.getInventoryMasakan();
 
         Scanner input = new Scanner(System.in);
 
@@ -100,7 +102,27 @@ public class ShopDriver {
             }
 
             } else if (menuChoice.equals("2") || menuChoice.equalsIgnoreCase("Melihat Inventory")) {
-                sim.getInventory().printInventory();
+                System.out.println("1. Melihat Inventory Bahan Makanan");
+                System.out.println("2. Melihat Inventory Furniture");
+                System.out.println("3. Melihat Inventory Masakan");
+                System.out.println("4. Melihat Semua Inventory");
+                System.out.print("Masukkan pilihan: ");
+                String inventoryChoice = input.nextLine();
+
+                if (inventoryChoice.equals("1") || inventoryChoice.equalsIgnoreCase("Melihat Inventory Bahan Makanan")) {
+                    inventoryBahanMakanan.printInventory();
+                } else if (inventoryChoice.equals("2") || inventoryChoice.equalsIgnoreCase("Melihat Inventory Furniture")) {
+                    inventoryFurniture.printInventory();
+                } else if (inventoryChoice.equals("3") || inventoryChoice.equalsIgnoreCase("Melihat Inventory Masakan")) {
+                    inventoryMasakan.printInventory();
+                } 
+                else if(inventoryChoice.equals("4") || inventoryChoice.equalsIgnoreCase("Melihat Semua Inventory")){
+                    sim.printAllInventory();
+                }
+                else {
+                    System.out.println("Pilihan tidak valid.");
+                }
+
             } else {
                 System.out.println("Input tidak valid.");
             }

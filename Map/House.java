@@ -2,31 +2,21 @@ package Map;
 import java.util.ArrayList;
 
 public class House {
-    private int x;
-    private int y;
     private ArrayList<Room> rooms;
+    private String houseName;
 
-    public House(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public House(String houseName) {
+        this.houseName = houseName;
         rooms = new ArrayList<>();
-        rooms.add(new Room("Room 1"));
+        rooms.add(new Room("Living Room" , null , null , null , null));
     }
 
-    public int getX() {
-        return x;
+    public String getHouseName() {
+        return houseName;
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
+    public void setHouseName(String houseName){
+        this.houseName = houseName;
     }
 
     public ArrayList<Room> getRooms() {
@@ -35,5 +25,14 @@ public class House {
 
     public void addRoom(Room room) {
         rooms.add(room);
+    }
+
+    public Room getRoom(String roomName){
+        for(Room simRoom : this.rooms) {
+            if(simRoom.getRoomName().equals(roomName)) {
+                return simRoom;
+            }
+        }
+        return null;
     }
 }

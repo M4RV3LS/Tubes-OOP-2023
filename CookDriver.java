@@ -4,13 +4,15 @@ import Fitur.*;
 import Inventory.*;
 import Sim.*;
 
+
 public class CookDriver {
 
     public static void main(String[] args) {
 
         // Inisialisasi Sim dan Inventory
         Sim sim = new Sim("Marvel");
-        Inventory inventory = sim.getInventory();
+        Inventory<BahanMakanan> inventoryBahanMakanan = sim.getInventoryBahanMakanan();
+        Inventory<Masakan> inventoryMasakan = sim.getInventoryMasakan();
 
         System.out.println("");
         // Print daftar masakan yang tersedia
@@ -19,20 +21,19 @@ public class CookDriver {
         // Menambahkan bahan makanan ke inventory
         BahanMakanan nasi = BahanMakanan.NASI;
         BahanMakanan ayam = BahanMakanan.AYAM;
-        inventory.tambahStock(nasi, 10);
-        inventory.tambahStock(ayam, 5);
+        inventoryBahanMakanan.tambahStock(nasi, 10);
+        inventoryBahanMakanan.tambahStock(ayam, 5);
 
-        // Menambahkan daftar masakan
+        // Menambahkan masakan ke inventory
         Masakan nasiAyam = Masakan.NASI_AYAM;
         Masakan susuKacang = Masakan.SUSU_KACANG;
-        Cook.masak(nasiAyam , inventory);
-        Cook.masak(susuKacang , inventory);
-
-        
+        Cook.masak(nasiAyam, inventoryBahanMakanan, inventoryMasakan);
+        Cook.masak(susuKacang, inventoryBahanMakanan, inventoryMasakan);
 
         System.out.println("");
-        //print inventory
-        inventory.printInventory();
+        // Print inventory
+        inventoryBahanMakanan.printInventory();
+        inventoryMasakan.printInventory();
     }
 
 }

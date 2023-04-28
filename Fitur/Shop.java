@@ -35,7 +35,7 @@ public class Shop {
         // }
         if (sim.getUang() >= totalPrice) {
             
-            sim.getInventory().tambahStock(furniture, quantity);
+            sim.getInventoryFurniture().tambahStock(furniture, quantity);
             
             sim.setUang(sim.getUang() - totalPrice);
             System.out.println("Berhasil membeli " + quantity + " " + furniture.getName());
@@ -67,7 +67,7 @@ public class Shop {
         //     System.out.println("Maaf uang anda tidak mencukupi untuk membeli objek ini");
         // }
         if (sim.getUang() >= totalPrice) {
-            sim.getInventory().tambahStock(bahanMakanan, quantity);
+            sim.getInventoryBahanMakanan().tambahStock(bahanMakanan, quantity);
             sim.setUang(sim.getUang() - totalPrice);
             System.out.println("Berhasil membeli " + quantity + " " + bahanMakanan.getName());
         } else {

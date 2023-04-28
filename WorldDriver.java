@@ -18,7 +18,8 @@ public class WorldDriver {
             System.out.println("Masukkan koordinat rumah ke-" + (i + 1) + ": ");
             int x = input.nextInt();
             int y = input.nextInt();
-            House house = new House(x, y);
+            String namaRumah = "H" + String.format("%02d", i);
+            House house = new House(namaRumah);
             world.setHouse(x, y, house);
         }
 
@@ -35,7 +36,7 @@ public class WorldDriver {
             System.out.println("Koordinat rumah: (" + houseLocation[0] + ", " + houseLocation[1] + ")");
 
             // Menambahkan ruangan baru pada rumah
-            Room room = new Room("Living Room");
+            Room room = new Room("Living Room" , null , null , null , null);
         }
         
         // Mendapatkan koordinat rumah pertama dari hashmap houseLocations

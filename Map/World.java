@@ -29,13 +29,67 @@ public class World {
         for (int i = 0; i < 64; i++) {
             for (int j = 0; j < 64; j++) {
                 if (grid[i][j] != null) {
-                    System.out.print("H ");
+                    System.out.print(this.getHouse(i,j).getHouseName());
                 } else {
                     System.out.print("- ");
                 }
             }
             System.out.println();
         }
+
+        // int maxWordLength = 3; // maksimum panjang kata 3
+
+        // int boxWidth = maxWordLength + 2; // lebar kotak disesuaikan dengan panjang kata maksimum
+        
+
+        // // print baris pertama
+        // for (int allMap = 0 ; allMap < 64 ; allMap++){
+        //     for (int i = 0; i < 64; i++) {
+        //         System.out.print("+");
+        //         for (int j = 0; j < boxWidth - 1; j++) {
+        //             System.out.print("-");
+        //         }
+        //     }
+        //     System.out.println("+");
+
+        //     // print baris kedua sampai satu sebelum terakhir
+            
+        //         for (int i = 0; i < 64; i++) {
+        //             System.out.print("|");
+        //             // Coordinate coordinate = new Coordinate(allMap, i);
+        //             // String value = this.mapData.getOrDefault(coordinate, "");
+        //             // int valueLength = value.length();
+        //             int spaces = (4 - 3) / 2;
+        //             for (int j = 0; j < spaces; j++) {
+        //                 System.out.print(" ");
+        //             }
+        //             if(this.getHouse(allMap , i) != null){
+        //                 System.out.print(this.getHouse(allMap , i).getHouseName());
+        //             }
+        //             else{
+        //                 System.out.print("   ");
+
+        //             }
+                    
+                    
+        //             for (int j = 0; j < 4 - spaces - 3; j++) {
+        //                 System.out.print(" ");
+        //             }
+                    
+        //         }
+        //         System.out.print("|");
+        //         System.out.println();
+                
+            
+        // }
+        // // print baris terakhir
+        // for (int i = 0; i < 64; i++) {
+        //     System.out.print("+");
+        //     for (int j = 0; j < boxWidth - 1; j++) {
+        //         System.out.print("-");
+        //     }
+        // }
+        // System.out.println("+");
     }
 
     public int[] getHouseLocation(House house) {
@@ -45,5 +99,10 @@ public class World {
     public Set<House> getHouses() {
         return houseLocations.keySet();
     }
+
+    public HashMap<House, int[]> getHouseList() {
+        return houseLocations;
+    }
+    
 
 }

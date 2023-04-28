@@ -6,8 +6,8 @@ import Map.House;
 
 public class RoomDriver {
     public static void main(String[] args) {
-        Room room1 = new Room("Living Room");
-        Room room2 = new Room("Kitchen");
+        Room room1 = new Room("Living Room" , null , null , null , null);
+        Room room2 = new Room("Kitchen" , null , null , null , null);
 
         MyObject sofa = new MyObject("Sofa");
         MyObject tv = new MyObject("TV");
@@ -21,16 +21,12 @@ public class RoomDriver {
         room2.addObject(table);
         room2.addObject(chair);
 
-        ArrayList<MyObject> objectsInRoom1 = room1.getObjects();
+        HashMap<MyObject , Integer> objectsInRoom1 = room1.getObjectCounts();
         System.out.println("Objects in Room 1:");
-        for (MyObject obj : objectsInRoom1) {
-            System.out.println("- " + obj.getName());
-        }
+        room1.printObjectCounts();
 
-        ArrayList<MyObject> objectsInRoom2 = room2.getObjects();
+        HashMap<MyObject , Integer> objectsInRoom2 = room2.getObjectCounts();
         System.out.println("Objects in Room 2:");
-        for (MyObject obj : objectsInRoom2) {
-            System.out.println("- " + obj.getName());
-        }
+        room2.printObjectCounts();
     }
 }

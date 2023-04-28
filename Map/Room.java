@@ -7,37 +7,100 @@ public class Room {
     private int width = 6;
     private int height = 6;
     private String roomName;
-    private ArrayList<MyObject> objects = new ArrayList<>();
+    private HashMap<MyObject, Integer> objectCounts; // perubahan ini
     private Room roomUp;
     private Room roomDown;
     private Room roomLeft;
     private Room roomRight;
-    private char[][] layout;
+    private String[][] layout;
+    
 
 
-    public Room(String roomName) {
+    public Room(String roomName , Room roomUp , Room roomRight , Room roomDown , Room roomLeft) {
         this.roomName = roomName;
-        layout = new char[6][6];
+        this.roomUp = roomUp;
+        this.roomRight = roomRight;
+        this.roomDown = roomDown;
+        this.roomLeft = roomLeft;
+        layout = new String[6][6];
         for (int i = 0; i < layout.length; i++) {
-            Arrays.fill(layout[i], '-');
+            Arrays.fill(layout[i], "");
+        }
+    //     this.layout = new String[][]{
+    //         {"KKS", "KKS", "KKS", "", "", ""},
+    //         {"KKS", "KKS", "KKS", "", "", ""},
+    //         {"", "", "", "", "", ""},
+    //         {"", "", "", "", "", ""},
+    //         {"", "", "", "", "", ""},
+    //         {"", "", "", "", "", ""}
+    // };
+        // this.mapData = new HashMap<>();
+        // for (int i = 0; i < layout.length; i++) {
+        //     for (int j = 0; j < layout[i].length; j++) {
+        //         if (!layout[i][j].equals("")) {
+        //             Coordinate coord = new Coordinate(i, j);
+        //             mapData.put(coord, layout[i][j]);
+        //         }
+        //     }
+        // }
+        objectCounts = new HashMap<MyObject, Integer>(); // inisialisasi HashMap
+    }
+
+    public String[][] getLayout() {
+        return layout;
+    }
+
+    public String getLayoutContent(int i , int j){
+        return layout[i][j];
+    }
+
+    public String[] getLayoutRow(int i){
+        return layout[i];
+    }
+
+    // public boolean addObject(MyObject obj) {
+    //     if (objects.size() < width * height) {
+    //         objects.add(obj);
+    //         return true;
+    //     }
+    //     return false;
+    // }
+
+    public void addObject(MyObject object) {
+        if (objectCounts.containsKey(object)) { // jika objek sudah ada di dalam HashMap
+            int count = objectCounts.get(object);
+            objectCounts.put(object, count + 1); // tambahkan jumlah barang
+        } else {
+            objectCounts.put(object, 1); // tambahkan objek baru ke HashMap dengan jumlah 1
         }
     }
 
-    public boolean addObject(MyObject obj) {
-        if (objects.size() < width * height) {
-            objects.add(obj);
+
+    public boolean removeObject(MyObject obj) {
+        if (objectCounts.containsKey(obj)) {
+            int jumlahBarang = objectCounts.get(obj);
+            if (jumlahBarang > 1) {
+                objectCounts.put(obj, jumlahBarang - 1);
+            } else {
+                objectCounts.remove(obj);
+            }
             return true;
+        } else {
+            return false;
         }
-        return false;
     }
-
-    public boolean removeObject(Object obj) {
-        return objects.remove(obj);
+    
+    public HashMap<MyObject, Integer> getObjectCounts() {
+        return objectCounts;
     }
-
-    public ArrayList<MyObject> getObjects() {
-        return objects;
+    
+    //Print HashMap
+    public void printObjectCounts() {
+        for (Map.Entry<MyObject, Integer> entry : objectCounts.entrySet()) {
+            System.out.println(entry.getKey().toString() + ": " + entry.getValue());
+        }
     }
+    
 
     public Room getRoomUp() {
         return roomUp;
@@ -86,41 +149,129 @@ public class Room {
         return false;
     }
 
+    // public void updateMapData(){
+    //     HashMap<Coordinate, String> newMapData = new HashMap<>();
+    //     for (int i = 0; i < this.layout.length; i++) {
+    //         for (int j = 0; j < this.layout[i].length; j++) {
+    //             if (!(this.layout[i][j].equals(""))) {
+    //                 Coordinate coord = new Coordinate(i, j);
+    //                 newMapData.put(coord, layout[i][j]);
+    //             }
+    //         }
+    //     }
+    //     this.mapData = newMapData;
+    // }
+
     public void printRoom() {
-        for (int i = 0; i < layout.length; i++) {
-            for (int j = 0; j < layout[i].length; j++) {
-                if (layout[i][j] != '-') {
-                    System.out.print(layout[i][j] + " ");
-                } else {
-                    System.out.print("- ");
+        int maxWordLength = 3; // maksimum panjang kata 3
+
+        int boxWidth = maxWordLength + 2; // lebar kotak disesuaikan dengan panjang kata maksimum
+        
+
+        // print baris pertama
+        for (int allMap = 0 ; allMap < 6 ; allMap++){
+            for (int i = 0; i < 6; i++) {
+                System.out.print("+");
+                for (int j = 0; j < boxWidth - 1; j++) {
+                    System.out.print("-");
                 }
             }
-            System.out.println();
+            System.out.println("+");
+
+            // print baris kedua sampai satu sebelum terakhir
+            
+                for (int i = 0; i < 6; i++) {
+                    System.out.print("|");
+                    // Coordinate coordinate = new Coordinate(allMap, i);
+                    // String value = this.mapData.getOrDefault(coordinate, "");
+                    // int valueLength = value.length();
+                    int spaces = (4 - 3) / 2;
+                    for (int j = 0; j < spaces; j++) {
+                        System.out.print(" ");
+                    }
+                    if(this.getLayoutContent(allMap , i) == ""){
+                        System.out.print("   ");
+                    }
+                    else{
+                        System.out.print(this.getLayoutContent(allMap , i));
+                    }
+                    
+                    for (int j = 0; j < 4 - spaces - 3; j++) {
+                        System.out.print(" ");
+                    }
+                    
+                }
+                System.out.print("|");
+                System.out.println();
+                
+            
         }
+        // print baris terakhir
+        for (int i = 0; i < 6; i++) {
+            System.out.print("+");
+            for (int j = 0; j < boxWidth - 1; j++) {
+                System.out.print("-");
+            }
+        }
+        System.out.println("+");
     }
 
-    public boolean placeFurniture(int startX, int startY, Dimension dimension, char furniture , Boolean horizontal) {
-        if (startX < 0 || startX >= layout.length || startY < 0 || startY >= layout[0].length) {
-            return false;
+    public Boolean placeFurniture(int startX, int startY, Dimension dimension, String furniture, Boolean horizontal) throws Exception {
+        Boolean valid = true;
+        if (startX < 0 || startX >= 6 || startY < 0 || startY >= 6) {
+            valid = false;
+            throw new Exception("Input coordinates are out of bounds");
         }
-        if(horizontal){
-            if (startX + dimension.getLength() > layout.length || startY + dimension.getWidth() > layout[0].length) {
-                return false;
+        if (!horizontal) {
+            if (startX + dimension.getLength() - 1 > 5 || startY + dimension.getWidth() - 1 > 5) {
+                valid = false;
+                throw new Exception("Furniture dimensions are too large");
+            }
+        } else {
+            if (startX + dimension.getWidth() - 1 > 5 || startY + dimension.getLength() - 1 > 5) {
+                valid = false;
+                throw new Exception("Furniture dimensions are too large");
             }
         }
-        
-        for (int i = startX; i < startX + lengthX; i++) {
-            for (int j = startY; j < startY + lengthY; j++) {
-                if (layout[i][j] != '-') {
-                    return false;
+    
+        if (horizontal && valid) {
+            for (int i = startX; i < startX + dimension.getWidth(); i++) {
+                for (int j = startY; j < startY + dimension.getLength(); j++) {
+                    if (layout[i][j] != "") {
+                        valid = false;
+                        throw new Exception("Furniture placement overlaps with existing furniture");
+                    }
+                }
+            }
+            if (valid) {
+                for (int i = startX; i < startX + dimension.getWidth(); i++) {
+                    for (int j = startY; j < startY + dimension.getLength(); j++) {
+                        layout[i][j] = furniture;
+                    }
+                }
+            }
+        } else if (!horizontal && valid) {
+            for (int i = startX; i < startX + dimension.getLength(); i++) {
+                for (int j = startY; j < startY + dimension.getWidth(); j++) {
+                    if (layout[i][j] != "") {
+                        valid = false;
+                        throw new Exception("Furniture placement overlaps with existing furniture");
+                    }
+                }
+            }
+            if (valid) {
+                for (int i = startX; i < startX + dimension.getLength(); i++) {
+                    for (int j = startY; j < startY + dimension.getWidth(); j++) {
+                        layout[i][j] = furniture;
+                    }
                 }
             }
         }
-        for (int i = startX; i < startX + lengthX; i++) {
-            for (int j = startY; j < startY + lengthY; j++) {
-                layout[i][j] = furniture;
-            }
-        }
-        return true;
+    
+        // if(valid){
+        //     updateMapData();
+        // }
+        return valid;
     }
+    
 }

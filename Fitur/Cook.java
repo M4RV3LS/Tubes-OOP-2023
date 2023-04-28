@@ -18,9 +18,9 @@ public class Cook {
     }
     
     
-    public static void masak(Masakan masakan, Inventory inventory) {
+    public static void masak(Masakan masakan, Inventory<BahanMakanan> inventoryBahanMakanan , Inventory<Masakan> inventoryMasakan) {
         List<BahanMakanan> bahanMakanan = masakan.getBahanMakanan();
-        HashMap<BahanMakanan, Integer> stockBahanMakanan = inventory.getStockBahanMakanan();
+        HashMap<BahanMakanan, Integer> stockBahanMakanan = inventoryBahanMakanan.getStock();
         for (BahanMakanan bahan : bahanMakanan) {
             if (stockBahanMakanan.containsKey(bahan)) {
                 int jumlah = stockBahanMakanan.get(bahan);
@@ -35,10 +35,10 @@ public class Cook {
         }
         
         for (BahanMakanan bahan : bahanMakanan) {
-            inventory.kurangiStock(bahan, 1);
+            inventoryBahanMakanan.kurangiStock(bahan, 1);
         }
         
-        inventory.tambahStock(masakan, 1);
+        inventoryMasakan.tambahStock(masakan, 1);
         System.out.println("Masakan " + masakan.getNama() + " berhasil dimasak");
     }
     
