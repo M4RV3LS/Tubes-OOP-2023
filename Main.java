@@ -155,7 +155,7 @@ public class Main {
                 sim.viewSimInfo();
             }
             else if(menuInput.equals("2")|| menuInput.equalsIgnoreCase("View Current Location")){
-                
+                sim.lokasiSIM();
             }
             else if(menuInput.equals("3")|| menuInput.equalsIgnoreCase("View Inventory")){
                 sim.printAllInventory();
@@ -172,6 +172,7 @@ public class Main {
                 System.out.print("Masukkan nama ruangan yang ingin anda kunjungi: ");
                 menuInput = scanner.nextLine();
                 room = house.getRoom(menuInput);
+                sim.setRoom(room);
             }
             else if(menuInput.equals("6")|| menuInput.equalsIgnoreCase("Edit Room")){
                 
@@ -210,7 +211,13 @@ public class Main {
                 room.printObjectCounts();
             }
             else if(menuInput.equals("10")|| menuInput.equalsIgnoreCase("Go To Object")){
-                
+                System.out.println("Masukkan Koordinat Objek Yang Dituju: ");
+                System.out.print("X : ");
+                int x = scanner.nextInt();
+                System.out.print("Y : ");
+                int y = scanner.nextInt();
+                sim.moveToObject(x,y);
+                scanner.nextLine();
             }
             else if(menuInput.equals("11")|| menuInput.equalsIgnoreCase("Action")){
                 obj.print("Berikut ini adalah beberapa aksi yang bisa dilakukan oleh SIM : ");
