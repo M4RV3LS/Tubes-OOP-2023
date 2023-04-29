@@ -216,64 +216,281 @@ public class Room {
         System.out.println("+");
     }
 
-    public Boolean placeFurniture(int startX, int startY, Dimension dimension, String furniture, Boolean horizontal) throws Exception {
-        Boolean valid = true;
-        if (startX < 0 || startX >= 6 || startY < 0 || startY >= 6) {
-            valid = false;
-            throw new Exception("Input coordinates are out of bounds");
-        }
-        if (!horizontal) {
-            if (startX + dimension.getLength() - 1 > 5 || startY + dimension.getWidth() - 1 > 5) {
-                valid = false;
-                throw new Exception("Furniture dimensions are too large");
-            }
-        } else {
-            if (startX + dimension.getWidth() - 1 > 5 || startY + dimension.getLength() - 1 > 5) {
-                valid = false;
-                throw new Exception("Furniture dimensions are too large");
-            }
-        }
+    // public Boolean placeFurniture(int startX, int startY, Dimension dimension, String furniture, Boolean horizontal) throws Exception {
+    //     Boolean valid = true;
+    //     if (startX < 0 || startX >= 6 || startY < 0 || startY >= 6) {
+    //         valid = false;
+    //         throw new Exception("Input coordinates are out of bounds");
+    //     }
+    //     if (!horizontal) {
+    //         if (startX + dimension.getLength() - 1 > 5 || startY + dimension.getWidth() - 1 > 5) {
+    //             valid = false;
+    //             throw new Exception("Furniture dimensions are too large");
+    //         }
+    //     } else {
+    //         if (startX + dimension.getWidth() - 1 > 5 || startY + dimension.getLength() - 1 > 5) {
+    //             valid = false;
+    //             throw new Exception("Furniture dimensions are too large");
+    //         }
+    //     }
     
-        if (horizontal && valid) {
-            for (int i = startX; i < startX + dimension.getWidth(); i++) {
-                for (int j = startY; j < startY + dimension.getLength(); j++) {
-                    if (layout[i][j] != "") {
-                        valid = false;
-                        throw new Exception("Furniture placement overlaps with existing furniture");
-                    }
-                }
-            }
-            if (valid) {
-                for (int i = startX; i < startX + dimension.getWidth(); i++) {
-                    for (int j = startY; j < startY + dimension.getLength(); j++) {
-                        layout[i][j] = furniture;
-                    }
-                }
-            }
-        } else if (!horizontal && valid) {
-            for (int i = startX; i < startX + dimension.getLength(); i++) {
-                for (int j = startY; j < startY + dimension.getWidth(); j++) {
-                    if (layout[i][j] != "") {
-                        valid = false;
-                        throw new Exception("Furniture placement overlaps with existing furniture");
-                    }
-                }
-            }
-            if (valid) {
-                for (int i = startX; i < startX + dimension.getLength(); i++) {
-                    for (int j = startY; j < startY + dimension.getWidth(); j++) {
-                        layout[i][j] = furniture;
-                    }
-                }
-            }
-        }
+    //     if (horizontal && valid) {
+    //         for (int i = startX; i < startX + dimension.getWidth(); i++) {
+    //             for (int j = startY; j < startY + dimension.getLength(); j++) {
+    //                 if (layout[i][j] != "") {
+    //                     valid = false;
+    //                     throw new Exception("Furniture placement overlaps with existing furniture");
+    //                 }
+    //             }
+    //         }
+    //         if (valid) {
+    //             for (int i = startX; i < startX + dimension.getWidth(); i++) {
+    //                 for (int j = startY; j < startY + dimension.getLength(); j++) {
+    //                     layout[i][j] = furniture;
+    //                 }
+    //             }
+    //         }
+    //     } else if (!horizontal && valid) {
+    //         for (int i = startX; i < startX + dimension.getLength(); i++) {
+    //             for (int j = startY; j < startY + dimension.getWidth(); j++) {
+    //                 if (layout[i][j] != "") {
+    //                     valid = false;
+    //                     throw new Exception("Furniture placement overlaps with existing furniture");
+    //                 }
+    //             }
+    //         }
+    //         if (valid) {
+    //             for (int i = startX; i < startX + dimension.getLength(); i++) {
+    //                 for (int j = startY; j < startY + dimension.getWidth(); j++) {
+    //                     layout[i][j] = furniture;
+    //                 }
+    //             }
+    //         }
+    //     }
     
-        // if(valid){
-        //     updateMapData();
+    //     // if(valid){
+    //     //     updateMapData();
+    //     // }
+    //     return valid;
+    // }
+
+    // public Boolean placeFurniture(int startX, int startY, Dimension dimension, String furniture, Boolean right , Boolean left , Boolean up , Boolean down) throws Exception {
+    //     Boolean valid = true;
+    //     if (startX < 0 || startX >= 6 || startY < 0 || startY >= 6) {
+    //         valid = false;
+    //         throw new Exception("Input coordinates are out of bounds");
+            
+    //     }
+    //     if (right) {
+    //         System.out.println("Masuk Right");
+    //         if (startX + dimension.getLength() - 1 > 5 || startY + dimension.getWidth() - 1 > 5) {
+    //             valid = false;
+    //             throw new Exception("Furniture dimensions are too large");
+                
+    //         }
+    //     else if(left){
+    //         System.out.println("Masuk Left");
+    //         if (startX - dimension.getLength() + 1 < 0 || startY + dimension.getWidth() - 1 > 5) {
+    //             valid = false;
+    //             throw new Exception("Furniture dimensions are too large");
+                
+    //     }
+    //     } else if (down) {
+    //         System.out.println("Masuk Down");
+    //         if (startX + dimension.getWidth() - 1 > 5 || startY + dimension.getLength() - 1 > 5) {
+    //             valid = false;
+    //             throw new Exception("Furniture dimensions are too large");
+                
+    //         }
+    //     } else if (up) {
+    //         System.out.println("Masuk Up");
+    //         if (startX + dimension.getWidth() - 1 > 5 || startY - dimension.getLength() + 1 < 0 ) {
+    //             valid = false;
+    //             throw new Exception("Furniture dimensions are too large");
+                
+    //         }
+    //     } else {
+    //         valid = false;
+    //         throw new Exception("Invalid direction specified");
+    //     }
+    
+        // if (right && valid) {
+        //     System.out.println("Masuk Right 2");
+        //     for (int i = startY; i < startY + dimension.getWidth(); i++) {
+        //         for (int j = startX; j < startX + dimension.getLength(); j++) {
+        //             if (layout[i][j] != "") {
+        //                 valid = false;
+        //                 throw new Exception("Furniture placement overlaps with existing furniture");
+        //             }
+        //         }
+        //     }
+        //     if (valid) {
+        //         for (int i = startY; i < startY + dimension.getWidth(); i++) {
+        //             for (int j = startX; j < startX + dimension.getLength(); j++) {
+        //                 layout[i][j] = furniture;
+        //             }
+        //         }
+        //     }
+        // } else if (left && valid) {
+        //     System.out.println("Masuk Left 2");
+        //     for (int i = startY; i < startY + dimension.getWidth(); i++) {
+        //         for (int j = startY; j > startY - dimension.getLength() + 1; j--) {
+        //             if (layout[i][j] != "") {
+        //                 valid = false;
+        //                 throw new Exception("Furniture placement overlaps with existing furniture");
+        //             }
+        //         }
+        //     }
+        //     if (valid) {
+        //         for (int i = startY; i < startY + dimension.getWidth(); i++) {
+        //             for (int j = startY; j > startY - dimension.getLength() + 1; j--) {
+        //                 layout[i][j] = furniture;
+        //             }
+        //         }
+        //     }
+        // } else if (down && valid) {
+        //     System.out.println("Masuk Down 2");
+        //     for (int i = startY; i < startY + dimension.getLength(); i++) {
+        //         for (int j = startX; j < startX + dimension.getWidth(); j++) {
+        //             if (layout[i][j] != "") {
+        //                 valid = false;
+        //                 throw new Exception("Furniture placement overlaps with existing furniture");
+        //             }
+        //         }
+        //     }
+        //     if (valid) {
+        //         for (int i = startY; i < startY + dimension.getLength(); i++) {
+        //             for (int j = startX; j < startX + dimension.getWidth(); j++) {
+        //                 layout[i][j] = furniture;
+        //             }
+        //         }
+        //     }
+        // } else if (up && valid) {
+        //     System.out.println("Masuk Up 2");
+        //     for (int i = startY; i > startY - dimension.getLength(); i--) {
+        //         for (int j = startX; j < startX + dimension.getWidth(); j++) {
+        //             if (layout[i][j] != "") {
+        //                 valid = false;
+        //                 throw new Exception("Furniture placement overlaps with existing furniture");
+        //             }
+        //         }
+        //     }
+        //     if (valid) {
+        //         for (int i = startY; i > startY - dimension.getLength(); i--) {
+        //             for (int j = startX; j < startX + dimension.getWidth(); j++) {
+        //                 layout[i][j] = furniture;
+        //             }
+        //         }
+        //     }
         // }
+
+    // }
+    //     return valid;
+    // }
+
+    public boolean placeFurniture(int startX, int startY, Dimension dimension, String furniture, String direction) throws Exception {
+        boolean valid = true;
+        if (startX < 0 || startY < 0 || startX > 5 || startY > 5) {
+            valid = false;
+            throw new Exception("Invalid starting position");
+        }
+        int endX = startX;
+        int endY = startY;
+        if (direction.equalsIgnoreCase("Right")) {
+            endX = startX + dimension.getLength();
+            endY = startY + dimension.getWidth() - 1;
+        } else if (direction.equalsIgnoreCase("Left")) {
+            endX = startX - dimension.getLength() + 1;
+            endY = startY + dimension.getWidth() - 1;
+        } else if (direction.equalsIgnoreCase("Up")) {
+            endX = startX + dimension.getWidth() - 1;
+            endY = startY - dimension.getLength() + 1;
+        } else if (direction.equalsIgnoreCase("Down")) {
+            endX = startX + dimension.getWidth() - 1;
+            endY = startY + dimension.getLength() - 1;
+        }
+        if (endX < 0 || endY < 0 || endX > 5 || endY > 5) {
+            valid = false;
+            throw new Exception("Furniture dimensions are too large");
+        }
+        if (direction.equalsIgnoreCase("Right") && valid) {
+            System.out.println("Masuk Right 2");
+            for (int i = startY; i < startY + dimension.getWidth(); i++) {
+                for (int j = startX; j < startX + dimension.getLength(); j++) {
+                    if (layout[i][j] != "") {
+                        valid = false;
+                        throw new Exception("Furniture placement overlaps with existing furniture");
+                    }
+                }
+            }
+            if (valid) {
+                for (int i = startY; i < startY + dimension.getWidth(); i++) {
+                    for (int j = startX; j < startX + dimension.getLength(); j++) {
+                        layout[i][j] = furniture;
+                    }
+                }
+                return true;
+            }
+        } else if (direction.equalsIgnoreCase("Left") && valid) {
+            System.out.println("Masuk Left 2");
+            for (int i = startY; i < startY + dimension.getWidth(); i++) {
+                for (int j = startX; j > startX - dimension.getLength(); j--) {
+                    if (layout[i][j] != "") {
+                        valid = false;
+                        throw new Exception("Furniture placement overlaps with existing furniture");
+                    }
+                }
+            }
+            if (valid) {
+                for (int i = startY; i < startY + dimension.getWidth(); i++) {
+                    for (int j = startX; j > startX - dimension.getLength() ; j--) {
+                        layout[i][j] = furniture;
+                    }
+                }
+                return true;
+            }
+        } else if (direction.equalsIgnoreCase("Down") && valid) {
+            System.out.println("Masuk Down 2");
+            for (int i = startY; i < startY + dimension.getLength(); i++) {
+                for (int j = startX; j < startX + dimension.getWidth(); j++) {
+                    if (layout[i][j] != "") {
+                        valid = false;
+                        throw new Exception("Furniture placement overlaps with existing furniture");
+                    }
+                }
+            }
+            if (valid) {
+                for (int i = startY; i < startY + dimension.getLength(); i++) {
+                    for (int j = startX; j < startX + dimension.getWidth(); j++) {
+                        layout[i][j] = furniture;
+                    }
+                }
+                return true;
+            }
+        } else if (direction.equalsIgnoreCase("Up") && valid) {
+            System.out.println("Masuk Up 2");
+            for (int i = startY; i > startY - dimension.getLength(); i--) {
+                for (int j = startX; j < startX + dimension.getWidth(); j++) {
+                    if (layout[i][j] != "") {
+                        valid = false;
+                        throw new Exception("Furniture placement overlaps with existing furniture");
+                    }
+                }
+            }
+            if (valid) {
+                for (int i = startY; i > startY - dimension.getLength(); i--) {
+                    for (int j = startX; j < startX + dimension.getWidth(); j++) {
+                        layout[i][j] = furniture;
+                    }
+                }
+                return true;
+            }
+        }
+        else {
+            return false;
+        }
         return valid;
     }
+    } 
+    
 
-    
-    
-}

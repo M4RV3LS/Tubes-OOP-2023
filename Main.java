@@ -70,13 +70,13 @@ public class Main {
         boolean exit = false;
         
         //Loading Bar Features 
-        int totalTasks = 10;
-        for(int i = 0; i <= totalTasks; i++) {
-            double progressPercentage = (double)i/totalTasks;
-            String progressBar = getProgressBar(progressPercentage);
-            System.out.print("\r" + progressBar + " " + Math.round(progressPercentage*100) + "%");
-            Thread.sleep(1000);
-        }
+        // int totalTasks = 10;
+        // for(int i = 0; i <= totalTasks; i++) {
+        //     double progressPercentage = (double)i/totalTasks;
+        //     String progressBar = getProgressBar(progressPercentage);
+        //     System.out.print("\r" + progressBar + " " + Math.round(progressPercentage*100) + "%");
+        //     Thread.sleep(1000);
+        // }
 
         // print the message and make it blink until user input
         while (!started) {
@@ -117,12 +117,12 @@ public class Main {
             System.out.println("");
     
             System.out.println("");
-            for(int i=0; i<4; i++) {
-                System.out.print("\rGenerating Sims Map . . . . . ");
-                Thread.sleep(1000);
-                System.out.print("\r                                 ");
-                Thread.sleep(1000);
-            }
+            // for(int i=0; i<4; i++) {
+            //     System.out.print("\rGenerating Sims Map . . . . . ");
+            //     Thread.sleep(1000);
+            //     System.out.print("\r                                 ");
+            //     Thread.sleep(1000);
+            // }
             System.out.println("");
             house = sim.getHouse();
             room = house.getRoom("Living Room");
@@ -414,19 +414,57 @@ public class Main {
                 int x = scanner.nextInt();
                 System.out.print("Masukkan Koordinat Y : ");
                 int y = scanner.nextInt();
-                System.out.print("Apakah barang ingin diletakkan secara horizontal ?");
                 scanner.nextLine();
-                menuInput = scanner.nextLine();
-                Boolean horizontal = true;
-                if(menuInput.equalsIgnoreCase("Y")){
-                    horizontal = true;
-                }
-                else if(menuInput.equalsIgnoreCase("N")){
-                    horizontal = false;
-                }
-                else{
-                    System.out.println("Input tidak valid.");
-                }
+                System.out.print("Masukan Arah Letak Benda (Right/Left/Up/Down) :");
+                String input2 = scanner.nextLine();
+                // Boolean right = false;
+                // Boolean left = false;
+                // Boolean up = false;
+                // Boolean down = false;
+                // if(input2.equalsIgnoreCase("right")){
+                //     right = true;
+                // }
+                // else if(input2.equalsIgnoreCase("left")){
+                //     left = true;
+                // }
+                // else if(input2.equalsIgnoreCase("up")){
+                //     up = true;
+                // }
+                // else if(input2.equalsIgnoreCase("down")){
+                //     down = true;
+                // }
+                // else{
+                //     System.out.println("Input Salah");
+                // }
+
+
+                // if(input2.equalsIgnoreCase("y")){
+                //     horizontal = true;
+                // }
+                // else if(input2.equalsIgnoreCase("n")){
+                //     horizontal = false;
+                // }
+                // else{
+                //     System.out.println("Input Salah");
+                // }
+                // System.out.print("Masukan Arah Letak Benda (Right/Left/Up/Down) :");
+                // menuInput = scanner.nextLine().trim();
+                // String direction = menuInput;
+                // if(menuInput.equalsIgnoreCase("Left")){
+                //     direction = "Left";
+                // }
+                // else if(menuInput.equalsIgnoreCase("Right")){
+                //     direction = "Right";
+                // }
+                // else if(menuInput.equalsIgnoreCase("Up")){
+                //     direction = "Up";
+                // }
+                // else if(menuInput.equalsIgnoreCase("Down")){
+                //     direction = "Down";
+                // }
+                // else{
+                //     System.out.println("Input Salah");
+                // }
                 // if(horizontal){
                 //     System.out.println("Horizontal");
                 // }
@@ -436,8 +474,13 @@ public class Main {
 
                 try {
                     Boolean valid;
+                    // System.out.println(direction);
                     Furniture furniture = Furniture.valueOf(input.toUpperCase());
-                    valid = room.placeFurniture(x , y , furniture.getDimensi() , furniture.getNamaInisial() , horizontal);
+                    int length = furniture.getDimensi().getLength();
+                    int width = furniture.getDimensi().getWidth();
+                    System.out.println(length + " , " + width);
+                    // System.out.println(x + " , " + y);
+                    valid = room.placeFurniture(x , y , furniture.getDimensi() , furniture.getNamaInisial() , input2);
                     if(valid){
                         sim.getInventoryFurniture().kurangiStock(furniture,1);
                         MyObject myObject = new MyObject(furniture.getName()); // membuat objek MyObject
@@ -480,6 +523,7 @@ public class Main {
         else{
             System.out.println("Input tidak valid.");
         }
+
 
         // //Membuat Objek Baru 
         // Scanner scanner = new Scanner(System.in);
