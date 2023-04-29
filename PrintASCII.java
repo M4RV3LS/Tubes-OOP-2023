@@ -1,5 +1,5 @@
 public class PrintASCII {
-    public printTitle() {
+    public void printTitle() {
         System.out.println("   ▄████████  ▄█    ▄▄▄▄███▄▄▄▄              ▄███████▄  ▄█        ▄█   ▄████████  ▄█      ███     ▄██   ▄");
         System.out.println("  ███    ███ ███  ▄██▀▀▀███▀▀▀██▄           ███    ███ ███       ███  ███    ███ ███  ▀█████████▄ ███   ██▄");
         System.out.println("  ███    █▀  ███▌ ███   ███   ███           ███    ███ ███       ███▌ ███    █▀  ███▌    ▀███▀▀██ ███▄▄▄███");
