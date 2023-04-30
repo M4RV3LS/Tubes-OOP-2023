@@ -127,7 +127,7 @@ public class Main {
             System.out.println("Masukkan nama SIM: ");
             String nama = scanner.nextLine();
             Sim firstSim = new Sim(nama);
-            world.simList.add(firstSim);
+            world.addSim(firstSim);
             world.addWaktuTidakTidur(firstSim , 0);
             world.addWaktuTidakBuangAir(firstSim , 0);
             sim = firstSim;
@@ -377,7 +377,7 @@ public class Main {
                 System.out.println("Masukkan nama SIM: ");
                 nama = scanner.nextLine();
                 Sim newSim = new Sim(nama);
-                world.simList.add(newSim);
+                world.addSim(newSim);
                 world.addWaktuTidakTidur(newSim , 0);
                 world.addWaktuTidakBuangAir(newSim , 0);
                 System.out.println("Objek SIM " + nama + " berhasil ditambahkan ke dalam list!");
@@ -386,16 +386,16 @@ public class Main {
                 // }
             }
             else if(menuInput.equals("8")|| menuInput.equalsIgnoreCase("Change Sim")){
-                if (world.simList.isEmpty()) {
+                if (world.getSimList().isEmpty()) {
                     System.out.println("Tidak ada SIM yang tersedia.");
                 } else {
                     System.out.println("Berikut adalah SIM yang tersedia:");
-                for ( Sim daftarSim : world.simList) {
+                for ( Sim daftarSim : world.getSimList()) {
                     System.out.println("- " + daftarSim.getNamaLengkap());
                 }
                 System.out.println("Masukkan nama SIM yang ingin anda gunakan : ");
                 nama = scanner.nextLine();
-                for(Sim s : world.simList){
+                for(Sim s : world.getSimList()){
                      if(s.getNamaLengkap().equals(nama)){
                          sim = s;
                          house = sim.getHouse();

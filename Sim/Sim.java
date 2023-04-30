@@ -604,7 +604,10 @@ public class Sim {
         // int waktuDibutuhkan = lamaBerobat;
         return lamaBerobat;
         }
-        
+        else{
+            System.out.println("Uang anda tidak cukup");
+            return 0;
+        }
     }
 
     public int karaoke(int lamaKaraoke)
@@ -692,6 +695,11 @@ public class Sim {
     //Aksi Move To Objek
     public void moveToObject(int x, int y) {
         String objName = this.room.getLayoutContent(x , y);
+        //Melakukan Cek apakah masukan melebihi peta layout [5] [5] 
+        if (x > 5 || y > 5 || x < 0 || y < 0) {
+            System.out.println("Posisi yang anda masukkan tidak valid");
+        }
+        else{
             if (objName != "") {
                 // System.out.println("Moving to " + obj.getName() + " at (" + x + "," + y + ")");
                 switch(objName) {
@@ -732,5 +740,6 @@ public class Sim {
             else{
                 System.out.println("Object not found at (" + x + "," + y + ")");
             }
+        }
     }
 }
