@@ -1,2 +1,1 @@
-int length = furniture.getDimensi().getLength();
-                    int width = furniture.getDimensi().getWidth();
+obj.print("14.Memasang barang");

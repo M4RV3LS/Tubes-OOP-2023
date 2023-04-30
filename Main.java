@@ -53,6 +53,25 @@ public class Main {
         bar.append("]");
         return bar.toString();
     }
+
+    public void printMenu(){
+            System.out.println("");
+            System.out.println("Menu: ");
+            System.out.println("1.View Sim Info");
+            System.out.println("2.View Current Location");
+            System.out.println("3.View Inventory");
+            System.out.println("4.Upgrade House");
+            System.out.println("5.Move Room");
+            System.out.println("6.Edit Room");
+            System.out.println("7.Add Sim");
+            System.out.println("8.Change Sim");
+            System.out.println("9.List Object");
+            System.out.println("10.Go To Object");
+            System.out.println("11.Action");
+            System.out.println("12.Exit");
+            System.out.println("13.Beli barang");
+            System.out.println("14.Print Room");
+    }
     
     public static void main(String[] args) throws InterruptedException{
         Main obj = new Main();       
@@ -60,6 +79,7 @@ public class Main {
         World world = World.getInstance();
         House house;
         Room room;
+        FurnitureData furnitureData;
         Sim sim = obj.getSim();
         
         // Ascii Welcome
@@ -128,26 +148,10 @@ public class Main {
             room = house.getRoom("Living Room");
             room.printRoom();
             
-            obj.print("");
-            obj.print("Menu: ");
-            obj.print("1.View Sim Info");
-            obj.print("2.View Current Location");
-            obj.print("3.View Inventory");
-            obj.print("4.Upgrade House");
-            obj.print("5.Move Room");
-            obj.print("6.Edit Room");
-            obj.print("7.Add Sim");
-            obj.print("8.Change Sim");
-            obj.print("9.List Object");
-            obj.print("10.Go To Object");
-            obj.print("11.Action");
-            obj.print("12.Exit");
-            obj.print("");
-            obj.print("action: ");
-            obj.print("13.Beli barang");
-            obj.print("14.Memasang barang");
+            obj.printMenu();
 
             while(!exit){
+            obj.print("Masukkan Help atau Menu untuk menampilkan menu permainan");
             System.out.print("Masukkan Angka atau Aksi yang diiginkan: ");
             menuInput = scanner.nextLine();
 
@@ -175,9 +179,199 @@ public class Main {
                 sim.setRoom(room);
             }
             else if(menuInput.equals("6")|| menuInput.equalsIgnoreCase("Edit Room")){
+                System.out.println("Pilih aksi:");
+                System.out.println("1. Place Furniture");
+                System.out.println("2. Edit Furniture");
+                System.out.println("3. Remove Furniture");
+                System.out.print("Masukkan Pilihan Anda : ");
+                menuInput = scanner.nextLine();
+                if (menuInput.equals("1") || menuInput.equalsIgnoreCase("Place Furniture")) {
+                obj.print("Berikut ini adalah list barang anda: ");
+                sim.getInventoryFurniture().printInventory();
+                System.out.print("Masukkan nama Furniture: ");
+                String input = scanner.nextLine();
+                System.out.print("Masukkan Koordinat X : ");
+                int x = scanner.nextInt();
+                System.out.print("Masukkan Koordinat Y : ");
+                int y = scanner.nextInt();
+                scanner.nextLine();
+                System.out.print("Masukan Arah Letak Benda (Right/Left/Up/Down) :");
+                String input2 = scanner.nextLine();
+                // Boolean right = false;
+                // Boolean left = false;
+                // Boolean up = false;
+                // Boolean down = false;
+                // if(input2.equalsIgnoreCase("right")){
+                //     right = true;
+                // }
+                // else if(input2.equalsIgnoreCase("left")){
+                //     left = true;
+                // }
+                // else if(input2.equalsIgnoreCase("up")){
+                //     up = true;
+                // }
+                // else if(input2.equalsIgnoreCase("down")){
+                //     down = true;
+                // }
+                // else{
+                //     System.out.println("Input Salah");
+                // }
+
+
+                // if(input2.equalsIgnoreCase("y")){
+                //     horizontal = true;
+                // }
+                // else if(input2.equalsIgnoreCase("n")){
+                //     horizontal = false;
+                // }
+                // else{
+                //     System.out.println("Input Salah");
+                // }
+                // System.out.print("Masukan Arah Letak Benda (Right/Left/Up/Down) :");
+                // menuInput = scanner.nextLine().trim();
+                // String direction = menuInput;
+                // if(menuInput.equalsIgnoreCase("Left")){
+                //     direction = "Left";
+                // }
+                // else if(menuInput.equalsIgnoreCase("Right")){
+                //     direction = "Right";
+                // }
+                // else if(menuInput.equalsIgnoreCase("Up")){
+                //     direction = "Up";
+                // }
+                // else if(menuInput.equalsIgnoreCase("Down")){
+                //     direction = "Down";
+                // }
+                // else{
+                //     System.out.println("Input Salah");
+                // }
+                // if(horizontal){
+                //     System.out.println("Horizontal");
+                // }
+                // else{
+                //     System.out.println("Vertical");
+                // }
+
                 
+                    Boolean valid;
+                    // System.out.println(direction);
+                    Furniture furniture = Furniture.valueOf(input.toUpperCase());
+                    // int length = furniture.getDimensi().getLength();
+                    // int width = furniture.getDimensi().getWidth();
+                    // System.out.println(length + " , " + width);
+                    // System.out.println(x + " , " + y);
+                    valid = room.placeFurniture(x , y , furniture.getDimensi() ,furniture.getName() , furniture.getNamaInisial() , input2);
+                    if(valid){
+                        sim.getInventoryFurniture().kurangiStock(furniture,1);
+                        room.addFurnitureData(valid, x, y, furniture.getDimensi(),furniture.getName() , furniture.getNamaInisial() , input2);
+                        MyObject myObject = new MyObject(furniture.getName());
+                        room.addObject(myObject);
+                        System.out.println("Furniture berhasil diletakkan di koordinat (" + x + "," + y + ")");
+                    }
+                    else{
+                        System.out.println("Tidak dapat meletakkan furniture di koordinat (" + x + "," + y + ")");
+                    }
+                    room.printRoom();
+                
+                }
+
+                else if (menuInput.equals("2") || menuInput.equalsIgnoreCase("Edit Furniture")) {
+                room.printFurnitureData();
+                System.out.print("Masukkan nama furniture yang ingin anda edit : ");
+                menuInput = scanner.nextLine();
+                System.out.print("Masukkan koordinat X : ");
+                int koorX = scanner.nextInt();
+                System.out.print("Masukkan koordinat Y : ");
+                int koorY = scanner.nextInt();
+                Boolean inputValid = room.checkFurnitureData(menuInput , koorX , koorY);
+
+                
+                
+                    if(inputValid) {
+                        furnitureData = room.getFurnitureData(menuInput); 
+                        System.out.println("Furniture yang ingin anda edit adalah " + furnitureData.getFurnitureName());
+                        room.removeFurniture(furnitureData.getStartX(), furnitureData.getStartY(), furnitureData.getDimension(),furnitureData.getFurnitureName(),furnitureData.getInitialName(), furnitureData.getDirection());
+                        room.removeFurnitureData(room.getFurnitureDataList() , room.getFurnitureDataWithParameter(furnitureData.getStartX(), furnitureData.getStartY(), furnitureData.getDimension(),furnitureData.getFurnitureName(),furnitureData.getInitialName(), furnitureData.getDirection()));
+                        System.out.println("Masukkan koordinat yang baru : ");
+                        System.out.print("Masukkan koordinat X : ");
+                        koorX = scanner.nextInt();
+                        System.out.print("Masukkan koordinat Y : ");
+                        koorY = scanner.nextInt();
+                        scanner.nextLine();
+                        System.out.print("Masukan Arah Letak Benda (Right/Left/Up/Down) :");
+                        String input2 = scanner.nextLine();
+                        Boolean validInput = false;
+
+                        validInput = room.placeFurniture(koorX , koorY , furnitureData.getDimension() ,furnitureData.getFurnitureName() , furnitureData.getInitialName() , input2);
+                        while(!validInput){
+                            System.out.println("Koordinat yang anda masukkan tidak valid");
+                            System.out.println("Masukkan koordinat yang baru : ");
+                            System.out.print("Masukkan koordinat X : ");
+                            koorX = scanner.nextInt();
+                            System.out.print("Masukkan koordinat Y : ");
+                            koorY = scanner.nextInt();
+                            scanner.nextLine();
+                            System.out.print("Masukan Arah Letak Benda (Right/Left/Up/Down) :");
+                            input2 = scanner.nextLine();
+                            validInput = room.placeFurniture(koorX , koorY , furnitureData.getDimension() ,furnitureData.getFurnitureName() , furnitureData.getInitialName() , input2);
+                        }
+                        if(validInput){
+                            room.addFurnitureData(validInput, koorX, koorY, furnitureData.getDimension(),furnitureData.getFurnitureName() , furnitureData.getInitialName() , input2);
+                            System.out.println("Furniture berhasil diletakkan di koordinat (" + koorX + "," + koorY + ")");
+                        }
+                        else{
+                            System.out.println("Tidak dapat meletakkan furniture di koordinat (" + koorX + "," + koorY + ")");
+                        }
+                        room.printRoom();
+                    }
+                    else{
+                        System.out.println("Furniture tidak ditemukan");
+                    }
+                }
+                else if (menuInput.equals("3") || menuInput.equalsIgnoreCase("Remove Furniture")) {
+                room.printFurnitureData();
+                System.out.print("Masukkan nama furniture yang ingin anda hapus : ");
+                menuInput = scanner.nextLine();
+                System.out.print("Masukkan koordinat X : ");
+                int koorX = scanner.nextInt();
+                System.out.print("Masukkan koordinat Y : ");
+                int koorY = scanner.nextInt();
+                Boolean inputValid = room.checkFurnitureData(menuInput , koorX , koorY);
+
+                // while(!inputValid){
+                //     System.out.println("");
+                //     System.out.println("Furniture tidak ditemukan");
+                //     System.out.print("Masukkan nama furniture yang ingin anda hapus : ");
+                //     scanner.nextLine();
+                //     menuInput = scanner.nextLine();
+                //     System.out.print("Masukkan koordinat X : ");
+                //     koorX = scanner.nextInt();
+                //     System.out.print("Masukkan koordinat Y : ");
+                //     koorY = scanner.nextInt();
+                //     inputValid = room.checkFurnitureData(menuInput , koorX , koorY);
+                // }
+                if(inputValid){
+                    Furniture furniture = Furniture.valueOf(menuInput.toUpperCase());
+                    furnitureData = room.getFurnitureData(menuInput); 
+                    System.out.println("Furniture yang ingin anda hapus adalah " + furnitureData.getFurnitureName());
+                    room.removeFurniture(furnitureData.getStartX(), furnitureData.getStartY(), furnitureData.getDimension(),furnitureData.getFurnitureName(),furnitureData.getInitialName(), furnitureData.getDirection());
+                    room.removeFurnitureData(room.getFurnitureDataList() , room.getFurnitureDataWithParameter(furnitureData.getStartX(), furnitureData.getStartY(), furnitureData.getDimension(),furnitureData.getFurnitureName(),furnitureData.getInitialName(), furnitureData.getDirection()));
+                    MyObject myObject = room.getMyObject(furnitureData.getFurnitureName());
+                    room.removeObject(myObject);
+                    sim.getInventoryFurniture().tambahStock(furniture,1);
+                    System.out.println("Furniture berhasil dihapus");
+                    room.printRoom();
+                }
+                else{
+                    System.out.println("Furniture tidak ditemukan");
+                }
+            
+                    }
+                   
+
             }
-            else if(menuInput.equals("7")|| menuInput.equalsIgnoreCase("Add Sim")){
+        
+                else if(menuInput.equals("7")|| menuInput.equalsIgnoreCase("Add Sim")){
                 System.out.println("Masukkan nama SIM: ");
                 nama = scanner.nextLine();
                 Sim newSim = new Sim(nama);
@@ -192,7 +386,7 @@ public class Main {
                     System.out.println("Tidak ada SIM yang tersedia.");
                 } else {
                     System.out.println("Berikut adalah SIM yang tersedia:");
-                for (Sim daftarSim : simList) {
+                for ( Sim daftarSim : simList) {
                     System.out.println("- " + daftarSim.getNamaLengkap());
                 }
                 System.out.println("Masukkan nama SIM yang ingin anda gunakan : ");
@@ -405,113 +599,20 @@ public class Main {
                     }
                 }
             }
-            else if(menuInput.equals("14")|| menuInput.equalsIgnoreCase("Memasang barang")){
-                obj.print("Berikut ini adalah list barang anda: ");
-                sim.getInventoryFurniture().printInventory();
-                System.out.print("Masukkan nama Furniture: ");
-                String input = scanner.nextLine();
-                System.out.print("Masukkan Koordinat X : ");
-                int x = scanner.nextInt();
-                System.out.print("Masukkan Koordinat Y : ");
-                int y = scanner.nextInt();
-                scanner.nextLine();
-                System.out.print("Masukan Arah Letak Benda (Right/Left/Up/Down) :");
-                String input2 = scanner.nextLine();
-                // Boolean right = false;
-                // Boolean left = false;
-                // Boolean up = false;
-                // Boolean down = false;
-                // if(input2.equalsIgnoreCase("right")){
-                //     right = true;
-                // }
-                // else if(input2.equalsIgnoreCase("left")){
-                //     left = true;
-                // }
-                // else if(input2.equalsIgnoreCase("up")){
-                //     up = true;
-                // }
-                // else if(input2.equalsIgnoreCase("down")){
-                //     down = true;
-                // }
-                // else{
-                //     System.out.println("Input Salah");
-                // }
 
+            else if(menuInput.equals("14")|| menuInput.equalsIgnoreCase("Print Room")){
+                room.printRoom();
+            }
 
-                // if(input2.equalsIgnoreCase("y")){
-                //     horizontal = true;
-                // }
-                // else if(input2.equalsIgnoreCase("n")){
-                //     horizontal = false;
-                // }
-                // else{
-                //     System.out.println("Input Salah");
-                // }
-                // System.out.print("Masukan Arah Letak Benda (Right/Left/Up/Down) :");
-                // menuInput = scanner.nextLine().trim();
-                // String direction = menuInput;
-                // if(menuInput.equalsIgnoreCase("Left")){
-                //     direction = "Left";
-                // }
-                // else if(menuInput.equalsIgnoreCase("Right")){
-                //     direction = "Right";
-                // }
-                // else if(menuInput.equalsIgnoreCase("Up")){
-                //     direction = "Up";
-                // }
-                // else if(menuInput.equalsIgnoreCase("Down")){
-                //     direction = "Down";
-                // }
-                // else{
-                //     System.out.println("Input Salah");
-                // }
-                // if(horizontal){
-                //     System.out.println("Horizontal");
-                // }
-                // else{
-                //     System.out.println("Vertical");
-                // }
-
-                try {
-                    Boolean valid;
-                    // System.out.println(direction);
-                    Furniture furniture = Furniture.valueOf(input.toUpperCase());
-                    int length = furniture.getDimensi().getLength();
-                    int width = furniture.getDimensi().getWidth();
-                    System.out.println(length + " , " + width);
-                    // System.out.println(x + " , " + y);
-                    valid = room.placeFurniture(x , y , furniture.getDimensi() , furniture.getNamaInisial() , input2);
-                    if(valid){
-                        sim.getInventoryFurniture().kurangiStock(furniture,1);
-                        MyObject myObject = new MyObject(furniture.getName()); // membuat objek MyObject
-                        int jumlahBarang = 1; // jumlah barang Furniture yang ingin ditambahkan
-
-                        // Memasukkan objek MyObject dan jumlah barang ke dalam HashMap objectCounts
-                        if (room.getObjectCounts().containsKey(myObject)) { // jika objek MyObject sudah ada di HashMap
-                            int currentCount = room.getObjectCounts().get(myObject); // ambil nilai jumlah barang saat ini
-                            room.getObjectCounts().put(myObject, currentCount + jumlahBarang); // tambahkan jumlah barang yang baru ke nilai yang sudah ada
-                        } else { // jika objek MyObject belum ada di HashMap
-                            room.getObjectCounts().put(myObject, jumlahBarang); // tambahkan objek MyObject dan jumlah barang ke HashMap
-                        }
-                        System.out.println("Furniture berhasil diletakkan di koordinat (" + x + "," + y + ")");
-                    }
-                    else{
-                        System.out.println("Tidak dapat meletakkan furniture di koordinat (" + x + "," + y + ")");
-                    }
-                    room.printRoom();
-                } catch (IllegalArgumentException e) {
-                    System.out.println("Furniture tidak ditemukan");
-                }
-                catch (Exception e) {
-                    System.out.println("Terjadi kesalahan: " + e.getMessage());
-                }
+            else if(menuInput.equalsIgnoreCase("Help") || menuInput.equalsIgnoreCase("Menu")){
+                obj.printMenu();
             }
             else{
                 System.out.println("Input tidak valid.");
             }
-            
-            }
         }
+    }
+            
         else if(menuInput.equals("2") || menuInput.equalsIgnoreCase("Help")){
 
         }
@@ -523,7 +624,8 @@ public class Main {
         else{
             System.out.println("Input tidak valid.");
         }
-
+    }
+}
 
         // //Membuat Objek Baru 
         // Scanner scanner = new Scanner(System.in);
@@ -601,5 +703,4 @@ public class Main {
         // }
 
 
-}
-}
+

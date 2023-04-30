@@ -1,4 +1,5 @@
 package Map;
+import Inventory.*;
 public class FurnitureData {
     private String furnitureName;
     private String initialName;

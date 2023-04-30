@@ -7,13 +7,13 @@ public class Room {
     private int width = 6;
     private int height = 6;
     private String roomName;
-    private HashMap<MyObject, Integer> objectCounts; // perubahan ini
+    private HashMap<MyObject, Integer> objectCounts; 
     private Room roomUp;
     private Room roomDown;
     private Room roomLeft;
     private Room roomRight;
     private String[][] layout;
-    
+    private ArrayList<FurnitureData> furnitureDataList;
 
 
     public Room(String roomName , Room roomUp , Room roomRight , Room roomDown , Room roomLeft) {
@@ -22,7 +22,7 @@ public class Room {
         this.roomRight = roomRight;
         this.roomDown = roomDown;
         this.roomLeft = roomLeft;
-        layout = new String[6][6];
+        this.layout = new String[6][6];
         for (int i = 0; i < layout.length; i++) {
             Arrays.fill(layout[i], "");
         }
@@ -43,7 +43,8 @@ public class Room {
         //         }
         //     }
         // }
-        objectCounts = new HashMap<MyObject, Integer>(); // inisialisasi HashMap
+        this.objectCounts = new HashMap<MyObject, Integer>(); // inisialisasi HashMap
+        this.furnitureDataList = new ArrayList<FurnitureData>();
     }
 
     public String[][] getLayout() {
@@ -88,6 +89,15 @@ public class Room {
         } else {
             return false;
         }
+    }
+
+    public MyObject getMyObject(String furnitureName) {
+        for (Map.Entry<MyObject, Integer> entry : objectCounts.entrySet()) {
+            if (entry.getKey().getName().equals(furnitureName)) {
+                return entry.getKey();
+            }
+        }
+        return null; // jika tidak ada MyObject dengan furnitureName tersebut
     }
     
     public HashMap<MyObject, Integer> getObjectCounts() {
@@ -148,6 +158,44 @@ public class Room {
         }
         return false;
     }
+
+    public ArrayList<FurnitureData> getFurnitureDataList(){
+        return furnitureDataList;
+    }
+
+    //mendapatkan objek furnitureData berdasarkan parameter int startX, int startY, Dimension dimension,String furnitureName , String initialName, String direction
+    public FurnitureData getFurnitureDataWithParameter(int startX, int startY, Dimension dimension,String furnitureName , String initialName, String direction){
+        for (FurnitureData furnitureData : furnitureDataList) {
+            if (furnitureData.getFurnitureName().equals(furnitureName) && furnitureData.getInitialName().equals(initialName) && furnitureData.getStartX() == startX && furnitureData.getStartY() == startY && furnitureData.getDimension().equals(dimension) && furnitureData.getDirection().equals(direction)) {
+                return furnitureData;
+            }
+        }
+        return null;
+    }
+
+    public void setFurnitureDataList(ArrayList<FurnitureData> furnitureDataList){
+        this.furnitureDataList = furnitureDataList;
+    }
+
+    public void addFurnitureData(Boolean valid , int startX, int startY, Dimension dimension,String furnitureName , String initialName, String direction){
+        if(valid){
+            FurnitureData furnitureData = new FurnitureData(furnitureName, initialName, startX, startY, dimension, direction);
+            furnitureDataList.add(furnitureData);
+            
+        }
+    }
+
+    //menghapus salah satu furnitureData 
+    public void removeFurnitureData(ArrayList<FurnitureData> furnitureDataList , FurnitureData furnitureData){
+        if(furnitureData != null){
+            furnitureDataList.remove(furnitureData);
+        }
+        else{
+            System.out.println("Data Furniture tidak ditemukan");
+        }
+        
+    }
+
 
     // public void updateMapData(){
     //     HashMap<Coordinate, String> newMapData = new HashMap<>();
@@ -387,12 +435,13 @@ public class Room {
     // }
     //     return valid;
     // }
+    
 
-    public boolean placeFurniture(int startX, int startY, Dimension dimension, String furniture, String direction) throws Exception {
+    public boolean placeFurniture(int startX, int startY, Dimension dimension,String furnitureName , String initialName, String direction) {
         boolean valid = true;
         if (startX < 0 || startY < 0 || startX > 5 || startY > 5) {
             valid = false;
-            throw new Exception("Invalid starting position");
+            System.out.println("Invalid starting position");
         }
         int endX = startX;
         int endY = startY;
@@ -411,78 +460,82 @@ public class Room {
         }
         if (endX < 0 || endY < 0 || endX > 5 || endY > 5) {
             valid = false;
-            throw new Exception("Furniture dimensions are too large");
+            System.out.println("Furniture dimensions are too large");
         }
         if (direction.equalsIgnoreCase("Right") && valid) {
-            System.out.println("Masuk Right 2");
+            // System.out.println("Masuk Right 2");
             for (int i = startY; i < startY + dimension.getWidth(); i++) {
                 for (int j = startX; j < startX + dimension.getLength(); j++) {
                     if (layout[i][j] != "") {
                         valid = false;
-                        throw new Exception("Furniture placement overlaps with existing furniture");
+                        System.out.println("Furniture placement overlaps with existing furniture");
                     }
                 }
             }
             if (valid) {
                 for (int i = startY; i < startY + dimension.getWidth(); i++) {
                     for (int j = startX; j < startX + dimension.getLength(); j++) {
-                        layout[i][j] = furniture;
+                        layout[i][j] = initialName;
                     }
                 }
+                
                 return true;
             }
         } else if (direction.equalsIgnoreCase("Left") && valid) {
-            System.out.println("Masuk Left 2");
+            // System.out.println("Masuk Left 2");
             for (int i = startY; i < startY + dimension.getWidth(); i++) {
                 for (int j = startX; j > startX - dimension.getLength(); j--) {
                     if (layout[i][j] != "") {
                         valid = false;
-                        throw new Exception("Furniture placement overlaps with existing furniture");
+                        System.out.println("Furniture placement overlaps with existing furniture");
                     }
                 }
             }
             if (valid) {
                 for (int i = startY; i < startY + dimension.getWidth(); i++) {
                     for (int j = startX; j > startX - dimension.getLength() ; j--) {
-                        layout[i][j] = furniture;
+                        layout[i][j] = initialName;
                     }
                 }
+                
                 return true;
             }
         } else if (direction.equalsIgnoreCase("Down") && valid) {
-            System.out.println("Masuk Down 2");
+            // System.out.println("Masuk Down 2");
             for (int i = startY; i < startY + dimension.getLength(); i++) {
                 for (int j = startX; j < startX + dimension.getWidth(); j++) {
                     if (layout[i][j] != "") {
                         valid = false;
-                        throw new Exception("Furniture placement overlaps with existing furniture");
+                        System.out.println("Furniture placement overlaps with existing furniture");
                     }
                 }
             }
             if (valid) {
                 for (int i = startY; i < startY + dimension.getLength(); i++) {
                     for (int j = startX; j < startX + dimension.getWidth(); j++) {
-                        layout[i][j] = furniture;
+                        layout[i][j] = initialName;
                     }
                 }
+                
                 return true;
             }
         } else if (direction.equalsIgnoreCase("Up") && valid) {
-            System.out.println("Masuk Up 2");
+            // System.out.println("Masuk Up 2");
             for (int i = startY; i > startY - dimension.getLength(); i--) {
                 for (int j = startX; j < startX + dimension.getWidth(); j++) {
                     if (layout[i][j] != "") {
                         valid = false;
-                        throw new Exception("Furniture placement overlaps with existing furniture");
+                        System.out.println("Furniture placement overlaps with existing furniture");
                     }
                 }
             }
             if (valid) {
                 for (int i = startY; i > startY - dimension.getLength(); i--) {
                     for (int j = startX; j < startX + dimension.getWidth(); j++) {
-                        layout[i][j] = furniture;
+                        layout[i][j] = initialName;
                     }
                 }
+                
                 return true;
             }
         }
@@ -491,6 +544,139 @@ public class Room {
         }
         return valid;
     }
-    } 
+
+    public void removeFurniture(int startX, int startY, Dimension dimension,String furnitureName , String initialName, String direction){
+        Boolean valid = true;
+        if (direction.equalsIgnoreCase("Right")) {
+            // System.out.println("Masuk Right 2");
+            for (int i = startY; i < startY + dimension.getWidth(); i++) {
+                for (int j = startX; j < startX + dimension.getLength(); j++) {
+                    if (layout[i][j] == "") {
+                        valid = false;
+                        // System.out.println("Furniture placement overlaps with existing furniture");
+                    }
+                }
+            }
+            if (valid) {
+                for (int i = startY; i < startY + dimension.getWidth(); i++) {
+                    for (int j = startX; j < startX + dimension.getLength(); j++) {
+                        layout[i][j] = "";
+                    }
+                }
+            }
+            else{
+               System.out.println("Furniture memiliki posisi yang tidak valid");
+            }
+        } else if (direction.equalsIgnoreCase("Left")) {
+            // System.out.println("Masuk Left 2");
+            for (int i = startY; i < startY + dimension.getWidth(); i++) {
+                for (int j = startX; j > startX - dimension.getLength(); j--) {
+                    if (layout[i][j] == "") {
+                        valid = false;
+                        //System.out.println("Furniture placement overlaps with existing furniture");
+                    }
+                }
+            }
+            if (valid) {
+                for (int i = startY; i < startY + dimension.getWidth(); i++) {
+                    for (int j = startX; j > startX - dimension.getLength() ; j--) {
+                        layout[i][j] = "";
+                    }
+                }
+            }
+            else{
+               System.out.println("Furniture memiliki posisi yang tidak valid");
+            }
+        } else if (direction.equalsIgnoreCase("Down")) {
+            // System.out.println("Masuk Down 2");
+            for (int i = startY; i < startY + dimension.getLength(); i++) {
+                for (int j = startX; j < startX + dimension.getWidth(); j++) {
+                    if (layout[i][j] == "") {
+                        valid = false;
+                        //System.out.println("Furniture placement overlaps with existing furniture");
+                    }
+                }
+            }
+            if (valid) {
+                for (int i = startY; i < startY + dimension.getLength(); i++) {
+                    for (int j = startX; j < startX + dimension.getWidth(); j++) {
+                        layout[i][j] = "";
+                    }
+                }
+            }
+            else{
+               System.out.println("Furniture memiliki posisi yang tidak valid");
+            }
+        } else if (direction.equalsIgnoreCase("Up")) {
+            // System.out.println("Masuk Up 2");
+            for (int i = startY; i > startY - dimension.getLength(); i--) {
+                for (int j = startX; j < startX + dimension.getWidth(); j++) {
+                    if (layout[i][j] == "") {
+                        valid = false;
+                        //System.out.println("Furniture placement overlaps with existing furniture");
+                    }
+                }
+            }
+            if (valid) {
+                for (int i = startY; i > startY - dimension.getLength(); i--) {
+                    for (int j = startX; j < startX + dimension.getWidth(); j++) {
+                        layout[i][j] = "";
+                    }
+                }
+            }
+            else{
+               System.out.println("Furniture memiliki posisi yang tidak valid");
+            }
+        }
+        else {
+           System.out.println("Direction tidak valid");
+        }
+    }
+
+    //print List Furniture yang ada di Room beserta Lokasinya
+    public void printFurnitureData(){
+        int i = 1;
+        System.out.println("Berikut ini adalah daftar furniture beserta lokasinya");
+        for(FurnitureData furnitureData : this.getFurnitureDataList()){
+            System.out.println(i + "." + furnitureData.getFurnitureName() + " - (x , y)" + " : " + "(" + furnitureData.getStartX() + " , " + furnitureData.getStartY() + ")");
+            // System.out.println(furnitureData.getInitialName());
+            // System.out.println(furnitureData.getDirection());
+            // System.out.println(furnitureData.getDimension().getLength());
+            // System.out.println(furnitureData.getDimension().getWidth());
+            // System.out.println(furnitureData.getStartX());
+            // System.out.println(furnitureData.getStartY());
+            i++;
+        }
+    }
+
+    //Mengecek furniture data sesuai dengan parameter String namaFurniture , int koordinatX , dan int koordinatY
+    public Boolean checkFurnitureData(String furnitureName , int koordinatX , int koordinatY){
+        Boolean valid = false;
+        for(FurnitureData furnitureData : this.getFurnitureDataList()){
+            if(furnitureData.getFurnitureName().equalsIgnoreCase(furnitureName) && furnitureData.getStartX() == koordinatX && furnitureData.getStartY() == koordinatY){
+                valid = true;
+            }
+        }
+        if(!valid){
+            System.out.println("Furniture tidak ditemukan");
+        }
+        return valid;
+    }
+
+    //getter untuk mengambil furniture data sesuai Mengecek furniture data sesuai dengan parameter String furnitureName
+    public FurnitureData getFurnitureData(String furnitureName){
+        FurnitureData furnitureData = null;
+        for(FurnitureData furnitureData1 : this.getFurnitureDataList()){
+            if(furnitureData1.getFurnitureName().equalsIgnoreCase(furnitureName)){
+                furnitureData = furnitureData1;
+            }
+        }
+        return furnitureData;
+    }
+
+    //Menaruh Objek yang berhasil dimasukkan ke Map ke dalam HashMap<MyObject, Integer> objectCounts dengan menciptakan MyObject terlebih dahulu
+
+
+}
     
 
