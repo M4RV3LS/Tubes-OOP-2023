@@ -549,6 +549,17 @@ public class SIM {
     {
         this.inventory.printInventory();
     }
+    
+    // PRINT STAT
+    public void printStat(int waktuAksi)
+    {
+        System.out.println("=========SIM SEDANG " + this.getStatus().toUpperCase() + "=========");
+        System.out.println("Anda melakukan aksi selama " + waktuAksi + " detik");
+        System.out.println("Mood anda sekarang: " + getMood());
+        System.out.println("Kesehatan anda sekarang: " + getKesehatan());
+        System.out.println("Kekenyangan anda sekarang: " + getKekenyangan());
+        System.out.println("Uang anda sekarang: " + getUang());
+    }
 
     // AKSI TAMBAHAN
     public int mainGame(int lamaMain)
@@ -562,19 +573,16 @@ public class SIM {
 
         setStatus("Main Game");
 
-        // print stats
-        System.out.println("=========SIM SEDANG MAIN GAME=========");
-        System.out.println("Anda main game selama " + lamaMain + " detik");
-        System.out.println("Mood anda sekarang: " + getMood());
-        System.out.println("Kesehatan anda sekarang: " + getKesehatan());
-        System.out.println("Kekenyangan anda sekarang: " + getKekenyangan());
+        printStat(lamaMain);
 
-        int waktuDibutuhkan = 0;
-        return waktuDibutuhkan;
+        // int waktuDibutuhkan = lamaMain;
+        return lamaMain;
     }
 
     public int santet(SIM simLain)
     {
+        int waktuDibutuhkan = 2400; // default
+        
         // this sim
         int thisMood = getMood() + 15;
         this.setMood(thisMood);
@@ -584,7 +592,7 @@ public class SIM {
         this.setKekenyangan(thisKekenyangan);
 
         // other sim
-        int thisMood = getMood() - 10;
+        int simLainMood = getMood() - 10;
         simLain.setMood(simLainMood);
         int simLainKesehatan = getKesehatan() - 20;
         simLain.setKesehatan(simLainKesehatan);
@@ -594,12 +602,8 @@ public class SIM {
         this.setStatus("Santet");
 
         // print stats
-        System.out.println("=========SIM MENYANTET SIM LAIN=========");
-        System.out.println("Mood anda sekarang: " + getMood());
-        System.out.println("Kesehatan anda sekarang: " + getKesehatan());
-        System.out.println("Kekenyangan anda sekarang: " + getKekenyangan());
+        printStat(waktuDibutuhkan); // waktu default 240
 
-        int waktuDibutuhkan = 0;
         return waktuDibutuhkan;
     }
 
@@ -615,14 +619,10 @@ public class SIM {
         setStatus("Berobat");
 
         // print stats
-        System.out.println("=========SIM SEDANG BEROBAT=========");
-        System.out.println("Anda berobat selama " + lamaBerobat + " detik");
-        System.out.println("Mood anda sekarang: " + getMood());
-        System.out.println("Kesehatan anda sekarang: " + getKesehatan());
-        System.out.println("Kekenyangan anda sekarang: " + getKekenyangan());
+        printStat(lamaBerobat);
 
-        int waktuDibutuhkan = 0;
-        return waktuDibutuhkan;
+        // int waktuDibutuhkan = lamaBerobat;
+        return lamaBerobat;
     }
 
     public int karaoke(int lamaKaraoke)
@@ -633,37 +633,32 @@ public class SIM {
         setKesehatan(kesehatanTurun);
         int kekenyanganTurun = getKekenyangan() - lamaKaraoke;
         setKekenyangan(kekenyanganTurun);
-        int uangTurun = getUang() - 20*lamaKaraoke;
+        Double uangTurun = getUang() - 20 * lamaKaraoke;
+        setUang(uangTurun);
 
         setStatus("Karaoke");
 
         // print stats
-        System.out.println("=========SIM SEDANG KARAOKE=========");
-        System.out.println("Anda karaoke selama " + lamaKaraoke + " detik");
-        System.out.println("Mood anda sekarang: " + getMood());
-        System.out.println("Kesehatan anda sekarang: " + getKesehatan());
-        System.out.println("Kekenyangan anda sekarang: " + getKekenyangan());
+        printStat(lamaKaraoke);
 
-        int waktuDibutuhkan = 0;
-        return waktuDibutuhkan;
+        // int waktuDibutuhkan = lamaKaraoke;
+        return lamaKaraoke;
     }
 
     public int puasa()
     {
+        int waktuDibutuhkan = 48600; // 13,5 jam (real life) dijadiin detik
+        
         int kesehatanNaik = getKesehatan() + 10;
-        setKesehatan(kesehatanTurun);
-        int kekenyanganTurun = getKekenyangan() + 30;
+        setKesehatan(kesehatanNaik);
+        int kekenyanganTurun = getKekenyangan() - 50;
         setKekenyangan(kekenyanganTurun);
 
         setStatus("Puasa");
 
         // print stats
-        System.out.println("=========SIM SEDANG BERPUASA=========");
-        System.out.println("Mood anda sekarang: " + getMood());
-        System.out.println("Kesehatan anda sekarang: " + getKesehatan());
-        System.out.println("Kekenyangan anda sekarang: " + getKekenyangan());
-
-        int waktuDibutuhkan = 0;
+        printStat(waktuDibutuhkan);
+        
         return waktuDibutuhkan;
     }
 
@@ -679,21 +674,19 @@ public class SIM {
         setStatus("Bersih-Bersih");
 
         // print stats
-        System.out.println("=========SIM SEDANG BERSIH-BERSIH=========");
-        System.out.println("Anda bersih-bersih selama " + lamaBersihBersih + " detik");
-        System.out.println("Mood anda sekarang: " + getMood());
-        System.out.println("Kesehatan anda sekarang: " + getKesehatan());
-        System.out.println("Kekenyangan anda sekarang: " + getKekenyangan());
+        printStat(lamaBersihBersih);
 
-        int waktuDibutuhkan = 0;
-        return waktuDibutuhkan;
+        // int waktuDibutuhkan = 0;
+        return lamaBersihBersih;
     }
 
     public int melawak()
     {
+        int waktuDibutuhkan = 300; // melawak 5 menit
+        
         int moodNaik = getMood() + 10;
         setMood(moodNaik);
-        int kesehatanNaik = getKesehatan()+ 5;
+        int kesehatanNaik = getKesehatan() + 5;
         setKesehatan(kesehatanNaik);
         int kekenyanganTurun = getKekenyangan() - 7;
         setKekenyangan(kekenyanganTurun);
@@ -701,12 +694,8 @@ public class SIM {
         setStatus("Melawak");
 
         // print stats
-        System.out.println("=========SIM SEDANG MELAWAK=========");
-        System.out.println("Mood anda sekarang: " + getMood());
-        System.out.println("Kesehatan anda sekarang: " + getKesehatan());
-        System.out.println("Kekenyangan anda sekarang: " + getKekenyangan());
-
-        int waktuDibutuhkan = 0;
+        printStat(waktuDibutuhkan);
+        
         return waktuDibutuhkan;
     }
 
