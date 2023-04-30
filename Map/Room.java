@@ -111,7 +111,6 @@ public class Room {
         }
     }
     
-
     public Room getRoomUp() {
         return roomUp;
     }
@@ -215,7 +214,7 @@ public class Room {
 
         int boxWidth = maxWordLength + 2; // lebar kotak disesuaikan dengan panjang kata maksimum
         
-
+        System.out.println("========= " + this.getRoomName() + " =========" );
         // print baris pertama
         for (int allMap = 0 ; allMap < 6 ; allMap++){
             for (int i = 0; i < 6; i++) {

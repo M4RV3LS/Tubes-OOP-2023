@@ -13,13 +13,12 @@ import Fitur.*;
 
 public class Main {
 
-    private static List<Sim> simList = new ArrayList<>();
     private Sim sim;
 
     
 
     // public void changeSim(String nama){
-    //     for(Sim s : simList){
+    //     for(Sim s : world.simList){
     //         if(s.getNamaLengkap().equals(nama)){
     //             this.sim = s;
     //             break;
@@ -128,7 +127,9 @@ public class Main {
             System.out.println("Masukkan nama SIM: ");
             String nama = scanner.nextLine();
             Sim firstSim = new Sim(nama);
-            simList.add(firstSim);
+            world.simList.add(firstSim);
+            world.addWaktuTidakTidur(firstSim , 0);
+            world.addWaktuTidakBuangAir(firstSim , 0);
             sim = firstSim;
             System.out.println("Selamat datang " + nama + "!");
             System.out.println("Sekarang kamu tinggal di sebuah rumah yang sangat sederhana.");
@@ -336,6 +337,7 @@ public class Main {
                 int koorX = scanner.nextInt();
                 System.out.print("Masukkan koordinat Y : ");
                 int koorY = scanner.nextInt();
+                scanner.nextLine();
                 Boolean inputValid = room.checkFurnitureData(menuInput , koorX , koorY);
 
                 // while(!inputValid){
@@ -375,23 +377,25 @@ public class Main {
                 System.out.println("Masukkan nama SIM: ");
                 nama = scanner.nextLine();
                 Sim newSim = new Sim(nama);
-                simList.add(newSim);
+                world.simList.add(newSim);
+                world.addWaktuTidakTidur(newSim , 0);
+                world.addWaktuTidakBuangAir(newSim , 0);
                 System.out.println("Objek SIM " + nama + " berhasil ditambahkan ke dalam list!");
-                // for (Sim daftarSim : simList) {
+                // for (Sim daftarSim : world.simList) {
                 //     System.out.println("- " + daftarSim.getNamaLengkap());
                 // }
             }
             else if(menuInput.equals("8")|| menuInput.equalsIgnoreCase("Change Sim")){
-                if (simList.isEmpty()) {
+                if (world.simList.isEmpty()) {
                     System.out.println("Tidak ada SIM yang tersedia.");
                 } else {
                     System.out.println("Berikut adalah SIM yang tersedia:");
-                for ( Sim daftarSim : simList) {
+                for ( Sim daftarSim : world.simList) {
                     System.out.println("- " + daftarSim.getNamaLengkap());
                 }
                 System.out.println("Masukkan nama SIM yang ingin anda gunakan : ");
                 nama = scanner.nextLine();
-                for(Sim s : simList){
+                for(Sim s : world.simList){
                      if(s.getNamaLengkap().equals(nama)){
                          sim = s;
                          house = sim.getHouse();
@@ -637,7 +641,7 @@ public class Main {
         //         System.out.println("Masukkan nama SIM: ");
         //         String nama = scanner.nextLine();
         //         Sim sim = new Sim(nama);
-        //         simList.add(sim);
+        //         world.simList.add(sim);
         //         System.out.println("Objek SIM " + nama + " berhasil ditambahkan ke dalam list!");
         //     }
         //     else if(input.equalsIgnoreCase("exit")){
@@ -652,18 +656,18 @@ public class Main {
         //     System.out.println("Apakah anda ingin melihat informasi SIM? (ya/tidak)");
         //     input = scanner.nextLine();
         //     if (input.equalsIgnoreCase("ya")) {
-        //         if (simList.isEmpty()) {
+        //         if (world.simList.isEmpty()) {
         //             System.out.println("Tidak ada SIM yang tersedia.");
         //         } else {
         //             System.out.println("Berikut adalah SIM yang tersedia:");
-        //         for (Sim sim : simList) {
+        //         for (Sim sim : world.simList) {
         //             System.out.println("- " + sim.getNamaLengkap());
         //         }
                 
         //         System.out.println("Masukkan nama SIM yang ingin anda lihat informasinya : ");
         //         String nama = scanner.nextLine();
         //         Sim sim = null;
-        //         for(Sim s : simList){
+        //         for(Sim s : world.simList){
         //             if(s.getNamaLengkap().equals(nama)){
         //                 sim = s;
         //                 break;

@@ -156,6 +156,9 @@ public class Sim {
         {
             this.kekenyangan = 100;
         }
+        else if (this.kekenyangan < 0){
+            this.kekenyangan = 0;
+        }
     }
 
     public int getMood() {
@@ -168,6 +171,9 @@ public class Sim {
         {
             this.mood = 100;
         }
+        else if (this.mood < 0){
+            this.mood = 0;
+        }
     }
 
     public int getKesehatan() {
@@ -179,6 +185,9 @@ public class Sim {
         if(this.kesehatan >= 100)
         {
             this.kesehatan = 100;
+        }
+        else if (this.kesehatan < 0){
+            this.kesehatan = 0;
         }
     }
 
@@ -225,6 +234,15 @@ public class Sim {
         System.out.println("Status: " + status);
         System.out.println("Rumah: " + house.getHouseName());
         System.out.println("Ruangan: " + room.getRoomName());
+    }
+
+    public void printStat()
+    {
+        System.out.println("=========SIM SEDANG " + this.getStatus().toUpperCase() + "=========");
+        System.out.println("Mood anda sekarang: " + getMood());
+        System.out.println("Kesehatan anda sekarang: " + getKesehatan());
+        System.out.println("Kekenyangan anda sekarang: " + getKekenyangan());
+        System.out.println("Uang anda sekarang: " + getUang());
     }
 
     // Ganti Hari
@@ -513,6 +531,162 @@ public class Sim {
         System.out.println("Anda tidak buang air selama " + waktuTidakBuangAir + " detik");
         System.out.println("Mood anda sekarang: " + getMood());
         System.out.println("Kekenyangan anda sekarang: " + getKekenyangan());
+    }
+
+    // Aksi Tambahan
+    public int mainGame(int lamaMain)
+    {
+        int moodNaik = getMood() + (lamaMain/10);
+        setMood(moodNaik);
+        int kesehatanTurun = getKesehatan() - (lamaMain/30);
+        setKesehatan(kesehatanTurun);
+        int kekenyanganTurun = getKekenyangan() - (lamaMain/20);
+        setKekenyangan(kekenyanganTurun);
+
+        setStatus("Main Game");
+
+        printStat();
+
+        // int waktuDibutuhkan = lamaMain;
+        return lamaMain;
+    }
+
+    public int santet(Sim simLain)
+    {
+        int waktuDibutuhkan = 60; // default
+        if(world.findSim(simLain.getNamaLengkap())){
+            // this sim
+        int thisMood = getMood() + 15;
+        this.setMood(thisMood);
+        int thisKesehatan = getKesehatan() - 5;
+        this.setKesehatan(thisKesehatan);
+        int thisKekenyangan = getKekenyangan() - 5;
+        this.setKekenyangan(thisKekenyangan);
+
+        // other sim
+        int simLainMood = getMood() - 10;
+        simLain.setMood(simLainMood);
+        int simLainKesehatan = getKesehatan() - 20;
+        simLain.setKesehatan(simLainKesehatan);
+        int simLainKekenyangan = getKekenyangan() - 15;
+        simLain.setKekenyangan(simLainKekenyangan);
+
+        this.setStatus("Santet");
+
+        // print stats
+        printStat(); // waktu default 60
+
+        return waktuDibutuhkan;
+        }
+        else{
+            System.out.println("Sim yang anda masukkan tidak ada");
+            return 0;
+        }
+        
+    }
+
+    public int berobat(int lamaBerobat)
+    {
+        int uangTurun = getUang() - (lamaBerobat/2);
+        if(uangTurun >= 0){
+            int moodNaik = getMood() + (lamaBerobat/30);
+        setMood(moodNaik);
+        int kesehatanNaik = getKesehatan() + (lamaBerobat/10)*2;
+        setKesehatan(kesehatanNaik);
+        // int kekenyanganNaik = getKekenyangan() + lamaBerobat;
+        // setKekenyangan(kekenyanganNaik);
+        setUang(uangTurun);
+        setStatus("Berobat");
+
+        // print stats
+        printStat();
+
+        // int waktuDibutuhkan = lamaBerobat;
+        return lamaBerobat;
+        }
+        
+    }
+
+    public int karaoke(int lamaKaraoke)
+    {
+        int uangTurun = getUang() - (lamaKaraoke/5);
+        if(uangTurun >= 0){
+            int moodNaik = getMood() + (lamaKaraoke/10);
+        setMood(moodNaik);
+        int kesehatanTurun = getKesehatan() - (lamaKaraoke/30);
+        setKesehatan(kesehatanTurun);
+        int kekenyanganTurun = getKekenyangan() - (lamaKaraoke/20);
+        setKekenyangan(kekenyanganTurun);
+        
+        setUang(uangTurun);
+
+        setStatus("Karaoke");
+
+        // print stats
+        printStat();
+
+        // int waktuDibutuhkan = lamaKaraoke;
+        return lamaKaraoke;
+        }
+        else{
+            System.out.println("Uang anda tidak cukup");
+            return 0;
+        }
+        
+    }
+
+    public int puasa()
+    {
+        int waktuDibutuhkan = 360;
+        
+        int kesehatanNaik = getKesehatan() + 10;
+        setKesehatan(kesehatanNaik);
+        int kekenyanganTurun = getKekenyangan() - 50;
+        setKekenyangan(kekenyanganTurun);
+
+        setStatus("Puasa");
+
+        // print stats
+        printStat();
+        
+        return waktuDibutuhkan;
+    }
+
+    public int bersihBersih(int lamaBersihBersih)
+    {
+        int moodNaik = getMood() + (lamaBersihBersih/20);
+        setMood(moodNaik);
+        int kesehatanNaik = getKesehatan() + (lamaBersihBersih/5);
+        setKesehatan(kesehatanNaik);
+        int kekenyanganTurun = getKekenyangan() - (lamaBersihBersih/15);
+        setKekenyangan(kekenyanganTurun);
+
+        setStatus("Bersih-Bersih");
+
+        // print stats
+        printStat();
+
+        // int waktuDibutuhkan = 0;
+        return lamaBersihBersih;
+    }
+
+    public int melawak()
+    {
+        int waktuDibutuhkan = 20;
+        
+        int moodNaik = getMood() + 10;
+        setMood(moodNaik);
+        int kesehatanNaik = getKesehatan() + 5;
+        setKesehatan(kesehatanNaik);
+        int kekenyanganTurun = getKekenyangan() - 3;
+        setKekenyangan(kekenyanganTurun);
+
+        setStatus("Melawak");
+
+        // print stats
+        printStat();
+        
+        return waktuDibutuhkan;
     }
 
     //Aksi Move To Objek
