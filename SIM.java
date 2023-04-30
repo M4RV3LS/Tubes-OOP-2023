@@ -564,11 +564,11 @@ public class SIM {
     // AKSI TAMBAHAN
     public int mainGame(int lamaMain)
     {
-        int moodNaik = getMood() + lamaMain;
+        int moodNaik = getMood() + (lamaMain/10);
         setMood(moodNaik);
-        int kesehatanTurun = getKesehatan() - lamaMain;
+        int kesehatanTurun = getKesehatan() - (lamaMain/30);
         setKesehatan(kesehatanTurun);
-        int kekenyanganTurun = getKekenyangan() - lamaMain;
+        int kekenyanganTurun = getKekenyangan() - (lamaMain/20);
         setKekenyangan(kekenyanganTurun);
 
         setStatus("Main Game");
@@ -581,7 +581,7 @@ public class SIM {
 
     public int santet(SIM simLain)
     {
-        int waktuDibutuhkan = 2400; // default
+        int waktuDibutuhkan = 60; // default
         
         // this sim
         int thisMood = getMood() + 15;
@@ -609,12 +609,12 @@ public class SIM {
 
     public int berobat(int lamaBerobat)
     {
-        int moodNaik = getMood() + lamaBerobat;
+        int moodNaik = getMood() + (lamaBerobat/30);
         setMood(moodNaik);
-        int kesehatanNaik = getKesehatan() + lamaBerobat;
+        int kesehatanNaik = getKesehatan() + (lamaBerobat/10);
         setKesehatan(kesehatanNaik);
-        int kekenyanganNaik = getKekenyangan() + lamaBerobat;
-        setKekenyangan(kekenyanganNaik);
+        // int kekenyanganNaik = getKekenyangan() + lamaBerobat;
+        // setKekenyangan(kekenyanganNaik);
 
         setStatus("Berobat");
 
@@ -627,13 +627,13 @@ public class SIM {
 
     public int karaoke(int lamaKaraoke)
     {
-        int moodNaik = getMood() + lamaKaraoke;
+        int moodNaik = getMood() + (lamaKaraoke/10);
         setMood(moodNaik);
-        int kesehatanTurun = getKesehatan() - lamaKaraoke;
+        int kesehatanTurun = getKesehatan() - (lamaKaraoke/30);
         setKesehatan(kesehatanTurun);
-        int kekenyanganTurun = getKekenyangan() - lamaKaraoke;
+        int kekenyanganTurun = getKekenyangan() - (lamaKaraoke/20);
         setKekenyangan(kekenyanganTurun);
-        Double uangTurun = getUang() - 20 * lamaKaraoke;
+        Double uangTurun = getUang() - (2*lamaKaraoke);
         setUang(uangTurun);
 
         setStatus("Karaoke");
@@ -647,7 +647,7 @@ public class SIM {
 
     public int puasa()
     {
-        int waktuDibutuhkan = 48600; // 13,5 jam (real life) dijadiin detik
+        int waktuDibutuhkan = 360;
         
         int kesehatanNaik = getKesehatan() + 10;
         setKesehatan(kesehatanNaik);
@@ -664,11 +664,11 @@ public class SIM {
 
     public int bersihBersih(int lamaBersihBersih)
     {
-        int moodNaik = getMood() + lamaBersihBersih;
+        int moodNaik = getMood() + (lamaBersihBersih/20);
         setMood(moodNaik);
-        int kesehatanNaik = getKesehatan() + lamaBersihBersih;
+        int kesehatanNaik = getKesehatan() + (lamaBersihBersih/5);
         setKesehatan(kesehatanNaik);
-        int kekenyanganTurun = getKekenyangan() - lamaBersihBersih;
+        int kekenyanganTurun = getKekenyangan() - (lamaBersihBersih/15);
         setKekenyangan(kekenyanganTurun);
 
         setStatus("Bersih-Bersih");
@@ -682,7 +682,7 @@ public class SIM {
 
     public int melawak()
     {
-        int waktuDibutuhkan = 300; // melawak 5 menit
+        int waktuDibutuhkan = 20;
         
         int moodNaik = getMood() + 10;
         setMood(moodNaik);
