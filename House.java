@@ -1,87 +1,106 @@
+import java.util.ArrayList;
 import java.util.*;
 
 public class House {
-    private int x;
-    private int y;
     private ArrayList<Room> rooms;
+    private String houseName;
 
-    public House(int x, int y) {
-        this.x = x;
-        this.y = y;
-        rooms = new ArrayList<Room>();
-        rooms.add(new Room("Room 1"));
+    public House(String houseName) {
+        this.houseName = houseName;
+        rooms = new ArrayList<>();
+        rooms.add(new Room("Living Room" , null , null , null , null));
     }
 
-    public int getX() {
-        return x;
+    public String getHouseName() {
+        return houseName;
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
+    public void setHouseName(String houseName){
+        this.houseName = houseName;
     }
 
     public ArrayList<Room> getRooms() {
         return rooms;
     }
 
-    public String getNamaRuangan(int index) {
-        return rooms.get(index).getRoomName();
-    }
-
     public void addRoom(Room room) {
         rooms.add(room);
     }
 
-    // print arraylist rooms
-    public void printRooms() {
+    public Room getRoom(String roomName){
+        for(Room simRoom : this.rooms) {
+            if(simRoom.getRoomName().equals(roomName)) {
+                return simRoom;
+            }
+        }
+        return null;
+    }
+
+    public void upgradeHouse(Room newrRoom) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Tolong pilih ruangan mana yang ingin dipakai sebagai acuan upgrade rumah: ");
         for (int i = 0; i < rooms.size(); i++) {
-            System.out.println(rooms.get(i).getRoomName());
+            System.out.println((i+1) + ". " + rooms.get(i).getRoomName());
+        }
+
+        int selectedRoomIndex = scanner.nextInt()-1;
+        Room selectedRoom = rooms.get(selectedRoomIndex);
+        System.out.println("Please select the position to add the room:");
+        System.out.println("1. Top");
+        System.out.println("2. Right");
+        System.out.println("3. Bottom");
+        System.out.println("4. Left");
+        int selectedPosition = scanner.nextInt();
+        switch (selectedPosition) 
+        {
+            case 1:
+                if(selectedRoom.getRoomUp() == null) 
+                {
+                    selectedRoom.setRoomUp(newrRoom);
+                } 
+                
+                else {
+                    System.out.println("There is already a room there.");
+                }
+                break;
+            
+            case 2:
+                if(selectedRoom.getRoomRight() == null) 
+                {
+                    selectedRoom.setRoomRight(newrRoom);
+                } 
+                
+                else {
+                    System.out.println("There is already a room there.");
+                }
+            break;
+            
+            case 3:
+                if(selectedRoom.getRoomDown() == null) 
+                {
+                    selectedRoom.setRoomDown(newrRoom);
+                } 
+                
+                else {
+                    System.out.println("There is already a room there.");
+                }
+            break;
+            
+            case 4:
+                if(selectedRoom.getRoomLeft() == null) 
+                {
+                    selectedRoom.setRoomLeft(newrRoom);
+                } 
+                
+                else {
+                    System.out.println("There is already a room there.");
+                }
+                break;
+            
+            default:
+                System.out.println("Invalid input.");
         }
     }
-
-    // test method
-    public void printHouse() {
-        System.out.println("House Coordinate: X " + x + ", Y " + y);
-        System.out.println("Rooms: ");
-        printRooms();
-    }
-
-    public void ugradeRumah(String namaRuangan)
-    {   
-        Room newRoom = new Room(namaRuangan);
-        rooms.add(newRoom);
-
-        // Kurangi uang Sim dan tampilkan pesan
-        System.out.println("Sim telah menambahkan ruangan baru.");
-
-        // Tunggu selama 18 menit
-        // try {
-        //     Thread.sleep(18 * 60 * 1000);
-        // } catch (InterruptedException e) {
-        //     e.printStackTrace();
-        // }
-
-        // Tampilkan pesan setelah selesai menunggu
-        System.out.println("Ruangan baru sudah siap.");
-    }
-
-    // Test method
-    public static void main(String[] args) {
-        House house = new House(10, 12);
-        house.getNamaRuangan(0);
-
-        house.addRoom(new Room("Room 2"));
-        System.out.println(house.getNamaRuangan(1)); 
-
-        house.printHouse();
-    }
-    
 }
+
+
