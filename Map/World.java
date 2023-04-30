@@ -131,6 +131,28 @@ public class World {
         simList.add(sim);
     }
 
+    //Mendapatkan atribut Sim berdasarkan parameter string nama sim
+    public Sim getSimByName(String simName) {
+        for (Sim sim : this.getSimList()) {
+            if (sim.getNamaLengkap().equals(simName)) {
+                return sim;
+            }
+        }
+        return null; // jika tidak ditemukan, return null
+    }
+    
+    //Menghapus Sim dari simList
+    public void removeSim(String simName) {
+        Sim simToRemove = this.getSimByName(simName);
+        if (simToRemove != null) {
+            simList.remove(simToRemove);
+            waktuUpgrade.remove(simToRemove);
+            waktuTidakTidur.remove(simToRemove);
+            waktuTidakBuangAir.remove(simToRemove);
+        }
+    }
+    
+
     //getter waktuUpgrade
     public HashMap<Sim , Integer> getWaktuUpgrade(){
         return waktuUpgrade;

@@ -20,6 +20,7 @@ public class Sim {
     private World world;
     private House house;
     private Room room;
+    private Boolean isDead;
     
     // Reset saat ganti kerja
     private int totalWaktuKerja = 0;
@@ -54,6 +55,7 @@ public class Sim {
         this.world = World.getInstance();
         this.house = generateRandomHouse();
         this.room = house.getRoom("Living Room");
+        this.isDead = false;
     }
 
     //Menggenerate Pekerjaan secara random 
@@ -221,6 +223,16 @@ public class Sim {
 
     public void setRoom(Room room){
         this.room = room;
+    }
+
+    public Boolean isDead(){
+        if(this.getKekenyangan() < 0 || this.getKesehatan() < 0 || this.getMood() < 0){
+            world.removeSim(this.getNamaLengkap());
+            return true
+        }
+        else{
+            return false;
+        }
     }
 
     public void viewSimInfo() {

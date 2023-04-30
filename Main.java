@@ -152,6 +152,28 @@ public class Main {
             obj.printMenu();
 
             while(!exit){
+            if(sim.isDead()){
+                obj.print("Sim " + sim.getNamaLengkap() + "telah mati");
+                obj.print("Silahkan gunakan Sim yang lain");
+                if (world.getSimList().isEmpty()) {
+                    System.out.println("Tidak ada SIM yang tersedia.Silahkan membuat SIM");
+                } else {
+                    System.out.println("Berikut adalah SIM yang tersedia:");
+                for ( Sim daftarSim : world.getSimList()) {
+                    System.out.println("- " + daftarSim.getNamaLengkap());
+                }
+                System.out.println("Masukkan nama SIM yang ingin anda gunakan : ");
+                nama = scanner.nextLine();
+                for(Sim s : world.getSimList()){
+                     if(s.getNamaLengkap().equals(nama)){
+                         sim = s;
+                         house = sim.getHouse();
+                         room = house.getRoom("Living Room");
+                     }
+                 }
+                }
+            }
+            obj.print("");
             obj.print("Masukkan Help atau Menu untuk menampilkan menu permainan");
             System.out.print("Masukkan Angka atau Aksi yang diiginkan: ");
             menuInput = scanner.nextLine();
@@ -404,6 +426,7 @@ public class Main {
                  }
                 }
             }
+
             else if(menuInput.equals("9")|| menuInput.equalsIgnoreCase("List Object")){
                 obj.print("Berikut ini adalah daftar objek yang berada didalam ruangan ini : ");
                 room.printObjectCounts();
