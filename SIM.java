@@ -551,10 +551,9 @@ public class SIM {
     }
     
     // PRINT STAT
-    public void printStat(int waktuAksi)
+    public void printStat()
     {
         System.out.println("=========SIM SEDANG " + this.getStatus().toUpperCase() + "=========");
-        System.out.println("Anda melakukan aksi selama " + waktuAksi + " detik");
         System.out.println("Mood anda sekarang: " + getMood());
         System.out.println("Kesehatan anda sekarang: " + getKesehatan());
         System.out.println("Kekenyangan anda sekarang: " + getKekenyangan());
@@ -573,7 +572,7 @@ public class SIM {
 
         setStatus("Main Game");
 
-        printStat(lamaMain);
+        printStat();
 
         // int waktuDibutuhkan = lamaMain;
         return lamaMain;
@@ -602,7 +601,7 @@ public class SIM {
         this.setStatus("Santet");
 
         // print stats
-        printStat(waktuDibutuhkan); // waktu default 240
+        printStat();
 
         return waktuDibutuhkan;
     }
@@ -619,7 +618,7 @@ public class SIM {
         setStatus("Berobat");
 
         // print stats
-        printStat(lamaBerobat);
+        printStat();
 
         // int waktuDibutuhkan = lamaBerobat;
         return lamaBerobat;
@@ -639,7 +638,7 @@ public class SIM {
         setStatus("Karaoke");
 
         // print stats
-        printStat(lamaKaraoke);
+        printStat();
 
         // int waktuDibutuhkan = lamaKaraoke;
         return lamaKaraoke;
@@ -657,7 +656,7 @@ public class SIM {
         setStatus("Puasa");
 
         // print stats
-        printStat(waktuDibutuhkan);
+        printStat();
         
         return waktuDibutuhkan;
     }
@@ -674,7 +673,7 @@ public class SIM {
         setStatus("Bersih-Bersih");
 
         // print stats
-        printStat(lamaBersihBersih);
+        printStat();
 
         // int waktuDibutuhkan = 0;
         return lamaBersihBersih;
@@ -694,7 +693,7 @@ public class SIM {
         setStatus("Melawak");
 
         // print stats
-        printStat(waktuDibutuhkan);
+        printStat();
         
         return waktuDibutuhkan;
     }
