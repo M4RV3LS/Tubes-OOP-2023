@@ -4,16 +4,17 @@ import Sim.*;
 import Inventory.*;
 import Fitur.*;
 
+
 public class World {
     private static World instance = null;
     private House[][] grid = new House[64][64];
     private HashMap<House, int[]> houseLocations = new HashMap<>();
     private static List<Sim> simList = new ArrayList<>();
-    private static HashMap<Sim , Integer> waktuUpgrade = new HashMap<>();
+    private static ArrayList<UpgradeHouse> daftarUpgradeRumah = new ArrayList<>();
     private static HashMap<Sim , Integer> waktuTidakTidur = new HashMap<>();
     private static HashMap<Sim , Integer> waktuTidakBuangAir = new HashMap<>();
+    private static int waktuDunia = 0;
     private static int hariDunia = (waktuDunia / 720) + 1;
-    private static int waktuDunia;
     private static int waktuSim = 720 - (waktuDunia % 720);
 
     private World() {}
@@ -25,15 +26,18 @@ public class World {
         return instance;
     }
 
+    //getter house
     public House getHouse(int x, int y) {
         return grid[x][y];
     }
 
+    //setter house
     public void setHouse(int x, int y, House house) {
         grid[x][y] = house;
         houseLocations.put(house, new int[]{x, y});
     }
 
+    //printWorld
     public void printWorld() {
         for (int i = 0; i < 64; i++) {
             for (int j = 0; j < 64; j++) {
@@ -101,14 +105,17 @@ public class World {
         // System.out.println("+");
     }
 
+    //getter house location
     public int[] getHouseLocation(House house) {
         return houseLocations.get(house);
     }
 
+    //getter house
     public Set<House> getHouses() {
         return houseLocations.keySet();
     }
 
+    //getter houselist
     public HashMap<House, int[]> getHouseList() {
         return houseLocations;
     }
@@ -149,7 +156,7 @@ public class World {
         Sim simToRemove = this.getSimByName(simName);
         if (simToRemove != null) {
             simList.remove(simToRemove);
-            waktuUpgrade.remove(simToRemove);
+            daftarUpgradeRumah.remove(simToRemove);
             waktuTidakTidur.remove(simToRemove);
             waktuTidakBuangAir.remove(simToRemove);
         }
@@ -157,9 +164,9 @@ public class World {
     
 
     //getter waktuUpgrade
-    public HashMap<Sim , Integer> getWaktuUpgrade(){
-        return waktuUpgrade;
-    }
+    // public HashMap<Sim , Integer> getWaktuUpgrade(){
+    //     return waktuUpgrade;
+    // }
 
     //getter waktuTidakTidur
     public HashMap<Sim , Integer> getWaktuTidakTidur(){
@@ -171,10 +178,10 @@ public class World {
         return waktuTidakBuangAir;
     }
 
-    //Menambahkan Sim dan Integer ke dalam HashMap waktu upgrade
-    public void addWaktuUpgrade(Sim sim , int waktu){
-        waktuUpgrade.put(sim , waktu);
-    }
+    // //Menambahkan Sim dan Integer ke dalam HashMap waktu upgrade
+    // public void addWaktuUpgrade(Sim sim , int waktu){
+    //     waktuUpgrade.put(sim , waktu);
+    // }
 
     //Menambahkan Sim dan Integer ke dalam HashMap waktu tidak tidur
     public void addWaktuTidakTidur(Sim sim , int waktu){
@@ -187,14 +194,14 @@ public class World {
     }
 
     //getter waktu upgrade dengan parameter string sim name
-    public int getWaktuUpgrade(String name){
-        for (Sim sim : waktuUpgrade.keySet()){
-            if (sim.getNamaLengkap().equals(name)){
-                return waktuUpgrade.get(sim);
-            }
-        }
-        return 0;
-    }
+    // public int getWaktuUpgrade(String name){
+    //     for (Sim sim : waktuUpgrade.keySet()){
+    //         if (sim.getNamaLengkap().equals(name)){
+    //             return waktuUpgrade.get(sim);
+    //         }
+    //     }
+    //     return 0;
+    // }
 
     //getter waktu tidak tidur dengan parameter string sim name
     public int getWaktuTidakTidur(String name){
@@ -216,15 +223,15 @@ public class World {
         return 0;
     }
 
-    //Mengupdate Nilai integer berdasarkan paramater String simname pada hashmap waktuUpgrade
-    public void updateWaktuUpgrade(String name , int waktu){
-        for (Sim sim : waktuUpgrade.keySet()){
-            if (sim.getNamaLengkap().equals(name)){
-                waktuUpgrade.remove(sim);
-                waktuUpgrade.put(sim , waktu);
-            }
-        }
-    }
+    // //Mengupdate Nilai integer berdasarkan paramater String simname pada hashmap waktuUpgrade
+    // public void updateWaktuUpgrade(String name , int waktu){
+    //     for (Sim sim : waktuUpgrade.keySet()){
+    //         if (sim.getNamaLengkap().equals(name)){
+    //             waktuUpgrade.remove(sim);
+    //             waktuUpgrade.put(sim , waktu);
+    //         }
+    //     }
+    // }
 
     //Mengupdate Nilai integer berdasarkan paramater String simname pada hashmap waktuTidakTidur
     public void updateWaktuTidakTidur(String name , int waktu){
@@ -265,6 +272,196 @@ public class World {
     public int getWaktuSim(){
         return waktuSim;
     }
-    
 
+//     ArrayList<UpgradeHouse> daftarUpgradeHouse;
+// For(UpgradeHouse up : daftarUpgradeHouse){
+//     up.setWaktuUpgrade(up.getWaktuUpgrade() - durasiAksi);
+//     if(up.getWaktuUpgrade() < 0){
+//         Room 
+//     }
+
+    //getter daftarUpgradeHouse
+    public ArrayList<UpgradeHouse> getDaftarUpgradeHouse(){
+        return daftarUpgradeRumah;
+    }
+
+    //getter daftar upgrade House berdasarkan parameter nama Sim
+    public UpgradeHouse getDaftarUpgradeHouseUsingName(String name){
+        for (UpgradeHouse up : daftarUpgradeRumah){
+            if (up.getSim().getNamaLengkap().equals(name)){
+                return up;
+            }
+        }
+        return null;
+    }
+
+    //mengurangi waktuUgrade setiap Sim dengan parameter int waktuUpgrade
+    public void kurangiWaktuUpgrade(int waktuUpgrade){
+        for (UpgradeHouse up : daftarUpgradeRumah){
+            up.setWaktuUpgrade(up.getWaktuUpgrade() - waktuUpgrade);
+            if(up.getWaktuUpgrade() <= 0){
+                up.setIsUpgraded(true);
+            }
+        }
+        
+    }
+
+    public void upgradeHouse(Sim sim , String newrRoom , Boolean isInHouse) {
+
+        Boolean isStillUpgrade = false;
+        for (UpgradeHouse up : daftarUpgradeRumah){
+            if (up.getSim().getNamaLengkap().equals(sim.getNamaLengkap())){
+                isStillUpgrade = true;
+            }
+        }
+
+        if(isInHouse && !(isStillUpgrade)){
+            Scanner scanner = new Scanner(System.in);
+            Boolean inputValid = false;
+            while(!inputValid){
+                System.out.println("Tolong pilih ruangan mana yang ingin dipakai sebagai acuan upgrade rumah: ");
+                for (int i = 0; i < sim.getHouse().getRooms().size(); i++) {
+                    System.out.println((i+1) + ". " + sim.getHouse().getRooms().get(i).getRoomName());
+                }
+                System.out.print("Masukkan angka ruangan yang anda inginkan : ");
+                int selectedRoomIndex = scanner.nextInt()-1;
+
+                if(selectedRoomIndex < sim.getHouse().getRooms().size()){
+                    inputValid = true;
+                    Boolean inputValid2 = false;
+                    Room selectedRoom = sim.getHouse().getRooms().get(selectedRoomIndex);
+                    while(!inputValid2){
+                        System.out.println("Please select the position to add the room:");
+                        System.out.println("1. Top");
+                        System.out.println("2. Right");
+                        System.out.println("3. Bottom");
+                        System.out.println("4. Left");
+                        System.out.print("Masukkan  posisi yang anda inginkan : ");
+                        scanner.nextLine();
+                        String selectedPosition = scanner.nextLine();
+                        //mengecek apakah selectedposition merupakan "1" atau "Top"
+                        if(selectedPosition.equals("1") || selectedPosition.equalsIgnoreCase("Top")){
+                            if(selectedRoom.getRoomUp() == null){
+                                inputValid2 = true;
+                                UpgradeHouse upgradeHouse = new UpgradeHouse(sim , 1080 , sim.getHouse() , selectedRoom,  newrRoom , false , "Top");
+                                sim.setUpgradeHouse(upgradeHouse);
+                            } 
+                            else{
+                                System.out.println("Ruangan tidak bisa diupgrade karena sudah ada ruangan di atasnya");
+                            }
+                        }
+
+                        //mengecek apakah selectedposition merupakan "2" atau "Right"
+                        else if(selectedPosition.equals("2") || selectedPosition.equalsIgnoreCase("Right")){
+                            if(selectedRoom.getRoomRight() == null){
+                                inputValid2 = true;
+                                UpgradeHouse upgradeHouse = new UpgradeHouse(sim , 1080 , sim.getHouse() , selectedRoom,  newrRoom , false , "Right");
+                                sim.setUpgradeHouse(upgradeHouse);
+                            }
+                            else{
+                                System.out.println("Ruangan tidak bisa diupgrade karena sudah ada ruangan di kanannya");
+                            }
+                        }
+
+                        //mengecek apakah selectedposition merupakan "3" atau "Bottom"
+                        else if(selectedPosition.equals("3") || selectedPosition.equalsIgnoreCase("Bottom")){
+                            if(selectedRoom.getRoomDown() == null){
+                                inputValid2 = true;
+                                UpgradeHouse upgradeHouse = new UpgradeHouse(sim , 1080 , sim.getHouse() , selectedRoom,  newrRoom , false , "Bottom");
+                                sim.setUpgradeHouse(upgradeHouse);
+                            }
+                            else{
+                                System.out.println("Ruangan tidak bisa diupgrade karena sudah ada ruangan di bawahnya");
+                            }
+                            
+                        }
+
+                        //mengecek apakah selectedposition merupakan "4" atau "Left"
+                        else if(selectedPosition.equals("4") || selectedPosition.equalsIgnoreCase("Left")){
+                            if(selectedRoom.getRoomLeft() == null){
+                                inputValid2 = true;
+                                UpgradeHouse upgradeHouse = new UpgradeHouse(sim , 1080 , sim.getHouse() , selectedRoom,  newrRoom , false , "Left");
+                                sim.setUpgradeHouse(upgradeHouse);
+                            }
+                            else{
+                                System.out.println("Ruangan tidak bisa diupgrade karena sudah ada ruangan di kirinya");
+                            }
+                        }
+
+                        else{
+                            System.out.println("Input tidak valid");
+                        }
+
+
+                    }
+                
+                    
+                }
+            }
+            
+
+
+            
+        }
+        else if(isInHouse && isStillUpgrade){
+            System.out.println("Sim masih dalam proses upgrade");
+        }
+        else if(!(isInHouse)){
+            System.out.println("Sim tidak berada di dalam rumah");
+        }
+    }
+
+    public void checkUpgradeRoom() {
+        for (Sim sim : simList) {
+            UpgradeHouse upgradeHouse = sim.getUpgradeHouse();
+            if (upgradeHouse != null && upgradeHouse.getWaktuUpgrade() <= 0) {
+                Room newRoom = new Room(upgradeHouse.getNewRoom(), null, null, null, null);
+                if (upgradeHouse.getDirection().equalsIgnoreCase("Top")) {
+                    upgradeHouse.getRoomAcuan().setRoomUp(newRoom);
+                    newRoom.setRoomDown(upgradeHouse.getRoomAcuan());
+                    sim.getHouse().getRooms().add(newRoom);
+                    System.out.println("Ruangan " + newRoom.getRoomName() + " berhasil ditambahkan.");
+                    System.out.println("");
+                } else if (upgradeHouse.getDirection().equalsIgnoreCase("Left")) {
+                    upgradeHouse.getRoomAcuan().setRoomLeft(newRoom);
+                    newRoom.setRoomRight(upgradeHouse.getRoomAcuan());
+                    sim.getHouse().getRooms().add(newRoom);
+                    System.out.println("Ruangan " + newRoom.getRoomName() + " berhasil ditambahkan.");
+                    System.out.println("");
+                } else if (upgradeHouse.getDirection().equalsIgnoreCase("Right")) {
+                    upgradeHouse.getRoomAcuan().setRoomRight(newRoom);
+                    newRoom.setRoomLeft(upgradeHouse.getRoomAcuan());
+                    sim.getHouse().getRooms().add(newRoom);
+                    System.out.println("Ruangan " + newRoom.getRoomName() + " berhasil ditambahkan.");
+                    System.out.println("");
+                } else if (upgradeHouse.getDirection().equalsIgnoreCase("Down")) {
+                    upgradeHouse.getRoomAcuan().setRoomDown(newRoom);
+                    newRoom.setRoomUp(upgradeHouse.getRoomAcuan());
+                    sim.getHouse().getRooms().add(newRoom);
+                    System.out.println("Ruangan " + newRoom.getRoomName() + " berhasil ditambahkan.");
+                    System.out.println("");
+                }
+                sim.setUpgradeHouse(null);
+            }
+        }
+    }
+    
+    //print All Upgrade House List
+    public void printAllUpgradeHouse() {
+        if (daftarUpgradeRumah.isEmpty()) {
+            System.out.println("Tidak ada upgrade rumah yang sedang berlangsung.");
+            return;
+        }
+
+        System.out.println("Daftar upgrade rumah yang sedang berlangsung:");
+        for (UpgradeHouse upgrade : daftarUpgradeRumah) {
+            System.out.println("Sim: " + upgrade.getSim().getNamaLengkap());
+            System.out.println("Waktu upgrade: " + upgrade.getWaktuUpgrade());
+            System.out.println("Room baru: " + upgrade.getNewRoom());
+            System.out.println();
+        }
+    }
 }
+
+
+

@@ -675,7 +675,8 @@ public class Room {
 
     //Menaruh Objek yang berhasil dimasukkan ke Map ke dalam HashMap<MyObject, Integer> objectCounts dengan menciptakan MyObject terlebih dahulu
 
-
+    
+    
 }
     
 

@@ -9,7 +9,16 @@ public enum Furniture {
     KOMPOR_GAS("Kompor Gas", new Dimension(2, 1), 100, "Memasak" , "KMG"),
     KOMPOR_LISTRIK("Kompor Listrik", new Dimension(1, 1), 200, "Memasak" , "KML"),
     MEJA_KURSI("Meja dan Kursi", new Dimension(3, 3), 50, "Makan" , "MDK"),
-    JAM("Jam", new Dimension(1, 1), 10, "Melihat Waktu" , "JAM");
+    JAM("Jam", new Dimension(1, 1), 10, "Melihat Waktu" , "JAM"),
+
+    // TAMBAHAN
+    KOMPUTER("Komputer", new Dimension(1, 1), 350, "Main Game", "KOM"),
+    BOLA_KRISTAL("Bola Kristal", new Dimension(1, 1), 200, "Santet", "KRS"),
+    KOTAK_OBAT("Kotak Obat", new Dimension(2, 2), 100, "Berobat", "MED"),
+    MICROPHONE("Microphone", new Dimension(1, 1), 50, "Karaoke", "MIC"),
+    KITAB_SUCI("Kitab Suci", new Dimension(1, 1), 50, "Puasa", "KTB"),
+    SAPU("Sapu", new Dimension(1, 1), 20, "Bersih-Bersih", "SPU"),
+    SOFA("Sofa", new Dimension(3, 3), 150, "Melawak", "SOF");
 
     private final String name;
     private final Dimension dimensi;

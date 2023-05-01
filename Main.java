@@ -29,6 +29,25 @@ public class Main {
     public Sim getSim(){
         return this.sim;
     }
+
+    public void help(){
+        System.out.println("-Help-");
+        System.out.println("Sim-Plicity adalah permainan simulasi kehidupan yang berbasis Command Line Interface (CLI).");
+        System.out.println("Pemain akan mengendalikan sejumlah sim yang harus dijaga kesejahteraannya agar tidak depresi dan mati.");
+        System.out.println("Pemain harus memenuhi kebutuhan mood, kekenyangan, dan kesehatan dari setiap sim untuk menjaga kesejahteraannya.");
+        System.out.println("Jumlah sim yang dapat dimainkan tergantung dari berapa sim yang dibuat pada awal permainan.");
+        System.out.println();
+        System.out.println("Aturan Permainan");
+        System.out.println("1. Masukkan jumlah sim yang ingin dimainkan, kemudian masukkan nama-nama sim yang ingin dibuat");
+        System.out.println("2. Setiap sim akan memiliki kebutuhan berupa mood, kekenyangan, dan kesehatan");
+        System.out.println("3. Pemain harus memenuhi kebutuhan tersebut dengan memberi perintah yang tepat melalui CLI");
+        System.out.println("4. Pemain dapat memberikan perintah untuk memberi makan, minum, membersihkan, merawat kesehatan, atau memberikan hiburan kepada setiap sim");
+        System.out.println("5. Pemain harus memperhatikan level kebutuhan setiap sim dan segera memberikan perintah yang tepat untuk menghindari kematian atau depresi pada sim");
+        System.out.println("6. Permainan berakhir jika semua sim meninggal atau depresi");
+        System.out.println();
+        System.out.println("Selamat bermain Sim-Plicity!");
+        }
+    
     public void print(String text){
         System.out.println(text);
     }
@@ -82,7 +101,7 @@ public class Main {
         Sim sim = obj.getSim();
         
         // Ascii Welcome
-        ascii.printWelcome();
+        ascii.printTitle();
         System.out.println("");
         Scanner scanner = new Scanner(System.in);
         boolean started = false;
@@ -188,10 +207,28 @@ public class Main {
                 sim.printAllInventory();
             }
             else if(menuInput.equals("4")|| menuInput.equalsIgnoreCase("Upgrade House")){
-                System.out.print("Masukkan Nama Ruangan yang ingin anda tambahkan : ");
-                menuInput = scanner.nextLine();
-                Room newRoom = new Room(menuInput , null , null , null , null);
-                house.upgradeHouse(newRoom);
+                if(sim.getOwnHouse().getHouseName().equalsIgnoreCase(sim.getHouse().getHouseName())){
+                    //Print semua daftar Room yang ada dirumahnya
+                    obj.print("Berikut ini adalah ruangan yang sudah ada dirumah ini: ");
+                    for(Room houseRoom : sim.getHouse().getRooms()){
+                        obj.print("- " + houseRoom.getRoomName());
+                    }
+                    Boolean existRoom = true;
+                    while(existRoom){
+                        System.out.print("Masukkan Nama Ruangan yang ingin anda tambahkan : ");
+                        menuInput = scanner.nextLine();
+                        if(sim.getHouse().isRoomExist(menuInput)){
+                            obj.print("Ruangan sudah ada");
+                        }
+                        else{
+                            existRoom = false;
+                        }
+                    }
+                    world.upgradeHouse(sim, menuInput, sim.getIsInHouse());
+                    obj.print("");
+                    world.printAllUpgradeHouse();
+                }
+                
             }
             else if(menuInput.equals("5")|| menuInput.equalsIgnoreCase("Move Room")){
                 obj.print("Berikut ini adalah pilihan ruangan yang bisa anda kunjungi dirumah ini: ");
@@ -669,7 +706,7 @@ public class Main {
     }
             
         else if(menuInput.equals("2") || menuInput.equalsIgnoreCase("Help")){
-
+            obj.help();
         }
 
         else if(menuInput.equals("3") || menuInput.equalsIgnoreCase("Exit")){
