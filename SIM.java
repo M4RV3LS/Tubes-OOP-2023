@@ -884,6 +884,7 @@ public class Sim {
                             printStat();
                             world.addWaktuDunia(lamaMain);
                             world.kurangiWaktuUpgrade(lamaMain);
+                            world.checkUpgradeRoom();
                         }
                     }
                 }
@@ -938,6 +939,7 @@ public class Sim {
                             printStat();
                             world.addWaktuDunia(waktuDibutuhkan);
                             world.kurangiWaktuUpgrade(waktuDibutuhkan);
+                            world.checkUpgradeRoom();
                         }
                     }
                 }
@@ -984,6 +986,7 @@ public class Sim {
                             printStat();
                             world.addWaktuDunia(lamaBerobat);
                             world.kurangiWaktuUpgrade(lamaBerobat);
+                            world.checkUpgradeRoom();
                         }
                     }
                 }
@@ -1025,6 +1028,7 @@ public class Sim {
                             printStat();
                             world.addWaktuDunia(lamaKaraoke);
                             world.kurangiWaktuUpgrade(lamaKaraoke);
+                            world.checkUpgradeRoom();
                         }
                     }
                 }
@@ -1064,6 +1068,7 @@ public class Sim {
                         printStat();
                         world.addWaktuDunia(waktuDibutuhkan);
                         world.kurangiWaktuUpgrade(waktuDibutuhkan);
+                        world.checkUpgradeRoom();
                     }
                 }
             }
@@ -1107,6 +1112,7 @@ public class Sim {
                             printStat();
                             world.addWaktuDunia(lamaBersihBersih);
                             world.kurangiWaktuUpgrade(lamaBersihBersih);
+                            world.checkUpgradeRoom();
                         }    
                     }
                 }
@@ -1153,6 +1159,7 @@ public class Sim {
                         printStat();
                         world.addWaktuDunia(waktuDibutuhkan);
                         world.kurangiWaktuUpgrade(waktuDibutuhkan);
+                        world.checkUpgradeRoom();
                     }
                 }
             }
