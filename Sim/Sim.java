@@ -228,7 +228,7 @@ public class Sim {
     public Boolean isDead(){
         if(this.getKekenyangan() < 0 || this.getKesehatan() < 0 || this.getMood() < 0){
             world.removeSim(this.getNamaLengkap());
-            return true
+            return true;
         }
         else{
             return false;

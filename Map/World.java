@@ -12,6 +12,9 @@ public class World {
     private static HashMap<Sim , Integer> waktuUpgrade = new HashMap<>();
     private static HashMap<Sim , Integer> waktuTidakTidur = new HashMap<>();
     private static HashMap<Sim , Integer> waktuTidakBuangAir = new HashMap<>();
+    private static int hariDunia = (waktuDunia / 720) + 1;
+    private static int waktuDunia;
+    private static int waktuSim = 720 - (waktuDunia % 720);
 
     private World() {}
 
@@ -112,13 +115,13 @@ public class World {
     
     //Mencari sebuah objek Sim didalam simList
     public Boolean findSim(String name){
-        Boolean find = false;
+        
         for (Sim sim : simList){
-            if (sim.getNamaLengkap().equals(name)){
+            if (sim.getNamaLengkap().equalsIgnoreCase(name)){
                 return true;
             }
         }
-        return find;
+        return false;
     }
 
     //getter simList
@@ -242,5 +245,26 @@ public class World {
             }
         }
     }
+
+    //Menambah waktu Dunia
+    public void addWaktuDunia(int waktu){
+        waktuDunia += waktu;
+    }
+
+    //mendapatkan waktu dunia
+    public int getWaktuDunia(){
+        return waktuDunia;
+    }
+
+    //mendapatkan hari dunia
+    public int getHariDunia(){
+        return hariDunia;
+    }
+
+    //mendapatkan waktu SIM
+    public int getWaktuSim(){
+        return waktuSim;
+    }
+    
 
 }

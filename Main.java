@@ -188,18 +188,26 @@ public class Main {
                 sim.printAllInventory();
             }
             else if(menuInput.equals("4")|| menuInput.equalsIgnoreCase("Upgrade House")){
-                
+                System.out.print("Masukkan Nama Ruangan yang ingin anda tambahkan : ");
+                menuInput = scanner.nextLine();
+                Room newRoom = new Room(menuInput , null , null , null , null);
+                house.upgradeHouse(newRoom);
             }
             else if(menuInput.equals("5")|| menuInput.equalsIgnoreCase("Move Room")){
                 obj.print("Berikut ini adalah pilihan ruangan yang bisa anda kunjungi dirumah ini: ");
-                for(Room houseRoom : house.getRooms()){
-                    obj.print("- " + houseRoom.getRoomName());
-                }
+                // for(Room houseRoom : house.getRooms()){
+                //     obj.print("- " + houseRoom.getRoomName());
+                // }
+                house.printRooms();
                 obj.print("");
-                System.out.print("Masukkan nama ruangan yang ingin anda kunjungi: ");
+                System.out.print("Masukkan ruangan yang ingin anda kunjungi: ");
                 menuInput = scanner.nextLine();
-                room = house.getRoom(menuInput);
-                sim.setRoom(room);
+                for (int i = 0; i < house.getRooms().size(); i++) {
+                    if (house.getRooms().get(i).getRoomName().equals(menuInput) || (menuInput.matches("\\d+") && Integer.parseInt(menuInput) == i + 1) ) {
+                        room = house.getRooms().get(i);
+                        sim.setRoom(room);
+                }
+            }
             }
             else if(menuInput.equals("6")|| menuInput.equalsIgnoreCase("Edit Room")){
                 System.out.println("Pilih aksi:");
@@ -395,18 +403,38 @@ public class Main {
 
             }
         
-                else if(menuInput.equals("7")|| menuInput.equalsIgnoreCase("Add Sim")){
-                System.out.println("Masukkan nama SIM: ");
-                nama = scanner.nextLine();
-                Sim newSim = new Sim(nama);
-                world.addSim(newSim);
-                world.addWaktuTidakTidur(newSim , 0);
-                world.addWaktuTidakBuangAir(newSim , 0);
-                System.out.println("Objek SIM " + nama + " berhasil ditambahkan ke dalam list!");
-                // for (Sim daftarSim : world.simList) {
-                //     System.out.println("- " + daftarSim.getNamaLengkap());
-                // }
+            //     else if(menuInput.equals("7")|| menuInput.equalsIgnoreCase("Add Sim")){
+            //     System.out.println("Masukkan nama SIM: ");
+            //     nama = scanner.nextLine();
+            //     Sim newSim = new Sim(nama);
+            //     world.addSim(newSim);
+            //     world.addWaktuTidakTidur(newSim , 0);
+            //     world.addWaktuTidakBuangAir(newSim , 0);
+            //     System.out.println("Objek SIM " + nama + " berhasil ditambahkan ke dalam list!");
+            //     // for (Sim daftarSim : world.simList) {
+            //     //     System.out.println("- " + daftarSim.getNamaLengkap());
+            //     // }
+            // }
+
+            else if(menuInput.equals("7") || menuInput.equalsIgnoreCase("Add Sim")){
+                boolean isExists = true;
+                Sim newSim;
+                while (isExists) {
+                    System.out.println("Masukkan nama SIM: ");
+                    nama = scanner.nextLine();
+                    newSim = new Sim(nama);
+                    if (!world.findSim(newSim.getNamaLengkap())) {
+                        isExists = false;
+                        world.addSim(newSim);
+                        world.addWaktuTidakTidur(newSim, 0);
+                        world.addWaktuTidakBuangAir(newSim, 0);
+                        System.out.println("Objek SIM " + nama + " berhasil ditambahkan ke dalam list!");
+                    } else {
+                        System.out.println("Objek SIM " + nama + " sudah ada di dalam list, silahkan masukkan nama lain!");
+                    }
+                }
             }
+            
             else if(menuInput.equals("8")|| menuInput.equalsIgnoreCase("Change Sim")){
                 if (world.getSimList().isEmpty()) {
                     System.out.println("Tidak ada SIM yang tersedia.");

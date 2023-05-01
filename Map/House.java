@@ -57,6 +57,11 @@ public class House {
                 if(selectedRoom.getRoomUp() == null) 
                 {
                     selectedRoom.setRoomUp(newrRoom);
+                    newrRoom.setRoomDown(selectedRoom);
+                    //menambahkan Room ke dalam ArrayList<Room> rooms
+                    rooms.add(newrRoom);
+                    System.out.println("Ruangan " + newrRoom.getRoomName() + " Berhasil Ditambahkan");
+                    System.out.println("");
                 } 
                 
                 else {
@@ -68,6 +73,11 @@ public class House {
                 if(selectedRoom.getRoomRight() == null) 
                 {
                     selectedRoom.setRoomRight(newrRoom);
+                    newrRoom.setRoomLeft(selectedRoom);
+                    //menambahkan Room ke dalam ArrayList<Room> rooms
+                    rooms.add(newrRoom);
+                    System.out.println("Ruangan " + newrRoom.getRoomName() + " Berhasil Ditambahkan");
+                    System.out.println("");
                 } 
                 
                 else {
@@ -79,6 +89,11 @@ public class House {
                 if(selectedRoom.getRoomDown() == null) 
                 {
                     selectedRoom.setRoomDown(newrRoom);
+                    newrRoom.setRoomUp(selectedRoom);
+                    //menambahkan Room ke dalam ArrayList<Room> rooms
+                    rooms.add(newrRoom);
+                    System.out.println("Ruangan " + newrRoom.getRoomName() + " Berhasil Ditambahkan");
+                    System.out.println("");
                 } 
                 
                 else {
@@ -90,6 +105,11 @@ public class House {
                 if(selectedRoom.getRoomLeft() == null) 
                 {
                     selectedRoom.setRoomLeft(newrRoom);
+                    newrRoom.setRoomRight(selectedRoom);
+                    //menambahkan Room ke dalam ArrayList<Room> rooms
+                    rooms.add(newrRoom);
+                    System.out.println("Ruangan " + newrRoom.getRoomName() + " Berhasil Ditambahkan");
+                    System.out.println("");
                 } 
                 
                 else {
@@ -99,6 +119,13 @@ public class House {
             
             default:
                 System.out.println("Invalid input.");
+        }
+    }
+
+    //Melakukan Print ArrayList<Room> rooms menggunakan looping 
+    public void printRooms() {
+        for (int i = 0; i < rooms.size(); i++) {
+            System.out.println((i+1) + ". " + rooms.get(i).getRoomName());
         }
     }
 }
