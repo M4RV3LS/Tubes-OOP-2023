@@ -13,6 +13,9 @@ public class Sim {
     private int kesehatan;
     private String status;
     private World world;
+    private House house;
+    private Room room;
+    private Boolean isDead;
     
     //Indikasi Rumah sendiri
     private House ownHouse;
@@ -56,14 +59,11 @@ public class Sim {
         this.status = "Tidak melakukan apa-apa";
         // this.pekerjaan = getRandomPekerjaan();
         // this.job = Job.valueOf(pekerjaan.toUpperCase().replace(" ", "_"));
-        
         this.pekerjaan = getRandomJob();
         this.world = World.getInstance();
         this.house = generateRandomHouse();
         this.room = house.getRoom("Living Room");
-
-        //Indikasi Rumah sendiri
-        this.ownHouse = house;
+        this.isDead = false;
     }
 
     //Menggenerate Pekerjaan secara random 
@@ -232,6 +232,16 @@ public class Sim {
 
     public void setRoom(Room room){
         this.room = room;
+    }
+
+    public Boolean isDead(){
+        if(this.getKekenyangan() < 0 || this.getKesehatan() < 0 || this.getMood() < 0){
+            world.removeSim(this.getNamaLengkap());
+            return true
+        }
+        else{
+            return false;
+        }
     }
 
     public House getOwnHouse(){
@@ -853,8 +863,8 @@ public class Sim {
                         System.out.println("|  |_|    "._,"   A | hjw");
                         System.out.println("|    _  _    B      | `97");
                         System.out.println("|   // //           |");
-                        System.out.println("|  // //    \\\\\\\  |");
-                        System.out.println("|  `  `      \\\\\\\ ,");
+                        System.out.println("|  // //    ///////  |");
+                        System.out.println("|  `  `      /////// ,");
                         System.out.println("|________...______,\"");
                         Thread.sleep(lamaMain*1000);
                     } catch (InterruptedException e) {
@@ -867,8 +877,13 @@ public class Sim {
                         int kekenyanganTurun = getKekenyangan() - (lamaMain/20);
                         setKekenyangan(kekenyanganTurun);
 
-                        setStatus("Main Game");
-                        printStat();
+                        if (isDead()){
+                            System.out.println("SIM telah meninggal");
+                        } else {
+                            setStatus("Main Game");
+                            printStat();
+                            world.addWaktuDunia(lamaMain);
+                        }
                     }
                 }
             });
@@ -878,7 +893,7 @@ public class Sim {
         }
     }
 
-    public int santet(Sim simLain)
+    public void santet(Sim simLain)
     {
         int waktuDibutuhkan = 60; // default
         if (world.findSim(simLain.getNamaLengkap())){
@@ -886,6 +901,15 @@ public class Sim {
                 public void run(){
                     try {
                         System.out.println("==========SIM SEDANG MENYANTET==========");
+                        System.out.println("    .-')     ('-.         .-') _  .-') _     ('-.   .-') _    ");
+                        System.out.println("    ( OO ).  ( OO ).-.    ( OO ) )(  OO) )  _(  OO) (  OO) )   ");
+                        System.out.println("   (_)---\_) / . --. /,--./ ,--,' /     '._(,------./     '._  ");
+                        System.out.println("   /    _ |  | \-.  \ |   \ |  |\ |'--...__)|  .---'|'--...__) ");
+                        System.out.println("   \  :` `..-'-'  |  ||    \|  | )'--.  .--'|  |    '--.  .--' ");
+                        System.out.println("    '..`''.)\| |_.'  ||  .     |/    |  |  (|  '--.    |  |    ");
+                        System.out.println("   .-._)   \ |  .-.  ||  |\    |     |  |   |  .--'    |  |    ");
+                        System.out.println("   \       / |  | |  ||  | \   |     |  |   |  `---.   |  |    ");
+                        System.out.println("    `-----'  `--' `--'`--'  `--'     `--'   `------'   `--'    ");
                         Thread.sleep(waktuDibutuhkan*1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -906,8 +930,13 @@ public class Sim {
                         int simLainKekenyangan = getKekenyangan() - 15;
                         simLain.setKekenyangan(simLainKekenyangan);
 
-                        this.setStatus("Santet");
-                        printStat();
+                        if (isDead()){
+                            System.out.println("SIM telah meninggal");
+                        } else {
+                            this.setStatus("Santet");
+                            printStat();
+                            world.addWaktuDunia(waktuDibutuhkan);
+                        }
                     }
                 }
             });
@@ -917,7 +946,7 @@ public class Sim {
         }
     }
 
-    public int berobat(int lamaBerobat)
+    public void berobat(int lamaBerobat)
     {
         int uangTurun = getUang() - (lamaBerobat/2);
         if ((uangTurun >= 0) && (lamaBerobat>0)){
@@ -934,9 +963,14 @@ public class Sim {
                         int kesehatanNaik = getKesehatan() + (lamaBerobat/10)*2;
                         setKesehatan(kesehatanNaik);
                         
-                        setUang(uangTurun);
-                        setStatus("Berobat");
-                        printStat();
+                        if (isDead()) {
+                            System.out.println("SIM telah meninggal");
+                        } else {
+                            setUang(uangTurun);
+                            setStatus("Berobat");
+                            printStat();
+                            world.addWaktuDunia(lamaBerobat);
+                        }
                     }
                 }
             });
@@ -946,7 +980,7 @@ public class Sim {
         }
     }
 
-    public int karaoke(int lamaKaraoke)
+    public void karaoke(int lamaKaraoke)
     {
         int uangTurun = getUang() - (lamaKaraoke/5);
         if ((uangTurun >= 0) && (lamaKaraoke>0)){
@@ -965,9 +999,14 @@ public class Sim {
                         int kekenyanganTurun = getKekenyangan() - (lamaKaraoke/20);
                         setKekenyangan(kekenyanganTurun);
                         
-                        setUang(uangTurun);
-                        setStatus("Karaoke");
-                        printStat();
+                        if (isDead()){
+                            System.out.println("SIM telah meninggal");
+                        } else {
+                            setUang(uangTurun);
+                            setStatus("Karaoke");
+                            printStat();
+                            world.addWaktuDunia(lamaKaraoke);
+                        }
                     }
                 }
             });
@@ -977,7 +1016,7 @@ public class Sim {
         }
     }
 
-    public int puasa()
+    public void puasa()
     {
         int waktuDibutuhkan = 360;
         thread = new Thread(new Runnable() {
@@ -993,15 +1032,20 @@ public class Sim {
                     int kekenyanganTurun = getKekenyangan() - 50;
                     setKekenyangan(kekenyanganTurun);
 
-                    setStatus("Puasa");
-                    printStat();
+                    if (isDead()) {
+                        System.out.println("SIM telah meninggal");
+                    } else {
+                        setStatus("Puasa");
+                        printStat();
+                        world.addWaktuDunia(waktuDibutuhkan);
+                    }
                 }
             }
         });
         thread.run();
     }
 
-    public int bersihBersih(int lamaBersihBersih)
+    public void bersihBersih(int lamaBersihBersih)
     {
         if (lamaBersihBersih > 0){
             thread = new Thread(new Runnable() {
@@ -1019,8 +1063,13 @@ public class Sim {
                         int kekenyanganTurun = getKekenyangan() - (lamaBersihBersih/15);
                         setKekenyangan(kekenyanganTurun);
 
-                        setStatus("Bersih-Bersih");
-                        printStat();
+                        if (isDead()) {
+                            System.out.println("SIM telah meninggal");
+                        } else {
+                            setStatus("Bersih-Bersih");
+                            printStat();
+                            world.addWaktuDunia(lamaBersihBersih);
+                        }    
                     }
                 }
             });
@@ -1029,14 +1078,25 @@ public class Sim {
             System. out.println("Durasi bersih-bersih tidak valid!");
         }
     }
-
-    public int melawak()
+                                                                         
+    public void melawak()
     {
         int waktuDibutuhkan = 20;
         thread = new Thread(new Runnable() {
             public void run(){
                 try {
                     System.out.println("==========SIM SEDANG MELAWAK==========");
+                    System.out.println("     ▄         ▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄         ▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄         ▄  ▄▄▄▄▄▄▄▄▄▄▄ ");
+                    System.out.println("    ▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌");
+                    System.out.println("    ▐░▌       ▐░▌▐░█▀▀▀▀▀▀▀█░▌▐░▌       ▐░▌▐░█▀▀▀▀▀▀▀█░▌▐░▌       ▐░▌▐░█▀▀▀▀▀▀▀█░▌");
+                    System.out.println("    ▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌");
+                    System.out.println("    ▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌");
+                    System.out.println("    ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌");
+                    System.out.println("    ▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌");
+                    System.out.println("    ▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌");
+                    System.out.println("    ▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌");
+                    System.out.println("    ▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌");
+                    System.out.println("     ▀         ▀  ▀         ▀  ▀         ▀  ▀         ▀  ▀         ▀  ▀         ▀ ");
                     Thread.sleep(waktuDibutuhkan*1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -1048,8 +1108,13 @@ public class Sim {
                     int kekenyanganTurun = getKekenyangan() - 3;
                     setKekenyangan(kekenyanganTurun);
 
-                    setStatus("Melawak");
-                    printStat();
+                    if (isDead()){
+                        System.out.println("SIM telah meninggal");
+                    } else {
+                        setStatus("Melawak");
+                        printStat();
+                        world.addWaktuDunia(waktuDibutuhkan);
+                    }
                 }
             }
         });
