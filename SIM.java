@@ -954,6 +954,17 @@ public class Sim {
                 public void run(){
                     try {
                         System.out.println("==========SIM SEDANG BEROBAT==========");
+                        System.out.println("          .         .                                                                       ");
+                        System.out.println("         ,8.       ,8.          8 8888888888   8 888888888o.       8 8888     ,o888888o.    ");
+                        System.out.println("        ,888.     ,888.         8 8888         8 8888    `^888.    8 8888    8888     `88.  ");
+                        System.out.println("       .`8888.   .`8888.        8 8888         8 8888        `88.  8 8888 ,8 8888       `8. ");
+                        System.out.println("      ,8.`8888. ,8.`8888.       8 8888         8 8888         `88  8 8888 88 8888           ");
+                        System.out.println("     ,8'8.`8888,8^8.`8888.      8 888888888888 8 8888          88  8 8888 88 8888           ");
+                        System.out.println("    ,8' `8.`8888' `8.`8888.     8 8888         8 8888          88  8 8888 88 8888           ");
+                        System.out.println("   ,8'   `8.`88'   `8.`8888.    8 8888         8 8888         ,88  8 8888 88 8888           ");
+                        System.out.println("  ,8'     `8.`'     `8.`8888.   8 8888         8 8888        ,88'  8 8888 `8 8888       .8' ");
+                        System.out.println(" ,8'       `8        `8.`8888.  8 8888         8 8888    ,o88P'    8 8888    8888     ,88'  ");
+                        System.out.println(",8'         `         `8.`8888. 8 888888888888 8 888888888P'       8 8888     `8888888P'    ");
                         Thread.sleep(lamaBerobat*1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -979,7 +990,7 @@ public class Sim {
             System. out.println("Uang anda tidak cukup!");
         }
     }
-
+                                         
     public void karaoke(int lamaKaraoke)
     {
         int uangTurun = getUang() - (lamaKaraoke/5);
@@ -988,6 +999,10 @@ public class Sim {
                 public void run(){
                     try {
                         System.out.println("==========SIM SEDANG KARAOKE==========");
+                        System.out.println("     __                            __          ");
+                        System.out.println("    |  |--.---.-.----.---.-.-----.|  |--.-----.");
+                        System.out.println("    |    <|  _  |   _|  _  |  _  ||    <|  -__|");
+                        System.out.println("    |__|__|___._|__| |___._|_____||__|__|_____|");
                         Thread.sleep(lamaBerobat*1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -1015,7 +1030,7 @@ public class Sim {
             System. out.println("Uang anda tidak cukup!");
         }
     }
-
+                                   
     public void puasa()
     {
         int waktuDibutuhkan = 360;
@@ -1023,6 +1038,12 @@ public class Sim {
             public void run(){
                 try {
                     System.out.println("==========SIM SEDANG PUASA==========");
+                    System.out.println("d8888b. db    db  .d8b.  .d8888.  .d8b.  ");
+                    System.out.println("88  `8D 88    88 d8' `8b 88'  YP d8' `8b ");
+                    System.out.println("88oodD' 88    88 88ooo88 `8bo.   88ooo88 ");
+                    System.out.println("88~~~   88    88 88~~~88   `Y8b. 88~~~88 ");
+                    System.out.println("88      88b  d88 88   88 db   8D 88   88 ");
+                    System.out.println("88      ~Y8888P' YP   YP `8888Y' YP   YP ");
                     Thread.sleep(waktuDibutuhkan*1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -1052,6 +1073,17 @@ public class Sim {
                 public void run(){
                     try {
                         System.out.println("==========SIM SEDANG BERSIH-BERSIH==========");
+                        System.out.println("         888                            d8b                   ");
+                        System.out.println("         888                            Y8P                   ");
+                        System.out.println("         888                                                  ");
+                        System.out.println(".d8888b  888  .d88b.   8888b.  88888b.  888 88888b.   .d88b.  ");
+                        System.out.println("d88P"    888 d8P  Y8b     "88b 888 "88b 888 888 "88b d88P"88b ");
+                        System.out.println("888      888 88888888 .d888888 888  888 888 888  888 888  888 ");
+                        System.out.println("Y88b.    888 Y8b.     888  888 888  888 888 888  888 Y88b 888 ");
+                        System.out.println(""Y8888P  888  "Y8888  "Y888888 888  888 888 888  888  "Y88888 ");
+                        System.out.println("                                                     888 ");
+                        System.out.println("                                                Y8b d88P ");
+                        System.out.println("                                                 \"Y88P\"  ");
                         Thread.sleep(lamaBersihBersih*1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
