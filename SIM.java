@@ -883,6 +883,7 @@ public class Sim {
                             setStatus("Main Game");
                             printStat();
                             world.addWaktuDunia(lamaMain);
+                            world.kurangiWaktuUpgrade(lamaMain);
                         }
                     }
                 }
@@ -936,6 +937,7 @@ public class Sim {
                             this.setStatus("Santet");
                             printStat();
                             world.addWaktuDunia(waktuDibutuhkan);
+                            world.kurangiWaktuUpgrade(waktuDibutuhkan);
                         }
                     }
                 }
@@ -981,6 +983,7 @@ public class Sim {
                             setStatus("Berobat");
                             printStat();
                             world.addWaktuDunia(lamaBerobat);
+                            world.kurangiWaktuUpgrade(lamaBerobat);
                         }
                     }
                 }
@@ -1021,6 +1024,7 @@ public class Sim {
                             setStatus("Karaoke");
                             printStat();
                             world.addWaktuDunia(lamaKaraoke);
+                            world.kurangiWaktuUpgrade(lamaKaraoke);
                         }
                     }
                 }
@@ -1059,6 +1063,7 @@ public class Sim {
                         setStatus("Puasa");
                         printStat();
                         world.addWaktuDunia(waktuDibutuhkan);
+                        world.kurangiWaktuUpgrade(waktuDibutuhkan);
                     }
                 }
             }
@@ -1101,6 +1106,7 @@ public class Sim {
                             setStatus("Bersih-Bersih");
                             printStat();
                             world.addWaktuDunia(lamaBersihBersih);
+                            world.kurangiWaktuUpgrade(lamaBersihBersih);
                         }    
                     }
                 }
@@ -1146,6 +1152,7 @@ public class Sim {
                         setStatus("Melawak");
                         printStat();
                         world.addWaktuDunia(waktuDibutuhkan);
+                        world.kurangiWaktuUpgrade(waktuDibutuhkan);
                     }
                 }
             }
