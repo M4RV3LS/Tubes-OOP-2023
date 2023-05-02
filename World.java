@@ -189,8 +189,9 @@ public class World {
     }
 
     //Menambahkan Sim dan Integer ke dalam HashMap waktu tidak buang air
-    public void addWaktuTidakBuangAir(Sim sim , int waktu){
-        waktuTidakBuangAir.put(sim , waktu);
+    public void addWaktuTidakBuangAir(String nama, int waktu){
+        waktuTidakBuangAir.remove(getSimByName(nama));
+        waktuTidakBuangAir.put(getSimByName(nama) , waktu);
     }
 
     //getter waktu upgrade dengan parameter string sim name
@@ -273,6 +274,26 @@ public class World {
         }
     }
 
+    //Menambah Nilai integer berdasarkan paramater String simname pada hashmap waktuTidakBuangAir
+    public void increaseWaktuTidakBuangAir(String name , int waktu){
+        for (Sim sim : waktuTidakBuangAir.keySet()){
+            if (sim.getNamaLengkap().equals(name)){
+                waktuTidakBuangAir.remove(sim);
+                waktuTidakBuangAir.put(sim , waktuTidakBuangAir.get(sim) + waktu);
+            }
+        }
+    }
+
+    //Menambah Nilai integer berdasarkan paramater String simname pada hashmap waktuTidakTidur
+    public void increaseWaktuTidakTidur(String name , int waktu){
+        for (Sim sim : waktuTidakTidur.keySet()){
+            if (sim.getNamaLengkap().equals(name)){
+                waktuTidakTidur.remove(sim);
+                waktuTidakTidur.put(sim , waktuTidakTidur.get(sim) + waktu);
+            }
+        }
+    }
+
 
     //Menambah waktu Dunia
     public void addWaktuDunia(int waktu){
@@ -296,14 +317,31 @@ public class World {
 
     // Ganti hari
     public void gantiHari(){
-        hariDunia++;
-        waktuDunia = 0;
-        // Update waktu tidak buang air dan waktu tidak tidur untuk seluruh sim di simlist
-        for (Sim sim : simList){
-            updateWaktuTidakBuangAir(sim.getNamaLengkap() , 0);
-            updateWaktuTidakTidur(sim.getNamaLengkap() , 0);
+        int temp = 1;
+        if(getHariDunia() > temp)
+        {
+            // Update waktu tidak buang air dan waktu tidak tidur untuk seluruh sim di simlist
+            for (Sim sim : simList){
+                updateWaktuTidakBuangAir(sim.getNamaLengkap() , 240);
+                updateWaktuTidakTidur(sim.getNamaLengkap() , 240);
+            }
+
+            temp = getHariDunia();
         }
+        
     }
+
+    public void checkWaktuSetelahAksi(String nama,int waktuAksi)
+    {
+        addWaktuDunia(waktuAksi);
+        reduceWaktuTidakBuangAir(nama, waktuAksi);
+        reduceWaktuTidakTidur(nama, waktuAksi);
+        kurangiWaktuUpgrade(waktuAksi);
+        checkUpgradeRoom();  
+        checkWaktuTidakBuangAir();
+        checkWaktuTidakTidur();
+    }
+    
 
 //     ArrayList<UpgradeHouse> daftarUpgradeHouse;
 // For(UpgradeHouse up : daftarUpgradeHouse){
@@ -504,6 +542,23 @@ public class World {
         }
     }
 
+    public void checkWaktuTidakBuangAir() {
+        for (Sim sim : simList) {
+            if (getWaktuTidakBuangAir(sim.getNamaLengkap()) <= 0) {
+                sim.efekTidakBuangAir();
+            }
+        }
+    }
+
+    public void checkWaktuTidakTidur() {
+        for (Sim sim : simList) {
+            if (getWaktuTidakTidur(sim.getNamaLengkap()) <= 0) {
+                sim.efekTidakTidur();
+            }
+        }
+    }
+
+    
 }
 
 

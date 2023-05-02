@@ -435,9 +435,7 @@ public class Sim {
                         } else {
                             setStatus("Sedang Bekerja");
                             printStat();
-                            world.addWaktuDunia(lamaKerja);
-                            world.kurangiWaktuUpgrade(lamaKerja);
-                            world.checkUpgradeRoom();
+                            world.checkWaktuSetelahAksi(getNamaLengkap(), lamaKerja);
                         }
 
                         // print stats
@@ -510,9 +508,7 @@ public class Sim {
                         } else {
                             setStatus("Sedang Olahraga");
                             printStat();
-                            world.addWaktuDunia(lamaOlahraga);
-                            world.kurangiWaktuUpgrade(lamaOlahraga);
-                            world.checkUpgradeRoom();
+                            world.checkWaktuSetelahAksi(getNamaLengkap(), lamaOlahraga);
                         }
 
                         // print stats
@@ -538,7 +534,7 @@ public class Sim {
     //Aksi Tidur
     public void tidur(int lamaTidur)
     {
-        if(lamaTidur >= 240 ){
+        if(lamaTidur >= 180 ){
             thread = new Thread(new Runnable() 
             {
                public void run()
@@ -568,7 +564,6 @@ public class Sim {
                         int kesehatanNaik = getKesehatan()+ (lamaTidur)/240*20;
                         setKesehatan(kesehatanNaik);
                     
-                        setStatus("Tidur");
                         sisaWaktuTidur += (lamaTidur - ((lamaTidur/240)*240));
                         
                         // Tambahin Waktu ke World
@@ -578,8 +573,11 @@ public class Sim {
                             setStatus("Sedang Tidur");
                             printStat();
                             world.addWaktuDunia(lamaTidur);
+                            world.increaseWaktuTidakTidur(getNamaLengkap(), lamaTidur);
+                            world.reduceWaktuTidakBuangAir(getNamaLengkap(), lamaTidur);
                             world.kurangiWaktuUpgrade(lamaTidur);
                             world.checkUpgradeRoom();
+                            world.checkWaktuTidakBuangAir();
                         }
                         
                         // print stats
@@ -609,14 +607,11 @@ public class Sim {
     
     public void efekTidakTidur()
     {
-        if(world.getWaktuTidakTidur(getNamaLengkap()) <= 0 )
-        {
-            int moodTurun = getMood() - 5;
-            setMood(moodTurun);
-            int kesehatanTurun = getKesehatan() - 5;
-            setKesehatan(kesehatanTurun);
-        }
-
+        int moodTurun = getMood() - 5;
+        setMood(moodTurun);
+        int kesehatanTurun = getKesehatan() - 5;
+        setKesehatan(kesehatanTurun);
+        
         // print stats
         System.out.println("=========SIM BUTUH TIDUR=========");
         // System.out.println("Anda tidak tidur selama " + waktuTidakTidur + " detik");
@@ -625,7 +620,7 @@ public class Sim {
     }
 
     // Aksi Masak
-    public static void masak(Masakan masakan, Inventory<BahanMakanan> inventoryBahanMakanan , Inventory<Masakan> inventoryMasakan) {
+    public static void aksiMasak(Masakan masakan, Inventory<BahanMakanan> inventoryBahanMakanan , Inventory<Masakan> inventoryMasakan) {
         List<BahanMakanan> bahanMakanan = masakan.getBahanMakanan();
         HashMap<BahanMakanan, Integer> stockBahanMakanan = inventoryBahanMakanan.getStock();
         for (BahanMakanan bahan : bahanMakanan) {
@@ -645,36 +640,53 @@ public class Sim {
             inventoryBahanMakanan.kurangiStock(bahan, 1);
         }
         
-        try{
-            System.out.println("     ( ( (              ))     ");
-            System.out.println("      ) ) )           ((       ");
-            System.out.println("     ( ( (          ___o___");
-            System.out.println("   '. ___ .'        |     |====O");
-            System.out.println("  '  (> <) '        |_____|");
-            System.out.println("--ooO-(_)-Ooo--------------------");
-            System.out.println(" ");
-            
-            // Nunggu Masak
-            double waktuMasak = 1.5 * masakan.getKekenyangan();
-            Thread.sleep((long)waktuMasak);
-            
-            // Nambahin Masakan
-            inventoryMasakan.tambahStock(masakan, 1);
-            System.out.println("Masakan " + masakan.getNama() + " berhasil dimasak");
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        // Update hashmap
-        // getWorld().updateWaktuTidakTidur(getNamaLengkap(), 0);
-
-        // if(!isMakan)
-        // {
-        //     getWorld().TambahWaktuTidakBuangAir(getNamaLengkap(), lamaTidur);
-        // }
+        
     }
     
+    public void masak()
+    {
+        Scanner input = new Scanner(System.in);
+        
+        System.out.println("Masukkan nama masakan yang ingin dimasak: ");
+        String namaMasakan = input.nextLine();
+        
+        for(Masakan masakan: Masakan.values()){
+            if(namaMasakan.equalsIgnoreCase(masakan.getNama())){
+                try{
+                    aksiMasak(masakan, inventoryBahanMakanan, inventoryMasakan);
+
+                    System.out.println("     ( ( (              ))     ");
+                    System.out.println("      ) ) )           ((       ");
+                    System.out.println("     ( ( (          ___o___");
+                    System.out.println("   '. ___ .'        |     |====O");
+                    System.out.println("  '  (> <) '        |_____|");
+                    System.out.println("--ooO-(_)-Ooo--------------------");
+                    System.out.println(" ");
+                    
+                    // Nunggu Masak
+                    double waktuMasak = 1.5 * masakan.getKekenyangan();
+                    Thread.sleep((long)waktuMasak);
+        
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } finally
+                {
+                    double waktuMasak = 1.5 * masakan.getKekenyangan();
+
+                    // Masak berhasil
+                    inventoryMasakan.tambahStock(masakan, 1);
+                    System.out.println("Masakan " + masakan.getNama() + " berhasil dimasak");
+        
+                    // Check aksi pasif
+                    setStatus("Sedang Olahraga");
+                    printStat();
+                    world.checkWaktuSetelahAksi(getNamaLengkap(), (int)waktuMasak);
+                }
+            }
+           
+        }
+    }
+
     public static void showMasakan() {
         System.out.println("List Bahan Makanan yang Dijual:");
         for (Masakan masakan : Masakan.values()) {
@@ -720,20 +732,18 @@ public class Sim {
                         
                         // Remove masakan from inventory
                         inventoryMasakan.kurangiStock(masakan, 1);
-
-                        //buang air dan waktuTidak buang air di reset
-                        isBuangAir = false;
-                        isMakan = true;
                         
                         // Tambahin Waktu ke World
                         if (isDead()){
                             System.out.println("SIM telah meninggal");
                         } else {
-                            setStatus("Sedang Bekerja");
+                            setStatus("Sedang Makan");
                             printStat();
+                            world.addWaktuTidakBuangAir(getNamaLengkap(), 240);
                             world.addWaktuDunia(30);
                             world.kurangiWaktuUpgrade(30);
                             world.checkUpgradeRoom();
+                            world.reduceWaktuTidakTidur(getNamaLengkap(), 30);
                         }
                         
                         // print stats
@@ -817,9 +827,7 @@ public class Sim {
                         } else {
                             setStatus("Sedang Berkunjung");
                             printStat();
-                            world.addWaktuDunia((int)waktuPerjalanan);
-                            world.kurangiWaktuUpgrade((int)waktuPerjalanan);
-                            world.checkUpgradeRoom();
+                            world.checkWaktuSetelahAksi(getNamaLengkap(), (int)waktuPerjalanan);
                         }
                     }
                }
@@ -885,6 +893,8 @@ public class Sim {
                         printStat();
                         world.addWaktuDunia(10);
                         world.kurangiWaktuUpgrade(10);
+                        world.updateWaktuTidakBuangAir(getNamaLengkap(), 240);
+                        world.reduceWaktuTidakBuangAir(getNamaLengkap(), 10);
                         world.checkUpgradeRoom();
                     }    
                 }
@@ -895,7 +905,7 @@ public class Sim {
 
     public void efekTidakBuangAir()
     {
-        if(world.getWaktuTidakBuangAir(getNamaLengkap()) >= 240 && isBuangAir == false)
+        if(isBuangAir == false)
         {
             int moodTurun = getMood() - 5;
             setMood(moodTurun);
@@ -957,9 +967,7 @@ public class Sim {
                           else {
                              setStatus("Main Game");
                              printStat();
-                             world.addWaktuDunia(lamaMain);
-                             world.kurangiWaktuUpgrade(lamaMain);
-                             world.checkUpgradeRoom();
+                             world.checkWaktuSetelahAksi(getNamaLengkap(), lamaMain);
                          }
                      }
                  }
@@ -1012,9 +1020,7 @@ public class Sim {
                          } else {
                              setStatus("Santet");
                              printStat();
-                             world.addWaktuDunia(waktuDibutuhkan);
-                             world.kurangiWaktuUpgrade(waktuDibutuhkan);
-                             world.checkUpgradeRoom();
+                             world.checkWaktuSetelahAksi(getNamaLengkap(), waktuDibutuhkan);
                          }
                      }
                  }
@@ -1059,9 +1065,7 @@ public class Sim {
                              setUang(uangTurun);
                              setStatus("Berobat");
                              printStat();
-                             world.addWaktuDunia(lamaBerobat);
-                             world.kurangiWaktuUpgrade(lamaBerobat);
-                             world.checkUpgradeRoom();
+                             world.checkWaktuSetelahAksi(getStatus(), lamaBerobat);
                          }
                      }
                  }
@@ -1101,9 +1105,7 @@ public class Sim {
                              setUang(uangTurun);
                              setStatus("Karaoke");
                              printStat();
-                             world.addWaktuDunia(lamaKaraoke);
-                             world.kurangiWaktuUpgrade(lamaKaraoke);
-                             world.checkUpgradeRoom();
+                             world.checkWaktuSetelahAksi(getNamaLengkap(), lamaKaraoke);
                          }
                      }
                  }
@@ -1141,9 +1143,7 @@ public class Sim {
                      } else {
                          setStatus("Puasa");
                          printStat();
-                         world.addWaktuDunia(waktuDibutuhkan);
-                         world.kurangiWaktuUpgrade(waktuDibutuhkan);
-                         world.checkUpgradeRoom();
+                         world.checkWaktuSetelahAksi(getNamaLengkap(), waktuDibutuhkan);
                      }
                  }
              }
@@ -1185,9 +1185,7 @@ public class Sim {
                          } else {
                              setStatus("Bersih-Bersih");
                              printStat();
-                             world.addWaktuDunia(lamaBersihBersih);
-                             world.kurangiWaktuUpgrade(lamaBersihBersih);
-                             world.checkUpgradeRoom();
+                             world.checkWaktuSetelahAksi(getNamaLengkap(), lamaBersihBersih);
                          }    
                      }
                  }
@@ -1232,9 +1230,7 @@ public class Sim {
                      } else {
                          setStatus("Melawak");
                          printStat();
-                         world.addWaktuDunia(waktuDibutuhkan);
-                         world.kurangiWaktuUpgrade(waktuDibutuhkan);
-                         world.checkUpgradeRoom();
+                         world.checkWaktuSetelahAksi(getNamaLengkap(), waktuDibutuhkan);
                      }
                  }
              }
