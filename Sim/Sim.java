@@ -172,16 +172,29 @@ public class Sim {
             world.getDaftarUpgradeHouse().add(inputUpgradeHouse);
         }
     }
-
-    //getter isInHouse 
-    public Boolean isInHouse(){
-        return this.isInHouse;
+    //getter isInHouse
+    public Boolean getIsInHouse() {
+        return isInHouse;
     }
 
-    //setter isInHouse
-    public void setInHouse(Boolean isInHouse){
-        this.isInHouse = isInHouse;
-    }
+    //getter checkSsInHouse 
+    public Boolean checkIsInHouse(){
+        if(getHouse() != getOwnHouse())
+        {
+             setInHouse(false);
+             return false;
+        }
+        else
+        {
+             setInHouse(true);
+             return true;
+        }
+     }
+ 
+     //setter isInHouse
+     public void setInHouse(Boolean isInHouse){
+         this.isInHouse = isInHouse;
+     }
 
     //getter ownHouse
     public House getOwnHouse(){

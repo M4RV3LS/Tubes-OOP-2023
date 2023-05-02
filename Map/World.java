@@ -121,6 +121,11 @@ public class World{
     public HashMap<House, int[]> getHouseList() {
         return houseLocations;
     }
+
+    //make a house null 
+    public void removeHouse(House house){
+        house = null;
+    }
     
     //Mencari sebuah objek Sim didalam simList
     public Boolean findSim(String name){
