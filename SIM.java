@@ -38,14 +38,12 @@ public class Sim {
     
     // Reset jika ganti hari
     private int sisaWaktuTidur = 0;
-    private int waktuTidakTidur = 0;
 
     // Reset jika sudah buang air
-    private int waktuTidakBuangAir = 0;
     private boolean isBuangAir = false;
 
     // Sudah makan
-
+    private boolean isMakan = false;
 
     public Sim(String namaLengkap) {
         this.namaLengkap = namaLengkap;
@@ -336,10 +334,10 @@ public class Sim {
     }
 
     // Ganti Hari
-    public void gantiHari() {
-        waktuTidakTidur = 0;
-        waktuTidakBuangAir = 0;
-    }
+    // public void gantiHari() {
+    //     waktuTidakTidur = 0;
+    //     waktuTidakBuangAir = 0;
+    // }
 
     // Lokasi SIM
     public void lokasiSIM()
@@ -396,11 +394,9 @@ public class Sim {
                         setKekenyangan(kenyangTurun);
                         int moodTurun = getMood() + (lamaKerja/30)*(-10);
                         setMood(moodTurun);
-                        setStatus("Sedang Bekerja");
             
                         totalWaktuKerja += lamaKerja;
-            
-            
+                        
                         if(totalWaktuKerja >= 240)
                         {
                             if(pekerjaan.getName().equalsIgnoreCase("Badut Sulap"))
@@ -434,12 +430,15 @@ public class Sim {
                         }
 
                         // Tambahin Waktu ke World
-                        if(!isMakan)
-                        {
-                            getWorld().TambahWaktuTidakBuangAir(getNamaLengkap(), lamaKerja);
+                        if (isDead()){
+                            System.out.println("SIM telah meninggal");
+                        } else {
+                            setStatus("Sedang Bekerja");
+                            printStat();
+                            world.addWaktuDunia(lamaKerja);
+                            world.kurangiWaktuUpgrade(lamaKerja);
+                            world.checkUpgradeRoom();
                         }
-                        
-                        getWorld().TambahWaktuTidakTidur(getNamaLengkap(), lamaKerja);
 
                         // print stats
                         System.out.println("=========SIM SELESAI BEKERJA=========");
@@ -505,16 +504,16 @@ public class Sim {
                         int kesehatanNaik = getKesehatan() + lamaOlahraga/20*5;
                         setKesehatan(kesehatanNaik);
 
-                        setStatus("Olahraga");
-
-                        // Tambah hashmap
-                        if(!isMakan)
-                        {
-                            getWorld().TambahWaktuTidakBuangAir(getNamaLengkap(), lamaOlahraga);
-
+                        // Tambahin Waktu ke World
+                        if (isDead()){
+                            System.out.println("SIM telah meninggal");
+                        } else {
+                            setStatus("Sedang Olahraga");
+                            printStat();
+                            world.addWaktuDunia(lamaOlahraga);
+                            world.kurangiWaktuUpgrade(lamaOlahraga);
+                            world.checkUpgradeRoom();
                         }
-                        
-                        getWorld().TambahWaktuTidakTidur(getNamaLengkap(), lamaOlahraga);
 
                         // print stats
                         System.out.println("=========SIM SELESAI OLAHRAGA=========");
@@ -572,12 +571,15 @@ public class Sim {
                         setStatus("Tidur");
                         sisaWaktuTidur += (lamaTidur - ((lamaTidur/240)*240));
                         
-                        // Update hashmap
-                        getWorld().updateWaktuTidakTidur(getNamaLengkap(), 0);
-
-                        if(!isMakan)
-                        {
-                            getWorld().TambahWaktuTidakBuangAir(getNamaLengkap(), lamaTidur);
+                        // Tambahin Waktu ke World
+                        if (isDead()){
+                            System.out.println("SIM telah meninggal");
+                        } else {
+                            setStatus("Sedang Tidur");
+                            printStat();
+                            world.addWaktuDunia(lamaTidur);
+                            world.kurangiWaktuUpgrade(lamaTidur);
+                            world.checkUpgradeRoom();
                         }
                         
                         // print stats
@@ -607,7 +609,7 @@ public class Sim {
     
     public void efekTidakTidur()
     {
-        if(world.getWaktuTidakTidur(getNamaLengkap()) > 600 )
+        if(world.getWaktuTidakTidur(getNamaLengkap()) <= 0 )
         {
             int moodTurun = getMood() - 5;
             setMood(moodTurun);
@@ -617,7 +619,7 @@ public class Sim {
 
         // print stats
         System.out.println("=========SIM BUTUH TIDUR=========");
-        System.out.println("Anda tidak tidur selama " + waktuTidakTidur + " detik");
+        // System.out.println("Anda tidak tidur selama " + waktuTidakTidur + " detik");
         System.out.println("Mood anda sekarang: " + getMood());
         System.out.println("Kesehatan anda sekarang: " + getKesehatan());
     }
@@ -723,9 +725,16 @@ public class Sim {
                         isBuangAir = false;
                         isMakan = true;
                         
-                        // nambahin hashmap
-                        world.updateWaktuTidakBuangAir(getNamaLengkap(), 0);
-                        world.TambahWaktuTidakTidur(getNamaLengkap(), 30);
+                        // Tambahin Waktu ke World
+                        if (isDead()){
+                            System.out.println("SIM telah meninggal");
+                        } else {
+                            setStatus("Sedang Bekerja");
+                            printStat();
+                            world.addWaktuDunia(30);
+                            world.kurangiWaktuUpgrade(30);
+                            world.checkUpgradeRoom();
+                        }
                         
                         // print stats
                         System.out.println("=========SIM SEDANG MAKAN=========");
@@ -794,7 +803,6 @@ public class Sim {
                         int kenyangTurun = getKekenyangan() + (int)waktuPerjalanan/30*(-10);
                         setKekenyangan(kenyangTurun);
 
-                        setStatus("Berkunjung");
                         setHouse(visitedHouse);
                         setRoom(visitedHouse.getRoom(visitedRoom.getRoomName()));
 
@@ -803,16 +811,16 @@ public class Sim {
                         System.out.println("Waktu perjalanan: " + waktuPerjalanan + " detik");
                         System.out.println("posisi anda sekarang: X " + houseLocation[0] + ", Y " + houseLocation[1]);
 
-                        // Tambah Hashmap
-                        if(!isMakan)
-                        {
-                            world.TambahWaktuTidakBuangAir(getNamaLengkap(), (int)waktuPerjalanan);
+                        // Tambahin Waktu ke World
+                        if (isDead()){
+                            System.out.println("SIM telah meninggal");
+                        } else {
+                            setStatus("Sedang Berkunjung");
+                            printStat();
+                            world.addWaktuDunia((int)waktuPerjalanan);
+                            world.kurangiWaktuUpgrade((int)waktuPerjalanan);
+                            world.checkUpgradeRoom();
                         }
-                        else
-                        {
-                            world.TambahWaktuTidakTidur(getNamaLengkap(), (int)waktuPerjalanan);
-                        }
-                        world.TambahWaktuTidakTidur(getNamaLengkap(), (int)waktuPerjalanan);
                     }
                }
             });
@@ -861,18 +869,24 @@ public class Sim {
                     int moodNaik = getMood() + 10;
                     setMood(moodNaik);
                     
-                    waktuTidakBuangAir = 0;
+                    // waktuTidakBuangAir = 0;
                     isBuangAir = true;
                     
-                    setStatus("Buang Air");
                     System.out.println("Uhhh lega... SIM sudah buang air");
 
                     // print stats
                     printStat();
 
-                    //Update Hashmap
-                    world.updateWaktuTidakBuangAir(getNamaLengkap(), 0);
-                    world.TambahWaktuTidakTidur(getNamaLengkap(), 10);     
+                    // Tambahin Waktu ke World
+                    if (isDead()){
+                        System.out.println("SIM telah meninggal");
+                    } else {
+                        setStatus("Sedang Buang Air");
+                        printStat();
+                        world.addWaktuDunia(10);
+                        world.kurangiWaktuUpgrade(10);
+                        world.checkUpgradeRoom();
+                    }    
                 }
             }
         });
@@ -935,7 +949,12 @@ public class Sim {
  
                          if (isDead()){
                              System.out.println("SIM telah meninggal");
-                         } else {
+                        }
+                        //  else if(!isMakan)
+                        //  {
+                        //     world.
+                        //  }
+                          else {
                              setStatus("Main Game");
                              printStat();
                              world.addWaktuDunia(lamaMain);
