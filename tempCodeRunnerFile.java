@@ -1,1 +1,1 @@
-obj.print("14.Memasang barang");
+scanner.nextLine();

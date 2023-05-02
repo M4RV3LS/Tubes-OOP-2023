@@ -3,12 +3,19 @@ package Fitur;
 import Inventory.*;
 import Sim.*;
 import java.util.*;
+import Map.*;
 
 public class Shop {
+    private static Shop instance = null;
     private Sim sim;
+    private static World world = World.getInstance();
 
-    public Shop(Sim sim){
-        this.sim = sim;
+
+    public static Shop getInstance() {
+        if (instance == null) {
+            instance = new Shop();
+        }
+        return instance;
     }
     
     public static void showFurniture() {
@@ -34,11 +41,12 @@ public class Shop {
         //     System.out.println("Maaf uang anda tidak mencukupi untuk membeli objek ini");
         // }
         if (sim.getUang() >= totalPrice) {
-            
-            sim.getInventoryFurniture().tambahStock(furniture, quantity);
-            
+            Random random = new Random();
+            int randomNumber = random.nextInt(5) + 1;
+            DeliveryItem<Furniture> deliveryFurniture = new DeliveryItem<Furniture>(sim,randomNumber * 30, furniture, furniture.getName() , quantity);
+            world.addDeliveryItemFurniture(deliveryFurniture);
             sim.setUang(sim.getUang() - totalPrice);
-            System.out.println("Berhasil membeli " + quantity + " " + furniture.getName());
+            System.out.println("Berhasil memesan " + quantity + " " + furniture.getName());
         } else {
             System.out.println("Maaf uang anda tidak mencukupi untuk membeli objek ini");
         }
@@ -67,7 +75,10 @@ public class Shop {
         //     System.out.println("Maaf uang anda tidak mencukupi untuk membeli objek ini");
         // }
         if (sim.getUang() >= totalPrice) {
-            sim.getInventoryBahanMakanan().tambahStock(bahanMakanan, quantity);
+            Random random = new Random();
+            int randomNumber = random.nextInt(5) + 1;
+            DeliveryItem<BahanMakanan> deliveryBahanMakanan = new DeliveryItem<BahanMakanan>(sim,randomNumber * 30, bahanMakanan, bahanMakanan.getName() , quantity);
+            world.addDeliveryItemBahanMakanan(deliveryBahanMakanan);
             sim.setUang(sim.getUang() - totalPrice);
             System.out.println("Berhasil membeli " + quantity + " " + bahanMakanan.getName());
         } else {

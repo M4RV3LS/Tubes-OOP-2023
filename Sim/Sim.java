@@ -25,6 +25,8 @@ public class Sim {
     private UpgradeHouse upgradeHouse;
     private Boolean isInHouse;
     private House ownHouse;
+    // private DeliveryItem<Furniture> deliveryFurniture;
+    // private DeliveryItem<BahanMakanan> deliveryBahanMakanan;
     
     // Reset saat ganti kerja
     private int totalWaktuKerja = 0;
@@ -49,7 +51,7 @@ public class Sim {
         this.inventoryFurniture = new Inventory<>();
         //Menambah Objek yang wajib ada saat pertama kali objek Sim di instantiasi
         for (Furniture furniture : Furniture.values()) {
-            if (!(furniture.getName().equalsIgnoreCase("Komputer")) || !(furniture.getName().equalsIgnoreCase("Bola Kristal")) || !(furniture.getName().equalsIgnoreCase("Kitab Suci")) || !(furniture.getName().equalsIgnoreCase("Sapu")) || !(furniture.getName().equalsIgnoreCase("Sofa"))){
+            if (!(furniture.getName().equalsIgnoreCase("Komputer")) && !(furniture.getName().equalsIgnoreCase("Bola Kristal")) && !(furniture.getName().equalsIgnoreCase("Kitab Suci")) && !(furniture.getName().equalsIgnoreCase("Sapu")) && !(furniture.getName().equalsIgnoreCase("Sofa")) && !(furniture.getName().equalsIgnoreCase("Kotak Obat")) && !(furniture.getName().equalsIgnoreCase("Microphone"))){
                 inventoryFurniture.tambahStock(furniture,1);
             } 
             
@@ -66,6 +68,8 @@ public class Sim {
         this.upgradeHouse = null;
         this.isInHouse = true;
         this.ownHouse = this.house;
+        // this.deliveryFurniture = new DeliveryItem<>();
+        // this.deliveryBahanMakanan = new DeliveryItem<>();
     }
 
     //Menggenerate Pekerjaan secara random 
@@ -144,6 +148,7 @@ public class Sim {
     public void setInventoryMasakan(Inventory<Masakan> inventoryMasakan) {
         this.inventoryMasakan = inventoryMasakan;
     }
+    
 
     //getter upgradeHouse
     public UpgradeHouse getUpgradeHouse() {
@@ -600,6 +605,27 @@ public class Sim {
         System.out.println("Kekenyangan anda sekarang: " + getKekenyangan());
     }
 
+    //Aksi melihat Waktu 
+    public void lihatWaktu() {
+        System.out.println("Hari ke-" + world.getHariDunia() + ", Sisa waktu Sim: " + world.getWaktuSim());
+        for (UpgradeHouse upgradeHouse : world.getDaftarUpgradeHouse()) {
+            if (upgradeHouse.getSim() == this && upgradeHouse.getWaktuUpgrade() > 0) {
+                System.out.println("Sisa waktu upgrade rumah: " + upgradeHouse.getWaktuUpgrade() + " detik");
+            }
+        }
+        for (DeliveryItem<Furniture> deliveryItem : world.getDeliveryItemsFurniture()) {
+            if (deliveryItem.getSim() == this && deliveryItem.getWaktu() > 0) {
+                System.out.println("Sisa waktu pengiriman " + deliveryItem.getNamaObjek() + ": " + deliveryItem.getWaktu() + " detik");
+            }
+        }
+        for (DeliveryItem<BahanMakanan> deliveryItem : world.getDeliveryItemsBahanMakanan()) {
+            if (deliveryItem.getSim() == this && deliveryItem.getWaktu() > 0) {
+                System.out.println("Sisa waktu pengiriman " + deliveryItem.getNamaObjek() + ": " + deliveryItem.getWaktu() + " detik");
+            }
+        }
+    }
+    
+
      // AKSI TAMBAHAN
      public void mainGame(int lamaMain)
      {
@@ -940,36 +966,138 @@ public class Sim {
                 // System.out.println("Moving to " + obj.getName() + " at (" + x + "," + y + ")");
                 switch(objName) {
                     case "KSS":
-                    System.out.println("Tidur");
-                        //Tidur
+                    //Tidur
+                    System.out.print("Apakah anda ingin melakukan aksi tiudr ? (y/n)");
+                    Scanner input = new Scanner(System.in);
+                    String jawaban = input.nextLine();
+                    while(!(jawaban.equalsIgnoreCase("y")) || !(jawaban.equalsIgnoreCase("n"))){
+                        if (jawaban.equalsIgnoreCase("y")){
+                            // this.tidur();
+                        } else if(jawaban.equalsIgnoreCase("n")) {
+                            System.out.println("Anda tidak ingin melakukan aksi tidur");
+                        }
+                        else{
+                            System.out.println("Masukan tidak valid");
+                        }
+                    }
                         break;
+
                     case "KQS":
-                    System.out.println("Tidur");
                         //Tidur
+                        System.out.print("Apakah anda ingin melakukan aksi tidur ? (y/n)");
+                        Scanner input2 = new Scanner(System.in);
+                        String jawaban2 = input2.nextLine();
+                        while(!(jawaban2.equalsIgnoreCase("y")) || !(jawaban2.equalsIgnoreCase("n"))){
+                            if (jawaban2.equalsIgnoreCase("y")){
+                                // this.tidur();
+                            } else if(jawaban2.equalsIgnoreCase("n")) {
+                                System.out.println("Anda tidak ingin melakukan aksi tidur");
+                            }
+                            else{
+                                System.out.println("Masukan tidak valid");
+                            }
+                        }
                         break;
                     case "KKS":
-                    System.out.println("Tidur");
-                        //Tidur
+                    //Tidur
+                    System.out.print("Apakah anda ingin melakukan aksi tidur ? (y/n)");
+                    Scanner input3 = new Scanner(System.in);
+                    String jawaban3 = input3.nextLine();
+                    while(!(jawaban3.equalsIgnoreCase("y")) || !(jawaban3.equalsIgnoreCase("n"))){
+                        if (jawaban3.equalsIgnoreCase("y")){
+                            // this.tidur();
+                        } else if(jawaban3.equalsIgnoreCase("n")) {
+                            System.out.println("Anda tidak ingin melakukan aksi tidur");
+                        }
+                        else{
+                            System.out.println("Masukan tidak valid");
+                        }
+                    }
                         break;
+                        
                     case "TLT":
-                    System.out.println("Buang Air");
                         //Buang air
+                        System.out.print("Apakah anda ingin melakukan aksi buang air ? (y/n)");
+                        Scanner input4 = new Scanner(System.in);
+                        String jawaban4 = input4.nextLine();
+                        while(!(jawaban4.equalsIgnoreCase("y")) || !(jawaban4.equalsIgnoreCase("n"))){
+                            if (jawaban4.equalsIgnoreCase("y")){
+                                this.buangAir();
+                            } else if(jawaban4.equalsIgnoreCase("n")) {
+                                System.out.println("Anda tidak ingin melakukan aksi buang air");
+                            }
+                            else{
+                                System.out.println("Masukan tidak valid");
+                            }
+                        }
                         break;
+
                     case "KMG":
-                    System.out.println("Masak");
-                        //Masak()
+                    //Masak
+                    System.out.print("Apakah anda ingin melakukan aksi masak ? (y/n)");
+                    Scanner input5 = new Scanner(System.in);
+                    String jawaban5 = input5.nextLine();
+                    while(!(jawaban5.equalsIgnoreCase("y")) || !(jawaban5.equalsIgnoreCase("n"))){
+                        if (jawaban5.equalsIgnoreCase("y")){
+                            // masak();
+                        } else if(jawaban5.equalsIgnoreCase("n")) {
+                            System.out.println("Anda tidak ingin melakukan aksi masak");
+                        }
+                        else{
+                            System.out.println("Masukan tidak valid");
+                        }
+                    }
                         break;
+
                     case "KML":
-                    System.out.println("Masak");
-                        //Masak()
+                        //Masak
+                        System.out.print("Apakah anda ingin melakukan aksi masak ? (y/n)");
+                        Scanner input6 = new Scanner(System.in);
+                        String jawaban6 = input6.nextLine();
+                        while(!(jawaban6.equalsIgnoreCase("y")) || !(jawaban6.equalsIgnoreCase("n"))){
+                            if (jawaban6.equalsIgnoreCase("y")){
+                                // masak();
+                            } else if(jawaban6.equalsIgnoreCase("n")) {
+                                System.out.println("Anda tidak ingin melakukan aksi masak");
+                            }
+                            else{
+                                System.out.println("Masukan tidak valid");
+                            }
+                        }
                         break;
+
                     case "MDK":
-                    System.out.println("Belajar");
-                        //Do something
+                        //Makan
+                        System.out.print("Apakah anda ingin melakukan aksi makan ? (y/n)");
+                        Scanner input7 = new Scanner(System.in);   
+                        String jawaban7 = input7.nextLine();
+                        while(!(jawaban7.equalsIgnoreCase("y")) || !(jawaban7.equalsIgnoreCase("n"))){
+                            if (jawaban7.equalsIgnoreCase("y")){
+                                // this.makan();
+                            } else if(jawaban7.equalsIgnoreCase("n")) {
+                                System.out.println("Anda tidak ingin melakukan aksi makan");
+                            }
+                            else{
+                                System.out.println("Masukan tidak valid");
+                            }
+                        }
                         break;
+
                     case "JAM":
-                    System.out.println("Lihat Waktu");
                         //Melihat Waktu
+                        System.out.print("Apakah anda ingin melakukan aksi melihat waktu ? (y/n)");
+                        Scanner input8 = new Scanner(System.in);
+                        String jawaban8 = input8.nextLine();
+                        while(!(jawaban8.equalsIgnoreCase("y")) || !(jawaban8.equalsIgnoreCase("n"))){
+                            if (jawaban8.equalsIgnoreCase("y")){
+                                this.lihatWaktu();
+                            } else if(jawaban8.equalsIgnoreCase("n")) {
+                                System.out.println("Anda tidak ingin melakukan aksi melihat waktu");
+                            }
+                            else{
+                                System.out.println("Masukan tidak valid");
+                            }
+                        }
                         break;
                 }
             }

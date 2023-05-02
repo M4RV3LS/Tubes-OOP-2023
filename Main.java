@@ -89,6 +89,7 @@ public class Main {
             System.out.println("12.Exit");
             System.out.println("13.Beli barang");
             System.out.println("14.Print Room");
+            System.out.println("15.Lihat Waktu");
     }
     
     public static void main(String[] args) throws InterruptedException{
@@ -98,6 +99,7 @@ public class Main {
         House house;
         Room room;
         FurnitureData furnitureData;
+        Shop shop = Shop.getInstance();
         Sim sim = obj.getSim();
         
         // Ascii Welcome
@@ -404,7 +406,11 @@ public class Main {
                 int koorX = scanner.nextInt();
                 System.out.print("Masukkan koordinat Y : ");
                 int koorY = scanner.nextInt();
-                scanner.nextLine();
+                // scanner.nextLine();
+                // System.out.println(menuInput);
+                // System.out.println(koorX);
+                // System.out.println(koorY);
+
                 Boolean inputValid = room.checkFurnitureData(menuInput , koorX , koorY);
 
                 // while(!inputValid){
@@ -564,7 +570,7 @@ public class Main {
             }
             else if(menuInput.equals("13")|| menuInput.equalsIgnoreCase("Beli barang")){
                 ascii.printShop();
-                Shop shop = new Shop(sim);
+                
                 Inventory<BahanMakanan> inventoryBahanMakanan = sim.getInventoryBahanMakanan();
                 Inventory<Furniture> inventoryFurniture = sim.getInventoryFurniture();
                 Inventory<Masakan> inventoryMasakan = sim.getInventoryMasakan();
@@ -604,6 +610,8 @@ public class Main {
                                     int quantity = input.nextInt();
                                     input.nextLine();
                                     shop.buyFurniture(furniture, quantity, sim);
+                                    obj.print("");
+                                    world.printAllDeliveryItems();
                                 } else {
                                     System.out.println("Furniture tidak ditemukan.");
                                 }
@@ -637,6 +645,7 @@ public class Main {
                                     int quantity = input.nextInt();
                                     input.nextLine();
                                     shop.buyBahanMakanan(bahanMakanan, quantity, sim);
+                                    world.printAllDeliveryItems();
                                 } else {
                                     System.out.println("Bahan makanan tidak ditemukan.");
                                 }
@@ -694,6 +703,10 @@ public class Main {
 
             else if(menuInput.equals("14")|| menuInput.equalsIgnoreCase("Print Room")){
                 room.printRoom();
+            }
+
+            else if(menuInput.equals("15")|| menuInput.equalsIgnoreCase("Lihat Waktu")){
+                sim.lihatWaktu();
             }
 
             else if(menuInput.equalsIgnoreCase("Help") || menuInput.equalsIgnoreCase("Menu")){

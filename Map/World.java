@@ -5,7 +5,7 @@ import Inventory.*;
 import Fitur.*;
 
 
-public class World {
+public class World{
     private static World instance = null;
     private House[][] grid = new House[64][64];
     private HashMap<House, int[]> houseLocations = new HashMap<>();
@@ -13,6 +13,8 @@ public class World {
     private static ArrayList<UpgradeHouse> daftarUpgradeRumah = new ArrayList<>();
     private static HashMap<Sim , Integer> waktuTidakTidur = new HashMap<>();
     private static HashMap<Sim , Integer> waktuTidakBuangAir = new HashMap<>();
+    private ArrayList<DeliveryItem<Furniture>> deliveryItemsFurniture = new ArrayList<DeliveryItem<Furniture>>();
+    private ArrayList<DeliveryItem<BahanMakanan>> deliveryItemsBahanMakanan = new ArrayList<DeliveryItem<BahanMakanan>>();
     private static int waktuDunia = 0;
     private static int hariDunia = (waktuDunia / 720) + 1;
     private static int waktuSim = 720 - (waktuDunia % 720);
@@ -258,20 +260,39 @@ public class World {
         waktuDunia += waktu;
     }
 
-    //mendapatkan waktu dunia
-    public int getWaktuDunia(){
+   
+
+    //getter waktu dunia
+    public int getWaktuDunia() {
         return waktuDunia;
     }
 
-    //mendapatkan hari dunia
-    public int getHariDunia(){
+    //setter waktu dunia
+    public void setWaktuDunia(int waktuDunia) {
+        this.waktuDunia = waktuDunia;
+    }
+
+    //getter hari dunia
+    public int getHariDunia() {
         return hariDunia;
     }
 
-    //mendapatkan waktu SIM
-    public int getWaktuSim(){
+    //setter hari dunia
+    public void setHariDunia(int hariDunia) {
+        this.hariDunia = hariDunia;
+    }
+
+    //getter waktu sim
+    public int getWaktuSim() {
         return waktuSim;
     }
+
+    //setter waktu sim
+    public void setWaktuSim(int waktuSim) {
+        this.waktuSim = waktuSim;
+    }
+
+    
 
 //     ArrayList<UpgradeHouse> daftarUpgradeHouse;
 // For(UpgradeHouse up : daftarUpgradeHouse){
@@ -461,6 +482,132 @@ public class World {
             System.out.println();
         }
     }
+
+    //getter deliveryItemsFurniture
+    public ArrayList<DeliveryItem<Furniture>> getDeliveryItemsFurniture() {
+        return deliveryItemsFurniture;
+    }
+
+    //getter deliveryItemsBahanMakanan
+    public ArrayList<DeliveryItem<BahanMakanan>> getDeliveryItemsBahanMakanan() {
+        return deliveryItemsBahanMakanan;
+    }
+    
+
+    //add deliveryItem to deliveryItemsFurniture
+    public void addDeliveryItemFurniture(DeliveryItem<Furniture> deliveryItem) {
+        deliveryItemsFurniture.add(deliveryItem);
+    }
+
+    //add deliveryItem to deliveryItemsBahanMakanan
+    public void addDeliveryItemBahanMakanan(DeliveryItem<BahanMakanan> deliveryItem) {
+        deliveryItemsBahanMakanan.add(deliveryItem);
+    }
+
+    //remove deliveryItem from deliveryItemsFurniture
+    public void removeDeliveryItemFurniture(DeliveryItem<Furniture> deliveryItem) {
+        deliveryItemsFurniture.remove(deliveryItem);
+    }
+
+    //remove deliveryItem from deliveryItemsBahanMakanan
+    public void removeDeliveryItemBahanMakanan(DeliveryItem<BahanMakanan> deliveryItem) {
+        deliveryItemsBahanMakanan.remove(deliveryItem);
+    }
+    //mengurangi semua waktu deliveryItem pada deliveryItemsFurniture dengan parameter waktu 
+    public void kurangiWaktuDeliveryItemFurniture(int waktu) {
+        for (DeliveryItem<Furniture> deliveryItem : deliveryItemsFurniture) {
+            deliveryItem.kurangiWaktu(waktu);
+        }
+    }
+
+    //mengurangi semua waktu deliveryItem pada deliveryItemsBahanMakanan dengan parameter waktu
+    public void kurangiWaktuDeliveryItemBahanMakanan(int waktu) {
+        for (DeliveryItem<BahanMakanan> deliveryItem : deliveryItemsBahanMakanan) {
+            deliveryItem.kurangiWaktu(waktu);
+        }
+    }
+    
+    // public void checkWaktuDeliveryItem() {
+    //     for (DeliveryItem<T> deliveryItem : deliveryItems) {
+    //         int waktu = deliveryItem.getWaktu();
+    //         if (waktu <= 0) {
+    //             T item = deliveryItem.getTipeObjek();
+    //             String namaObjek = deliveryItem.getNamaObjek();
+    //             Sim sim = deliveryItem.getSim();
+    //             int quantity = deliveryItem.getQuantity();
+    //             if (item instanceof BahanMakanan) {
+    //                 sim.getInventoryBahanMakanan().tambahStock((BahanMakanan) item, quantity);
+    //             } else if (item instanceof Furniture) {
+    //                 sim.getInventoryFurniture().tambahStock((Furniture) item, quantity);
+    //             }
+    //             System.out.println(namaObjek + " telah diterima oleh " + sim.getNamaLengkap() + " sejumlah" + quantity);
+    //             deliveryItems.remove(deliveryItem);
+    //         } 
+    //     }
+    // }
+
+    public void checkWaktuDeliveryItemFurniture() {
+        Iterator<DeliveryItem<Furniture>> iterator = deliveryItemsFurniture.iterator();
+        while (iterator.hasNext()) {
+            DeliveryItem<Furniture> deliveryItem = iterator.next();
+            int waktu = deliveryItem.getWaktu();
+            if (waktu <= 0) {
+                Furniture item = deliveryItem.getTipeObjek();
+                String namaObjek = deliveryItem.getNamaObjek();
+                Sim sim = deliveryItem.getSim();
+                int quantity = deliveryItem.getQuantity();
+                sim.getInventoryFurniture().tambahStock(item, quantity);
+                System.out.println(namaObjek + " telah diterima oleh " + sim.getNamaLengkap() + " sejumlah " + quantity);
+                iterator.remove();
+            }
+        }
+    }
+    
+    public void checkWaktuDeliveryItemBahanMakanan() {
+        Iterator<DeliveryItem<BahanMakanan>> iterator = deliveryItemsBahanMakanan.iterator();
+        while (iterator.hasNext()) {
+            DeliveryItem<BahanMakanan> deliveryItem = iterator.next();
+            int waktu = deliveryItem.getWaktu();
+            if (waktu <= 0) {
+                BahanMakanan item = deliveryItem.getTipeObjek();
+                String namaObjek = deliveryItem.getNamaObjek();
+                Sim sim = deliveryItem.getSim();
+                int quantity = deliveryItem.getQuantity();
+                sim.getInventoryBahanMakanan().tambahStock(item, quantity);
+                System.out.println(namaObjek + " telah diterima oleh " + sim.getNamaLengkap() + " sejumlah " + quantity);
+                iterator.remove();
+            }
+        }
+    }
+    
+    
+    //print all deliveryItemsFurniture and deliveryItemsBahanMakanan information
+    public void printAllDeliveryItems() {
+        if (deliveryItemsFurniture.isEmpty() && deliveryItemsBahanMakanan.isEmpty()) {
+            System.out.println("Tidak ada delivery item yang sedang berlangsung.");
+            return;
+        }
+
+        System.out.println("Daftar delivery item yang sedang berlangsung:");
+        for (DeliveryItem<Furniture> deliveryItem : deliveryItemsFurniture) {
+            System.out.println("Nama objek: " + deliveryItem.getNamaObjek());
+            System.out.println("Sim: " + deliveryItem.getSim().getNamaLengkap());
+            System.out.println("Waktu: " + deliveryItem.getWaktu());
+            System.out.println("Quantity: " + deliveryItem.getQuantity());
+            System.out.println();
+        }
+        for (DeliveryItem<BahanMakanan> deliveryItem : deliveryItemsBahanMakanan) {
+            System.out.println("Nama objek: " + deliveryItem.getNamaObjek());
+            System.out.println("Sim: " + deliveryItem.getSim().getNamaLengkap());
+            System.out.println("Waktu: " + deliveryItem.getWaktu());
+            System.out.println("Quantity: " + deliveryItem.getQuantity());
+            System.out.println();
+        }
+    }
+
+    
+
+    
 }
 
 

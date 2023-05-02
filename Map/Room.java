@@ -652,7 +652,7 @@ public class Room {
     public Boolean checkFurnitureData(String furnitureName , int koordinatX , int koordinatY){
         Boolean valid = false;
         for(FurnitureData furnitureData : this.getFurnitureDataList()){
-            if(furnitureData.getFurnitureName().equalsIgnoreCase(furnitureName) && furnitureData.getStartX() == koordinatX && furnitureData.getStartY() == koordinatY){
+            if(furnitureData.getFurnitureName().equalsIgnoreCase(furnitureName) && (furnitureData.getStartX() == koordinatX) && (furnitureData.getStartY() == koordinatY)){
                 valid = true;
             }
         }
