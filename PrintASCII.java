@@ -70,6 +70,8 @@ public class PrintASCII {
         System.out.println("____(CCCCCCCCCCCCCC)____________-/___________________");
     }
 
+=======
+
     public void printTitle() {
         System.out.println("   ▄████████  ▄█    ▄▄▄▄███▄▄▄▄              ▄███████▄  ▄█        ▄█   ▄████████  ▄█      ███     ▄██   ▄");
         System.out.println("  ███    ███ ███  ▄██▀▀▀███▀▀▀██▄           ███    ███ ███       ███  ███    ███ ███  ▀█████████▄ ███   ██▄");
@@ -81,6 +83,7 @@ public class PrintASCII {
         System.out.println(" ▄████████▀  █▀    ▀█   ███   █▀           ▄████▀      █████▄▄██ █▀   ████████▀  █▀      ▄████▀    ▀█████▀");
         System.out.println("                                                       ▀                                                  ");
     }
+
         
     //Tetsing
     public static void main(String[] args) {
@@ -91,6 +94,12 @@ public class PrintASCII {
         test.printEat();
         test.printMasak();
         test.printupgradeRumah();
+
+    }
+}
+=======
         test.printTitle();
     }
 }
+
+
