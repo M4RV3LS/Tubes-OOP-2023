@@ -539,22 +539,29 @@ public class Sim {
                             totalWaktuKerja = totalWaktuKerja - ((totalWaktuKerja/10)*10);
                         }
 
-                        // Tambahin Waktu ke World
-                        if (isDead()){
-                            System.out.println("SIM telah meninggal");
-                        } else {
-                            setStatus("Sedang Bekerja");
-                            printStat();
-                            world.checkWaktuSetelahAksi(getNamaLengkap(), lamaKerja);
-                        }
-
                         // print stats
                         System.out.println("=========SIM SELESAI BEKERJA=========");
                         System.out.println("Anda bekerja selama " + lamaKerja + " detik");
-                        System.out.println("Kekenyangan anda sekarang: " + getKekenyangan());
-                        System.out.println("Mood anda sekarang: " + getMood());
-                        System.out.println("Uang anda sekarang: " + getUang());
-                        System.out.println(" ");
+                        printStat();
+
+                        // Tambahin Waktu ke World
+                        if (isDead()){
+                            System.out.println("SIM telah meninggal");
+                        } 
+                        setStatus("Sedang Bekerja");
+                        world.checkWaktuSetelahAksi(getNamaLengkap(), lamaKerja);
+
+                        //melakukan print hari sudah berganti jika isGantiHari pada class world bernilai true
+                        if (world.getIsGantiHari()){
+                            System.out.println("Hari telah berganti , sekarang sudah hari ke-" + world.getHariDunia());
+                        }
+                    }
+
+                        
+                        // System.out.println("Kekenyangan anda sekarang: " + getKekenyangan());
+                        // System.out.println("Mood anda sekarang: " + getMood());
+                        // System.out.println("Uang anda sekarang: " + getUang());
+                        // System.out.println(" ");
                     }
                 }
             });
@@ -570,23 +577,66 @@ public class Sim {
     public void olahraga(int lamaOlahraga)
     {
         if(lamaOlahraga%20 == 0)
-        {
-            int kenyangTurun = getKekenyangan() + lamaOlahraga/20*(-5);
-            setKekenyangan(kenyangTurun);
-            int moodNaik = getMood() + lamaOlahraga/20*10;
-            setMood(moodNaik);
-            int kesehatanNaik = getKesehatan() + lamaOlahraga/20*5;
-            setKesehatan(kesehatanNaik);
+        {   
+            world.checkIsGantiHari(lamaOlahraga);
+            thread = new Thread(new Runnable() 
+            {
+               public void run()
+               {
+                    try
+                    {
+                        System.out.println("==========SIM SEDANG OLAHRAGA==========");
+                        // System.out.println("     ");
+                        // System.out.println("                        ,////,");
+                        // System.out.println("                        /// 6|");
+                        // System.out.println("                        //  _|");
+                        // System.out.println("                       _/_,-'");
+                        // System.out.println("                  _.-/'/   \\   ,/,;");
+                        // System.out.println("               ,-' /'  \\_   \\ / _/");
+                        // System.out.println("               `\\ /     _/\\  ` /");
+                        // System.out.println("                 |     /,  `\\_/");
+                        // System.out.println("                 |     \\'");
+                        // System.out.println("    /\\_        /`      /\\");
+                        // System.out.println("   /' /_``--.__/\\  `,. /  \\");
+                        // System.out.println("  |_/`  `-._     `\\/  `\\   `.");
+                        // System.out.println("            `-.__/'     `\\   |");
+                        // System.out.println("                          `\\  \\");
+                        // System.out.println("                            `\\ \\");
+                        // System.out.println("                              \\_\\__");
+                        // System.out.println("                               \\___)");
+        
+                        // Nunggu waktu lari
+                        Thread.sleep(lamaOlahraga*1000);
+                        System.out.println(" ");
+                    } 
+                    catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    finally{
+                        int kenyangTurun = getKekenyangan() + lamaOlahraga/20*(-5);
+                        setKekenyangan(kenyangTurun);
+                        int moodNaik = getMood() + lamaOlahraga/20*10;
+                        setMood(moodNaik);
+                        int kesehatanNaik = getKesehatan() + lamaOlahraga/20*5;
+                        setKesehatan(kesehatanNaik);
 
-            setStatus("Olahraga");
+                        // print stats
+                        System.out.println("=========SIM SELESAI OLAHRAGA=========");
+                        System.out.println("Anda bekerja selama " + lamaOlahraga + " detik");
+                        printStat();
 
-            // print stats
-            System.out.println("=========SIM SEDANG OLAHRAGA=========");
-            System.out.println("SIM berolahraga selama " + lamaOlahraga + " detik");
-            System.out.println("Kekenyangan anda sekarang: " + getKekenyangan());
-            System.out.println("Mood anda sekarang: " + getMood());
-            System.out.println("Kesehatan anda sekarang: " + getKesehatan());
-            System.out.println(" ");
+                        // Tambahin Waktu ke World
+                        if (isDead()){
+                            System.out.println("SIM telah meninggal");
+                        } 
+                        setStatus("Sedang Olahraga");
+                        world.checkWaktuSetelahAksi(getNamaLengkap(), lamaOlahraga);
+
+                        
+                    }
+               }
+            });
+            thread.run();
         }
 
         else
