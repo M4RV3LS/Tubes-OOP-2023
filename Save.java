@@ -1,50 +1,71 @@
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Save {
-    private String filename;
-    private String data;
+    private FileWriter file;
+    private ArrayList<Sim> simList;
+    private World world;
 
-    public Save(String filename, String data) {
-        this.filename = filename;
-        this.data = data;
-    }
-
-    public void save(String path) {
+    public Save(ArrayList<Sim> simList, World world, String filename) {
+        this.simList = simList;
+        this.world = world;
         try {
-            // membuat objek file dengan path dan nama file
-            File file = new File(path + "\\" + filename);
-
-            // membuat file baru jika file tidak ditemukan
-            if (!file.exists()) {
-                file.createNewFile();
+            //cek file sudah ada atau belum
+            File f = new File(filename);
+            if(f.exists()) {
+                f.delete();
             }
-
-            FileWriter writer = new FileWriter(file);
-            writer.write(data);
-            writer.close();
-            System.out.println("Data telah berhasil disimpan ke dalam file " + file.getAbsolutePath());
+            file = new FileWriter(filename);
         } catch (IOException e) {
-            System.out.println("Terjadi kesalahan dalam menyimpan data ke dalam file " + filename);
+            System.out.println("File gagal disimpan.");
             e.printStackTrace();
         }
     }
 
-    // getter dan setter untuk atribut filename dan data
-    public String getFilename() {
-        return filename;
-    }
+    public void saveGame() {
+        try {
+            //save sims
+            for (Sim sim : simList) {
+                file.write(sim.getNameLengkap() + "\n");
+                file.write(sim.getPekerjaan().getName() + "\n");
+                file.write(sim.getUang() + "\n");
+                
+                // write bahan makanan
+                // write furniture
+                // write masakan
 
-    public void setFilename(String filename) {
-        this.filename = filename;
-    }
+                file.write(sim.getKekenyangan() + "\n");
+                file.write(sim.getMood() + "\n");
+                file.write(sim.getKesehatan() + "\n");
+                file.write(sim.getStatus() + "\n");
 
-    public String getData() {
-        return data;
-    }
+                file.write(sim.getHouse().getHouseName() + "\n");
+                ArrayList<Room> rooms = sim.getHouse().getRooms();
+                for (Room elmt : rooms) {
+                    file.write(elmt.getRoomName() + "\n");
+                }
 
-    public void setData(String data) {
-        this.data = data;
+                // write detail room (lokasi objek dsb)
+            }
+            
+            /* save world */
+            for (Map.Entry<House, int[]> entry : world.getHouseList().entrySet()) {
+                file.write(entry.getKey().getHouseName() + "\n");
+                int[] loc = entry.getValue();
+                file.write(loc[0] + ", " + loc[1] + "\n");
+            }
+
+            System.out.println("File berhasil disimpan.");
+            file.flush();
+            file.close();
+
+        } catch (IOException e) {
+            System.out.println("File gagal disimpan.");
+            e.printStackTrace();
+        }
     }
 }
