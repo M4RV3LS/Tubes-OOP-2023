@@ -271,6 +271,7 @@ public class World{
         this.setIsGantiHari(true);
 
         for(Sim cekSimTidur : simList){
+            // Berarti SIM tidur dan sudah pindah hari
             if(cekSimTidur.getStatus() == "Sedang Tidur" && waktuSim < 0)
             {
                 // Berarti sim sudah mencukupi waktu tidur sehingga sim akan terkena efek tidak tidur setelah 10 menit
