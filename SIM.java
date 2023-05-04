@@ -895,18 +895,7 @@ public class Sim {
                         setStatus("Sedang Makan");
                         printStat();
                         world.addWaktuTidakBuangAir(getNamaLengkap(), 240);
-                        world.addWaktuDunia(30);
-                        world.reduceWaktuTidakTidur(getNamaLengkap(), 30);
-                        world.kurangiWaktuUpgrade(30);
-                        world.checkUpgradeRoom();  
-                        world.checkWaktuTidakBuangAir();
-                        world.checkWaktuTidakTidur();
-                        world.checkUpgradeRoom();
-                        world.kurangiWaktuDeliveryItemFurniture(30);
-                        world.kurangiWaktuDeliveryItemBahanMakanan(30);
-                        world.checkWaktuDeliveryItemBahanMakanan();
-                        world.checkWaktuDeliveryItemFurniture();
-                        world.checkIsDead();
+                        world.checkWaktuSetelahAksi(getNamaLengkap(), 30);
 
                         //melakukan print hari sudah berganti jika isGantiHari pada class world bernilai true
                         if (world.getIsGantiHari()){
@@ -1057,19 +1046,9 @@ public class Sim {
                     } 
                     setStatus("Sedang Buang Air");
                     printStat();
-                    world.addWaktuDunia(10);
+                    world.checkWaktuSetelahAksi(getNamaLengkap(), 10);
                     world.removeWaktuTidakBuangAir(getNamaLengkap());
-                    world.reduceWaktuTidakTidur(getNamaLengkap(), 10);
-                    world.kurangiWaktuUpgrade(10);
-                    world.checkUpgradeRoom();
-                    world.checkWaktuTidakBuangAir();
-                    world.checkWaktuTidakTidur();
-                    world.kurangiWaktuDeliveryItemFurniture(10);
-                    world.kurangiWaktuDeliveryItemBahanMakanan(10);
-                    world.checkWaktuDeliveryItemBahanMakanan();
-                    world.checkWaktuDeliveryItemFurniture();
-                    world.checkIsDead();
-
+                    
                     //melakukan print hari sudah berganti jika isGantiHari pada class world bernilai true
                     if (world.getIsGantiHari()){
                         System.out.println("Hari telah berganti , sekarang sudah hari ke-" + world.getHariDunia());
