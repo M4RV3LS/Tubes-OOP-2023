@@ -47,7 +47,7 @@ public class Sim {
 
     public Sim(String namaLengkap) {
         this.namaLengkap = namaLengkap;
-        this.uang = 100;
+        this.uang = 2000;
         this.kekenyangan = 80;
         this.mood = 80;
         this.kesehatan = 80;
@@ -202,22 +202,25 @@ public class Sim {
     }
 
     //setter upgradeHouse
-    public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
-        //Melakukan Looping untuk mencari apakah Sim ini sudah memiliki upgradeHouse didalam list daftarUpgradeRumah
-        for (UpgradeHouse upgradeHouse1 : world.getDaftarUpgradeHouse()) {
-            if (upgradeHouse1.getSim().getNamaLengkap().equalsIgnoreCase(this.getNamaLengkap())) {
-                //Menghapus upgradeHouse milik Sim ini pada list daftarUpgradeRumah
-                world.getDaftarUpgradeHouse().remove(getUpgradeHouse());
-            }
-            
-            
-        }
-        if(inputUpgradeHouse != null){
-            this.upgradeHouse = upgradeHouse;
-            //menambahakan upgradeHouse kedalam list daftarUpgradeRumah
-            world.getDaftarUpgradeHouse().add(inputUpgradeHouse);
+public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
+    //Membuat Iterator untuk melakukan loop pada list daftarUpgradeRumah
+    Iterator<UpgradeHouse> iterator = world.getDaftarUpgradeHouse().iterator();
+    
+    while (iterator.hasNext()) {
+        UpgradeHouse upgradeHouse1 = iterator.next();
+        if (upgradeHouse1.getSim().getNamaLengkap().equalsIgnoreCase(this.getNamaLengkap())) {
+            //Menghapus upgradeHouse milik Sim ini pada list daftarUpgradeRumah menggunakan iterator.remove()
+            iterator.remove();
         }
     }
+    
+    if(inputUpgradeHouse != null){
+        this.upgradeHouse = inputUpgradeHouse;
+        //menambahkan upgradeHouse kedalam list daftarUpgradeRumah
+        world.getDaftarUpgradeHouse().add(inputUpgradeHouse);
+    }
+}
+
     //getter isInHouse
     public Boolean getIsInHouse() {
         return isInHouse;
@@ -359,7 +362,7 @@ public class Sim {
     }
 
     //setter isGantiKerja
-    public void setIsGantiKerja(Boolean isGantiKerja){
+    public void setIsGantiKerja(boolean isGantiKerja){
         this.isGantiKerja = isGantiKerja;
     }
 
@@ -405,10 +408,10 @@ public class Sim {
         System.out.println("Ruangan: " + room.getRoomName());
     }
 
-    //getter sim stat
+    //print sim stat
     public void printStat()
     {
-        System.out.println("=========SIM SEDANG " + this.getStatus().toUpperCase() + "=========");
+        System.out.println("=========SIM SELESAI " + this.getStatus().toUpperCase() + "=========");
         System.out.println("Mood anda sekarang: " + getMood());
         System.out.println("Kesehatan anda sekarang: " + getKesehatan());
         System.out.println("Kekenyangan anda sekarang: " + getKekenyangan());
@@ -709,7 +712,7 @@ public class Sim {
     }
 
     // Aksi Masak
-    public static void aksiMasak(Masakan masakan, Inventory<BahanMakanan> inventoryBahanMakanan , Inventory<Masakan> inventoryMasakan) {
+    public Boolean aksiMasak(Masakan masakan, Inventory<BahanMakanan> inventoryBahanMakanan , Inventory<Masakan> inventoryMasakan) {
         List<BahanMakanan> bahanMakanan = masakan.getBahanMakanan();
         HashMap<BahanMakanan, Integer> stockBahanMakanan = inventoryBahanMakanan.getStock();
         for (BahanMakanan bahan : bahanMakanan) {
@@ -717,17 +720,18 @@ public class Sim {
                 int jumlah = stockBahanMakanan.get(bahan);
                 if (jumlah <= 0) {
                     System.out.println("Maaf, stock bahan makanan " + bahan.getName() + " habis");
-                    return;
+                    return false;
                 }
             } else {
                 System.out.println("Maaf, stock bahan makanan " + bahan.getName() + " tidak ada");
-                return;
+                return false;
             }
         }
         
         for (BahanMakanan bahan : bahanMakanan) {
             inventoryBahanMakanan.kurangiStock(bahan, 1);
         }
+        return true;
         
         
     }
@@ -740,9 +744,10 @@ public class Sim {
         String namaMasakan = input.nextLine();
         
         for(Masakan masakan: Masakan.values()){
-            if(namaMasakan.equalsIgnoreCase(masakan.getNama())){
+            if(namaMasakan.equalsIgnoreCase(masakan.getNama()) && aksiMasak(masakan, inventoryBahanMakanan, inventoryMasakan)){
+                
                 try{
-                    aksiMasak(masakan, inventoryBahanMakanan, inventoryMasakan);
+                    
 
                     System.out.println("     ( ( (              ))     ");
                     System.out.println("      ) ) )           ((       ");
@@ -767,7 +772,7 @@ public class Sim {
                     System.out.println("Masakan " + masakan.getNama() + " berhasil dimasak");
         
                     // Check aksi pasif
-                    setStatus("Sedang Olahraga");
+                    setStatus("Sedang Makan");
                     printStat();
                     world.checkWaktuSetelahAksi(getNamaLengkap(), (int)waktuMasak);
                 }
@@ -1362,15 +1367,18 @@ public class Sim {
                 switch(objName) {
                     case "KSS":
                     //Tidur
-                    System.out.print("Apakah anda ingin melakukan aksi tiudr ? (y/n)");
+                    System.out.print("Apakah anda ingin melakukan aksi tidur ? (y/n)");
                     Scanner input = new Scanner(System.in);
                     String jawaban = input.nextLine();
-                    while(!(jawaban.equalsIgnoreCase("y")) || !(jawaban.equalsIgnoreCase("n"))){
+                    Boolean inputYN = false;
+                    while(!(inputYN)){
                         if (jawaban.equalsIgnoreCase("y")){
                             int number = readInteger(scanner);
                             tidur(number);
+                            inputYN = true;
                         } else if(jawaban.equalsIgnoreCase("n")) {
                             System.out.println("Anda tidak ingin melakukan aksi tidur");
+                            inputYN = true;
                         }
                         else{
                             System.out.println("Masukan tidak valid");
@@ -1418,7 +1426,7 @@ public class Sim {
                         System.out.print("Apakah anda ingin melakukan aksi buang air ? (y/n)");
                         Scanner input4 = new Scanner(System.in);
                         String jawaban4 = input4.nextLine();
-                        Boolean inputYN = false;
+                        inputYN = false;
                         while(!(inputYN)){
                             if (jawaban4.equalsIgnoreCase("y")){
                                 buangAir();

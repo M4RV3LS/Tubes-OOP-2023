@@ -208,12 +208,56 @@ public class Room {
     //     }
     //     this.mapData = newMapData;
     // }
-
     public void printRoom() {
         int maxWordLength = 3; // maksimum panjang kata 3
 
         int boxWidth = maxWordLength + 2; // lebar kotak disesuaikan dengan panjang kata maksimum
         
+        // PRINT PANDUAN KOORDINAT
+        System.out.println("========= PANDUAN KOORDINAT =========" );
+        for (int allMap = 0 ; allMap < 6 ; allMap++){
+            for (int i = 0; i < 6; i++) {
+                System.out.print("+");
+                for (int j = 0; j < boxWidth - 1; j++) {
+                    System.out.print("-");
+                }
+            }
+            System.out.println("+");
+
+            // print baris kedua sampai satu sebelum terakhir
+            
+                for (int i = 0; i < 6; i++) {
+                    System.out.print("|");
+                    // Coordinate coordinate = new Coordinate(allMap, i);
+                    // String value = this.mapData.getOrDefault(coordinate, "");
+                    // int valueLength = value.length();
+                    int spaces = (4 - 3) / 2;
+                    for (int j = 0; j < spaces; j++) {
+                        System.out.print(" ");
+                    }
+                    System.out.print(i + "," + allMap);
+                    for (int j = 0; j < 4 - spaces - 3; j++) {
+                        System.out.print(" ");
+                    }
+                    
+                }
+                System.out.print("|");
+                System.out.println();
+                
+            
+        }
+        // print baris terakhir
+        for (int i = 0; i < 6; i++) {
+            System.out.print("+");
+            for (int j = 0; j < boxWidth - 1; j++) {
+                System.out.print("-");
+            }
+        }
+        System.out.println("+");
+
+
+        // PRINT PETA RUANGAN
+        System.out.println(""); // biar enter
         System.out.println("========= " + this.getRoomName() + " =========" );
         // print baris pertama
         for (int allMap = 0 ; allMap < 6 ; allMap++){
@@ -262,6 +306,60 @@ public class Room {
         }
         System.out.println("+");
     }
+
+    // public void printRoom() {
+    //     int maxWordLength = 3; // maksimum panjang kata 3
+
+    //     int boxWidth = maxWordLength + 2; // lebar kotak disesuaikan dengan panjang kata maksimum
+        
+    //     System.out.println("========= " + this.getRoomName() + " =========" );
+    //     // print baris pertama
+    //     for (int allMap = 0 ; allMap < 6 ; allMap++){
+    //         for (int i = 0; i < 6; i++) {
+    //             System.out.print("+");
+    //             for (int j = 0; j < boxWidth - 1; j++) {
+    //                 System.out.print("-");
+    //             }
+    //         }
+    //         System.out.println("+");
+
+    //         // print baris kedua sampai satu sebelum terakhir
+            
+    //             for (int i = 0; i < 6; i++) {
+    //                 System.out.print("|");
+    //                 // Coordinate coordinate = new Coordinate(allMap, i);
+    //                 // String value = this.mapData.getOrDefault(coordinate, "");
+    //                 // int valueLength = value.length();
+    //                 int spaces = (4 - 3) / 2;
+    //                 for (int j = 0; j < spaces; j++) {
+    //                     System.out.print(" ");
+    //                 }
+    //                 if(this.getLayoutContent(allMap , i) == ""){
+    //                     System.out.print("   ");
+    //                 }
+    //                 else{
+    //                     System.out.print(this.getLayoutContent(allMap , i));
+    //                 }
+                    
+    //                 for (int j = 0; j < 4 - spaces - 3; j++) {
+    //                     System.out.print(" ");
+    //                 }
+                    
+    //             }
+    //             System.out.print("|");
+    //             System.out.println();
+                
+            
+    //     }
+    //     // print baris terakhir
+    //     for (int i = 0; i < 6; i++) {
+    //         System.out.print("+");
+    //         for (int j = 0; j < boxWidth - 1; j++) {
+    //             System.out.print("-");
+    //         }
+    //     }
+    //     System.out.println("+");
+    // }
 
     // public Boolean placeFurniture(int startX, int startY, Dimension dimension, String furniture, Boolean horizontal) throws Exception {
     //     Boolean valid = true;

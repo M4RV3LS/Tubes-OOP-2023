@@ -225,9 +225,11 @@ public class World{
 
     //getter waktu tidak buang air dengan parameter string sim name
     public int getWaktuTidakBuangAir(String name){
-        for (Sim sim : waktuTidakBuangAir.keySet()){
-            if (sim.getNamaLengkap().equals(name)){
-                return waktuTidakBuangAir.get(sim);
+        if(!(waktuTidakBuangAir.isEmpty())){
+            for (Sim sim : waktuTidakBuangAir.keySet()){
+                if (sim.getNamaLengkap().equals(name)){
+                    return waktuTidakBuangAir.get(sim);
+                }
             }
         }
         return 0;
@@ -273,9 +275,12 @@ public class World{
         }
 
         //meremove semua sim dari HashMap<Sim , Integer> waktuTidakBuangAir
-        for (Sim sim : waktuTidakBuangAir.keySet()){
-            waktuTidakBuangAir.remove(sim);
+        if(!(waktuTidakBuangAir.isEmpty())){
+            for (Sim sim : waktuTidakBuangAir.keySet()){
+                waktuTidakBuangAir.remove(sim);
+            }
         }
+        
     }
 
     //getter daftarUpgradeRumah
@@ -398,12 +403,14 @@ public class World{
     public void upgradeHouse(Sim sim , String newrRoom , Boolean isInHouse) {
 
         Boolean isStillUpgrade = false;
-        for (UpgradeHouse up : daftarUpgradeRumah){
-            if (up.getSim().getNamaLengkap().equals(sim.getNamaLengkap())){
-                isStillUpgrade = true;
-            }
+        if(!(daftarUpgradeRumah.isEmpty())){
+            for (UpgradeHouse up : daftarUpgradeRumah){
+                if (up.getSim().getNamaLengkap().equals(sim.getNamaLengkap())){
+                    isStillUpgrade = true;
+                    break;
+                }
+            }    
         }
-
         if(isInHouse && !(isStillUpgrade)){
             Scanner scanner = new Scanner(System.in);
             Boolean inputValid = false;
@@ -432,7 +439,7 @@ public class World{
                         if(selectedPosition.equals("1") || selectedPosition.equalsIgnoreCase("Top")){
                             if(selectedRoom.getRoomUp() == null){
                                 inputValid2 = true;
-                                UpgradeHouse upgradeHouse = new UpgradeHouse(sim , 1080 , sim.getHouse() , selectedRoom,  newrRoom , false , "Top");
+                                UpgradeHouse upgradeHouse = new UpgradeHouse(sim , 60 , sim.getHouse() , selectedRoom,  newrRoom , false , "Top");
                                 sim.setUpgradeHouse(upgradeHouse);
                             } 
                             else{
@@ -444,7 +451,7 @@ public class World{
                         else if(selectedPosition.equals("2") || selectedPosition.equalsIgnoreCase("Right")){
                             if(selectedRoom.getRoomRight() == null){
                                 inputValid2 = true;
-                                UpgradeHouse upgradeHouse = new UpgradeHouse(sim , 1080 , sim.getHouse() , selectedRoom,  newrRoom , false , "Right");
+                                UpgradeHouse upgradeHouse = new UpgradeHouse(sim , 60 , sim.getHouse() , selectedRoom,  newrRoom , false , "Right");
                                 sim.setUpgradeHouse(upgradeHouse);
                             }
                             else{
@@ -456,7 +463,7 @@ public class World{
                         else if(selectedPosition.equals("3") || selectedPosition.equalsIgnoreCase("Bottom")){
                             if(selectedRoom.getRoomDown() == null){
                                 inputValid2 = true;
-                                UpgradeHouse upgradeHouse = new UpgradeHouse(sim , 1080 , sim.getHouse() , selectedRoom,  newrRoom , false , "Bottom");
+                                UpgradeHouse upgradeHouse = new UpgradeHouse(sim , 60 , sim.getHouse() , selectedRoom,  newrRoom , false , "Bottom");
                                 sim.setUpgradeHouse(upgradeHouse);
                             }
                             else{
@@ -469,7 +476,7 @@ public class World{
                         else if(selectedPosition.equals("4") || selectedPosition.equalsIgnoreCase("Left")){
                             if(selectedRoom.getRoomLeft() == null){
                                 inputValid2 = true;
-                                UpgradeHouse upgradeHouse = new UpgradeHouse(sim , 1080 , sim.getHouse() , selectedRoom,  newrRoom , false , "Left");
+                                UpgradeHouse upgradeHouse = new UpgradeHouse(sim , 60 , sim.getHouse() , selectedRoom,  newrRoom , false , "Left");
                                 sim.setUpgradeHouse(upgradeHouse);
                             }
                             else{
@@ -502,10 +509,14 @@ public class World{
 
     public void checkUpgradeRoom() {
         for (Sim sim : simList) {
+            // System.out.println(sim.getUpgradeHouse().getWaktuUpgrade());
+            System.out.println("Check upgrade Room 1");
             UpgradeHouse upgradeHouse = sim.getUpgradeHouse();
             if (upgradeHouse != null && upgradeHouse.getWaktuUpgrade() <= 0) {
+                System.out.println("Check Upgrade Room 2");
                 Room newRoom = new Room(upgradeHouse.getNewRoom(), null, null, null, null);
                 if (upgradeHouse.getDirection().equalsIgnoreCase("Top")) {
+                    System.out.println("Check Upgrade Room 3");
                     upgradeHouse.getRoomAcuan().setRoomUp(newRoom);
                     newRoom.setRoomDown(upgradeHouse.getRoomAcuan());
                     sim.getHouse().getRooms().add(newRoom);
