@@ -278,6 +278,7 @@ public class Main {
             else if(menuInput.equals("5")|| menuInput.equalsIgnoreCase("Move Room")){
                 obj.print("Berikut ini adalah pilihan ruangan yang bisa anda kunjungi dirumah ini: ");
                 // for(Room houseRoom : house.getRooms()){
+                    
                 //     obj.print("- " + houseRoom.getRoomName());
                 // }
                 house.printRooms();

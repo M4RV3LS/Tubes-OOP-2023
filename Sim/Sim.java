@@ -61,6 +61,12 @@ public class Sim {
             
         }
         this.inventoryMasakan = new Inventory<>();
+        //Buat Test Case
+        // for (Masakan masakan : Masakan.values()) {
+        //     if (masakan.getNama().equalsIgnoreCase("Nasi Ayam")){
+        //         inventoryMasakan.tambahStock(masakan,1);
+        //     } 
+        // }
         this.status = "Tidak melakukan apa-apa";
         // this.pekerjaan = getRandomPekerjaan();
         // this.job = Job.valueOf(pekerjaan.toUpperCase().replace(" ", "_"));
@@ -490,7 +496,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
     // Aksi Kerja
     public void kerja(int lamaKerja)
     {   
-        if(!(this.getIsGantiKerja()) && lamaKerja%120 == 0)
+        if(!(this.getIsGantiKerja()) && lamaKerja%5 == 0)
         {
             world.checkIsGantiHari(lamaKerja);
             thread = new Thread(new Runnable() 
@@ -530,39 +536,39 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
             
                         totalWaktuKerja += lamaKerja;
                         
-                        if(totalWaktuKerja >= 240)
+                        if(totalWaktuKerja >= 10)
                         {
                             if(pekerjaan.getName().equalsIgnoreCase("Badut Sulap"))
                             {
-                                int tambahGaji = getUang() + (totalWaktuKerja/240) * getPekerjaan().getDailySalary();
+                                int tambahGaji = getUang() + (totalWaktuKerja/10) * getPekerjaan().getDailySalary();
                                 setUang(tambahGaji);
                             }
                             else if(pekerjaan.getName().equalsIgnoreCase("Koki"))
                             {
-                                int tambahGaji = getUang() + (totalWaktuKerja/240) * getPekerjaan().getDailySalary();
+                                int tambahGaji = getUang() + (totalWaktuKerja/10) * getPekerjaan().getDailySalary();
                                 setUang(tambahGaji);
                             }
                             else if(pekerjaan.getName().equalsIgnoreCase("Polisi"))
                             {
-                                int tambahGaji = getUang() + (totalWaktuKerja/240) *getPekerjaan().getDailySalary();
+                                int tambahGaji = getUang() + (totalWaktuKerja/10) *getPekerjaan().getDailySalary();
                                 setUang(tambahGaji);
                             }
                             else if(pekerjaan.getName().equalsIgnoreCase("Programmer"))
                             {
-                                int tambahGaji = getUang() + (totalWaktuKerja/240) * getPekerjaan().getDailySalary();
+                                int tambahGaji = getUang() + (totalWaktuKerja/10) * getPekerjaan().getDailySalary();
                                 setUang(tambahGaji);
                             }
                             else if(pekerjaan.getName().equalsIgnoreCase("Dokter"))
                             {
-                                int tambahGaji = getUang() + (totalWaktuKerja/240) *getPekerjaan().getDailySalary();
+                                int tambahGaji = getUang() + (totalWaktuKerja/10) *getPekerjaan().getDailySalary();
                                 setUang(tambahGaji);
                             }
             
-                            totalWaktuKerja = totalWaktuKerja - ((totalWaktuKerja-240));
+                            totalWaktuKerja = totalWaktuKerja - ((totalWaktuKerja/10)*10);
                         }
 
                         // print stats
-                        System.out.println("=========SIM SELESAI BEKERJA=========");
+                        // System.out.println("=========SIM SELESAI BEKERJA=========");
                         System.out.println("Anda bekerja selama " + lamaKerja + " detik");
                         printStat();
 
@@ -587,9 +593,13 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
             thread.run();
         }
         
-        else
+        else if(this.getIsGantiKerja())
         {
             System.out.println(this.getNamaLengkap() + " telah mengganti kerja di hari ini , silahkan coba di hari berikutnya");
+        }
+        else if((lamaKerja%120) != 0)
+        {
+            System.out.println("Waktu bekerja harus kelipatan 120 detik");
         }
     }
     
@@ -841,7 +851,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
     }
 
     public static void showMasakan() {
-        System.out.println("List Bahan Makanan yang Dijual:");
+        System.out.println("Daftar Masakan yang bisa dimakan:");
         for (Masakan masakan : Masakan.values()) {
             System.out.println("Nama: " + masakan.getNama() +
                                ", Kekenyangan: " + masakan.getKekenyangan());
@@ -851,8 +861,10 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
 
     public void makan()
     {
+        showMasakan();
+        System.out.println("");
         System.out.println("Berikut ini adalah daftar makanan yang ada di inventory " + getNamaLengkap());
-        this.inventoryBahanMakanan.printInventory();
+        this.inventoryMasakan.printInventory();
         Scanner input = new Scanner(System.in);
         
         System.out.print("Masukkan nama masakan yang ingin dimasak: ");
@@ -889,6 +901,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
         {
             int waktuSisaDiHariSelanjutnya = (-1) * (world.getWaktuSim() - 30);
             world.checkIsGantiHari(30);
+            Masakan finalDiMakan = diMakan;
             thread = new Thread(new Runnable() 
             {
                public void run()
@@ -914,13 +927,13 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
 
                     finally
                     {
-                        int kenyangNaik = getKekenyangan() + masakan.getKekenyangan();
+                        int kenyangNaik = getKekenyangan() + finalDiMakan.getKekenyangan();
                         setKekenyangan(kenyangNaik);
 
                         setStatus("Makan");
                         
                         // Remove masakan from inventory
-                        inventoryMasakan.kurangiStock(masakan, 1);
+                        inventoryMasakan.kurangiStock(finalDiMakan, 1);
                         
                         // Tambahin Waktu ke World
                         if (isDead()){
@@ -1589,11 +1602,14 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                         System.out.print("Apakah anda ingin melakukan aksi makan ? (y/n)");
                         Scanner input7 = new Scanner(System.in);   
                         String jawaban7 = input7.nextLine();
-                        while(!(jawaban7.equalsIgnoreCase("y")) || !(jawaban7.equalsIgnoreCase("n"))){
+                        inputYN = false;
+                        while(!(inputYN)){
                             if (jawaban7.equalsIgnoreCase("y")){
-                                // this.makan();
+                                makan();
+                                inputYN = true;
                             } else if(jawaban7.equalsIgnoreCase("n")) {
                                 System.out.println("Anda tidak ingin melakukan aksi makan");
+                                inputYN = true;
                             }
                             else{
                                 System.out.println("Masukan tidak valid");
