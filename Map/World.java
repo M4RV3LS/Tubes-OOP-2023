@@ -299,10 +299,12 @@ public class World{
 
     //Mengupdate Nilai integer berdasarkan paramater String simname pada hashmap waktuTidakTidur
     public void updateWaktuTidakTidur(String name , int waktu){
-        for (Sim sim : waktuTidakTidur.keySet()){
-            if (sim.getNamaLengkap().equals(name)){
-                waktuTidakTidur.remove(sim);
-                waktuTidakTidur.put(sim , waktu);
+        if(!(waktuTidakTidur.isEmpty())){
+            for (Sim sim : waktuTidakTidur.keySet()){
+                if (sim.getNamaLengkap().equals(name)){
+                    waktuTidakTidur.remove(sim);
+                    waktuTidakTidur.put(sim , waktu);
+                }
             }
         }
     }

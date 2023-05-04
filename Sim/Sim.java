@@ -465,6 +465,25 @@ public class Sim {
         }
     }
 
+    //print buku resep masakan 
+    public void printBukuResep(){
+        System.out.printf("-----------------------------------------------%n");
+        System.out.printf("|          BUKU RESEP SIMPLICITY              |%n");
+
+        System.out.printf("-----------------------------------------------%n");
+        System.out.printf("| %-15s | %-25s |%n", "MAKANAN", "BAHAN MAKANAN");
+        System.out.printf("-----------------------------------------------%n");
+
+        System.out.printf("| %-15s | %-25s |%n", "Nasi Ayam", "Nasi, Ayam");
+        System.out.printf("| %-15s | %-25s |%n", "Nasi Kari", "Nasi, Kentang, Wortel");
+        System.out.printf("| %-15s | %-25s |%n", "Susu Kacang", "Susu, Kacang");
+        System.out.printf("| %-15s | %-25s |%n", "Tumis Sayur", "Wortel, Bayam");
+        System.out.printf("| %-15s | %-25s |%n", "Bistik", "Kentang, Sapi");
+        
+
+        System.out.printf("-----------------------------------------------%n");
+    }
+
     // Aksi Kerja
     public void kerja(int lamaKerja)
     {   
