@@ -859,6 +859,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
         String namaMasakan = input.nextLine();
 
         Boolean inputValid = false;
+        Boolean stockAda = false;
         Masakan diMakan = null;
         
         for(Masakan masakan: Masakan.values()){
@@ -868,7 +869,23 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                 break;
             }
         }
-        if(inventoryMasakan.getStock(masakan) > 0 && (inputValid))
+        
+        if(inputValid){
+            HashMap<Masakan, Integer> stockMasakan = getInventoryMasakan().getStock();
+            if(diMakan != null){
+                if(stockMasakan.containsKey(diMakan)){
+                    int jumlah = stockMasakan.get(diMakan);
+                    if(jumlah > 0){
+                        stockAda = true;
+                    }
+                }
+            } 
+        }
+        else{
+            System.out.println("Masakan tidak ada");
+        }
+
+        if(stockAda)
         {
             int waktuSisaDiHariSelanjutnya = (-1) * (world.getWaktuSim() - 30);
             world.checkIsGantiHari(30);
@@ -936,7 +953,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
         
         else
         {
-            System.out.println("Tidak ada masakan tersebut di inventory");
+            System.out.println("Sim Gagal Makan Karena Stock Tidak Tersedia Di Inventory");
         }
     }
 
