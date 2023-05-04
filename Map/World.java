@@ -16,8 +16,10 @@ public class World{
     private ArrayList<DeliveryItem<Furniture>> deliveryItemsFurniture = new ArrayList<DeliveryItem<Furniture>>();
     private ArrayList<DeliveryItem<BahanMakanan>> deliveryItemsBahanMakanan = new ArrayList<DeliveryItem<BahanMakanan>>();
     private static int waktuDunia = 0;
-    private static int hariDunia = (waktuDunia / 720) + 1;
-    private static int waktuSim = 720 - (waktuDunia % 720);
+    private static int hariDunia = 0;
+    private static int waktuSim = 0;
+    private static Boolean isGantiHari = false;
+    private static Boolean isAddSim = true;
 
     private World() {}
 
@@ -129,10 +131,11 @@ public class World{
     
     //Mencari sebuah objek Sim didalam simList
     public Boolean findSim(String name){
-        
-        for (Sim sim : simList){
-            if (sim.getNamaLengkap().equalsIgnoreCase(name)){
-                return true;
+        if(!(simList.isEmpty())){
+            for (Sim sim : simList){
+                if (sim.getNamaLengkap().equalsIgnoreCase(name)){
+                    return true;
+                }
             }
         }
         return false;
@@ -196,8 +199,9 @@ public class World{
     }
 
     //Menambahkan Sim dan Integer ke dalam HashMap waktu tidak buang air
-    public void addWaktuTidakBuangAir(Sim sim , int waktu){
-        waktuTidakBuangAir.put(sim , waktu);
+    public void addWaktuTidakBuangAir(String nama, int waktu){
+        waktuTidakBuangAir.remove(getSimByName(nama));
+        waktuTidakBuangAir.put(getSimByName(nama) , waktu);
     }
 
     //getter waktu upgrade dengan parameter string sim name
@@ -230,6 +234,88 @@ public class World{
         return 0;
     }
 
+    //getter isGantiHari
+    public boolean getIsGantiHari(){
+        return isGantiHari;
+    }
+
+    //setter isGantiHari
+    public void setIsGantiHari(boolean isGantiHari){
+        this.isGantiHari = isGantiHari;
+    }
+
+    //check isGantiHari()
+    public void checkIsGantiHari(int waktuAksi){
+        int waktuSim = getWaktuSim() - waktuAksi;
+        if(waktuSim < 0){
+            resetHari();
+        }
+        else{
+            this.setIsGantiHari(false);
+        }
+    }
+
+    //getter isAddSim
+    public boolean getIsAddSim(){
+        return isAddSim;
+    }
+
+    //setter isAddSim
+    public void setIsAddSim(boolean isAddSim){
+        this.isAddSim = isAddSim;
+    }
+
+    //reset hari
+    public void resetHari(){
+        this.setIsAddSim(false);
+        this.setIsGantiHari(true);
+
+        for(Sim cekSimTidur : simList){
+            if(cekSimTidur.getStatus() == "Sedang Tidur" && waktuSim < 0)
+            {
+                // Berarti sim sudah mencukupi waktu tidur sehingga sim akan terkena efek tidak tidur setelah 10 menit
+                if(waktuSim == -3)
+                {
+                    updateWaktuTidakTidur(cekSimTidur.getNamaLengkap(), 600);
+                }
+
+                // Sim berarti sudah tidur 2 menit di hari kedua dan akan terkena efek tidak tidur 8 menit lagi
+                else if(waktuSim == -2)
+                {
+                    updateWaktuTidakTidur(cekSimTidur.getNamaLengkap(), 480);
+                }
+                
+                // Sim berarti sudah tidur 1 menit di hari kedua dan akan terkena efek tidak tidur 9 menit lagi
+                else if(waktuSim == -1)
+                {
+                    updateWaktuTidakTidur(cekSimTidur.getNamaLengkap(),540);
+                }
+            }
+        }
+        
+        for (Sim sim : simList){
+            sim.setIsGantiKerja(false);
+        }
+
+        //meremove semua sim dari HashMap<Sim , Integer> waktuTidakBuangAir
+        for (Sim sim : waktuTidakBuangAir.keySet()){
+            waktuTidakBuangAir.remove(sim);
+        }
+
+        // Misalkan Setelah aksi waktu sim menjadi negatif
+        // Test Case : waktuSim = -3, maka waktuSim = 9, berarti hari setelahnya sudah berjalan 3 menit
+        this.setWaktuSim(12 - (waktuSim * (-1)));
+    }
+
+    //getter daftarUpgradeRumah
+    public ArrayList<UpgradeHouse> getDaftarUpgradeRumah(){
+        return daftarUpgradeRumah;
+    }
+
+    // //Menambahkan Sim dan House ke dalam HashMap daftarUpgradeRumah
+    // public void addDaftarUpgradeRumah(Sim sim , House house){
+    //     daftarUpgradeRumah.put(sim , house);
+    // }
     // //Mengupdate Nilai integer berdasarkan paramater String simname pada hashmap waktuUpgrade
     // public void updateWaktuUpgrade(String name , int waktu){
     //     for (Sim sim : waktuUpgrade.keySet()){
@@ -252,17 +338,21 @@ public class World{
 
     //Mengupdate Nilai integer berdasarkan paramater String simname pada hashmap waktuTidakBuangAir
     public void updateWaktuTidakBuangAir(String name , int waktu){
-        for (Sim sim : waktuTidakBuangAir.keySet()){
-            if (sim.getNamaLengkap().equals(name)){
-                waktuTidakBuangAir.remove(sim);
-                waktuTidakBuangAir.put(sim , waktu);
+        //melakukan cek apakah HashMap<Sim , Integer> waktuTidakBuangAir kosong atau tidak 
+        if (!(waktuTidakBuangAir.isEmpty())){
+            for (Sim sim : waktuTidakBuangAir.keySet()){
+                if (sim.getNamaLengkap().equals(name)){
+                    waktuTidakBuangAir.remove(sim);
+                    waktuTidakBuangAir.put(sim , waktu);
+                }
             }
         }
+        
     }
 
     //Menambah waktu Dunia
     public void addWaktuDunia(int waktu){
-        waktuDunia += waktu;
+        this.waktuDunia += waktu;
     }
 
    
@@ -279,7 +369,7 @@ public class World{
 
     //getter hari dunia
     public int getHariDunia() {
-        return hariDunia;
+        return ((waktuDunia / 720) + 1);
     }
 
     //setter hari dunia
@@ -289,7 +379,7 @@ public class World{
 
     //getter waktu sim
     public int getWaktuSim() {
-        return waktuSim;
+        return (720 - (waktuDunia % 720));
     }
 
     //setter waktu sim
@@ -610,10 +700,201 @@ public class World{
         }
     }
 
+    // public void checkIsDead() {
+    //     for(Sim sim : simList){
+    //         if (sim.getKekenyangan() <= 0 || sim.getKesehatan() <= 0 || sim.getMood() <= 0) {
+
+    //             if(sim.getKekenyangan() <= 0){
+    //                 System.out.println("Sim " + sim.getNamaLengkap() + " mati karena kelaparan");
+    //             }
+    //             else if(sim.getKesehatan() <= 0){
+    //                 System.out.println("Sim " + sim.getNamaLengkap() + " mati karena sakit");
+    //             }
+    //             else if(sim.getMood() <= 0){
+    //                 System.out.println("Sim " + sim.getNamaLengkap() + " mati karena depresi");
+    //             }
+
+    //             //set every sim house that have entered died sim house to their ownhouse dengan parameter nama masing masing house
+    //             for (Sim anotherSim : simList){
+    //                 if(anotherSim.getHouse().getHouseName().equalsIgnoreCase(sim.getHouse().getHouseName())){
+    //                     anotherSim.setHouse(anotherSim.getOwnHouse());
+    //                 }
+    //             }
+                
+    //             // Remove upgradeHouse from daftarUpgradeRumah if any
+    //             if (sim.getUpgradeHouse() != null) {
+    //                 for (UpgradeHouse uh : daftarUpgradeRumah) {
+    //                     if (uh.getSim().getNamaLengkap().equalsIgnoreCase(sim.getNamaLengkap())) {
+    //                         daftarUpgradeRumah.remove(uh);
+    //                         break;
+    //                     }
+    //                 }
+    //             }
+                
+    //             // Remove delivery items
+    //             deliveryItemsFurniture.removeIf(item -> item.getSim().getNamaLengkap().equalsIgnoreCase(sim.getNamaLengkap()));
+    //             deliveryItemsBahanMakanan.removeIf(item -> item.getSim().getNamaLengkap().equalsIgnoreCase(sim.getNamaLengkap()));
+        
+    //             // Remove sim from waktuTidakTidur and waktuTidakBuangAir maps
+    //             waktuTidakTidur.remove(sim);
+    //             waktuTidakBuangAir.remove(sim);
+        
+    //             //Remove House from map
+    //             int[] houseLocation = getHouseLocation(sim.getHouse());
+    //             setHouse(houseLocation[0] , houseLocation[1] , null);
+
+                
+    //             // Remove sim from simList
+    //             simList.remove(sim);
+                
+    //         }
+    //     }
+        
+    // }
+
+    public void checkIsDead() {
+        Iterator<Sim> iterator = simList.iterator();
+        while (iterator.hasNext()) {
+            Sim sim = iterator.next();
+            if (sim.getKekenyangan() <= 0 || sim.getKesehatan() <= 0 || sim.getMood() <= 0) {
+                if (sim.getKekenyangan() <= 0) {
+                    System.out.println("Sim " + sim.getNamaLengkap() + " mati karena kelaparan");
+                } else if (sim.getKesehatan() <= 0) {
+                    System.out.println("Sim " + sim.getNamaLengkap() + " mati karena sakit");
+                } else if (sim.getMood() <= 0) {
+                    System.out.println("Sim " + sim.getNamaLengkap() + " mati karena depresi");
+                }
+                //set every sim house that have entered died sim house to their ownhouse dengan parameter nama masing masing house
+                for (Sim anotherSim : simList) {
+                    if (anotherSim.getHouse().getHouseName().equalsIgnoreCase(sim.getHouse().getHouseName())) {
+                        anotherSim.setHouse(anotherSim.getOwnHouse());
+                    }
+                }
+                // Remove upgradeHouse from daftarUpgradeRumah if any
+                if (sim.getUpgradeHouse() != null) {
+                    Iterator<UpgradeHouse> upgradeHouseIterator = daftarUpgradeRumah.iterator();
+                    while (upgradeHouseIterator.hasNext()) {
+                        UpgradeHouse uh = upgradeHouseIterator.next();
+                        if (uh.getSim().getNamaLengkap().equalsIgnoreCase(sim.getNamaLengkap())) {
+                            upgradeHouseIterator.remove();
+                            break;
+                        }
+                    }
+                }
+                // Remove delivery items
+                deliveryItemsFurniture.removeIf(item -> item.getSim().getNamaLengkap().equalsIgnoreCase(sim.getNamaLengkap()));
+                deliveryItemsBahanMakanan.removeIf(item -> item.getSim().getNamaLengkap().equalsIgnoreCase(sim.getNamaLengkap()));
+                // Remove sim from waktuTidakTidur and waktuTidakBuangAir maps
+                waktuTidakTidur.remove(sim);
+                waktuTidakBuangAir.remove(sim);
+                //Remove House from map
+                int[] houseLocation = getHouseLocation(sim.getHouse());
+                setHouse(houseLocation[0], houseLocation[1], null);
+                // Remove sim from simList
+                iterator.remove();
+            }
+        }
+    }
     
+
+    
+
+    //check waktu tidak tidur 
+    public void checkWaktuTidakTidur() {
+        for (Sim sim : simList) {
+            if (getWaktuTidakTidur(sim.getNamaLengkap()) <= 0) {
+                sim.efekTidakTidur();
+            }
+        }
+    }
+
+    //Check Waktu Tidak Buang Air
+    public void checkWaktuTidakBuangAir() {
+        for (Sim sim : simList) {
+            if (getWaktuTidakBuangAir(sim.getNamaLengkap()) <= 0) {
+                sim.efekTidakBuangAir();
+            }
+        }
+    }
+    //Mengurangi Nilai integer berdasarkan paramater String simname pada hashmap waktuTidakBuangAir
+    public void reduceWaktuTidakBuangAir(String name , int waktu){
+        //ngecek apakah waktuTidakBuangAir empty atau tidak
+        if(!(waktuTidakBuangAir.isEmpty())){
+            for (Sim sim : waktuTidakBuangAir.keySet()){
+                if (sim.getNamaLengkap().equalsIgnoreCase(name)){
+                    int currentTime = waktuTidakBuangAir.get(sim);
+                    waktuTidakBuangAir.remove(sim);
+                    waktuTidakBuangAir.put(sim , currentTime - waktu);
+                }
+            }
+        }
+        
+    }
+
+    //Mengurangi Nilai integer berdasarkan paramater String simname pada hashmap waktuTidakTidur
+    public void reduceWaktuTidakTidur(String name , int waktu){
+        //ngecek apakah waktuTidakTidur empty atau tidak
+
+        if(!( waktuTidakTidur.isEmpty())){
+            for (Sim sim : waktuTidakTidur.keySet()){
+                if (sim.getNamaLengkap().equals(name)){
+                    int currentTime = waktuTidakTidur.get(sim);
+                    waktuTidakTidur.remove(sim);
+                    waktuTidakTidur.put(sim , currentTime - waktu);
+                }
+            }
+        }
+       
+    }
+
+    //Menambah Nilai integer berdasarkan paramater String simname pada hashmap waktuTidakBuangAir
+    public void increaseWaktuTidakBuangAir(String name , int waktu){
+        for (Sim sim : waktuTidakBuangAir.keySet()){
+            if (sim.getNamaLengkap().equals(name)){
+                int currentTime = waktuTidakBuangAir.get(sim);
+                waktuTidakBuangAir.remove(sim);
+                waktuTidakBuangAir.put(sim , currentTime + waktu);
+            }
+        }
+    }
+
+    //Menambah Nilai integer berdasarkan paramater String simname pada hashmap waktuTidakTidur
+    public void increaseWaktuTidakTidur(String name , int waktu){
+        for (Sim sim : waktuTidakTidur.keySet()){
+            if (sim.getNamaLengkap().equals(name)){
+                int currentTime = waktuTidakBuangAir.get(sim);
+                waktuTidakBuangAir.remove(sim);
+                waktuTidakBuangAir.put(sim , currentTime + waktu);
+            }
+        }
+    }
+
+    // Hapus Sim dari hashmap waktutidakbuangair
+    public void removeWaktuTidakBuangAir(String name){
+        for (Sim sim : waktuTidakBuangAir.keySet()){
+            if (sim.getNamaLengkap().equals(name)){
+                waktuTidakBuangAir.remove(sim);
+            }
+        }
+    }
+
+
+    //Check Aksi Pasif
+    public void checkWaktuSetelahAksi(String nama,int waktuAksi)
+    {
+        addWaktuDunia(waktuAksi);
+        reduceWaktuTidakBuangAir(nama, waktuAksi);
+        reduceWaktuTidakTidur(nama, waktuAksi);
+        kurangiWaktuUpgrade(waktuAksi);
+        checkUpgradeRoom();  
+        checkWaktuTidakBuangAir();
+        checkWaktuTidakTidur();
+        kurangiWaktuDeliveryItemFurniture(waktuAksi);
+        kurangiWaktuDeliveryItemBahanMakanan(waktuAksi);
+        checkWaktuDeliveryItemBahanMakanan();
+        checkWaktuDeliveryItemFurniture();
+        checkIsDead();
+    }
 
     
 }
-
-
-
