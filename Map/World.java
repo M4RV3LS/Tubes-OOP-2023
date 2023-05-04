@@ -203,6 +203,16 @@ public class World{
         waktuTidakBuangAir.put(sim , waktu);
     }
 
+    //remove sim dari hashmap waktuTidakTidur
+    public void removeWaktuTidakTidur(Sim sim){
+        waktuTidakTidur.remove(sim);
+    }
+
+    //remove sim dari hashmap waktuTidakBuangAir
+    public void removeWaktuTidakBuangAir(Sim sim){
+        waktuTidakBuangAir.remove(sim);
+    }
+
     //getter waktu upgrade dengan parameter string sim name
     // public int getWaktuUpgrade(String name){
     //     for (Sim sim : waktuUpgrade.keySet()){
@@ -793,27 +803,45 @@ public class World{
     }
 
     //Check Waktu Tidak Buang Air
-    public void checkWaktuTidakBuangAir() {
-        for (Sim sim : simList) {
-            if (getWaktuTidakBuangAir(sim.getNamaLengkap()) <= 0) {
-                sim.efekTidakBuangAir();
-            }
-        }
-    }
+    // public void checkWaktuTidakBuangAir() {
+    //     for (Sim sim : simList) {
+    //         if (getWaktuTidakBuangAir(sim.getNamaLengkap()) <= 0) {
+    //             sim.efekTidakBuangAir();
+    //         }
+    //     }
+    // }
     //Mengurangi Nilai integer berdasarkan paramater String simname pada hashmap waktuTidakBuangAir
-    public void reduceWaktuTidakBuangAir(String name , int waktu){
+    // public void reduceWaktuTidakBuangAir(String name , int waktu){
+    //     //ngecek apakah waktuTidakBuangAir empty atau tidak
+    //     if(!(waktuTidakBuangAir.isEmpty())){
+    //         for (Sim sim : waktuTidakBuangAir.keySet()){
+    //             if (sim.getNamaLengkap().equalsIgnoreCase(name)){
+    //                 int currentTime = waktuTidakBuangAir.get(sim);
+    //                 waktuTidakBuangAir.remove(sim);
+    //                 waktuTidakBuangAir.put(sim , currentTime - waktu);
+    //             }
+    //         }
+    //     }
+    // }
+
+    public void checkWaktuTidakBuangAir(String name , int waktu){
         //ngecek apakah waktuTidakBuangAir empty atau tidak
         if(!(waktuTidakBuangAir.isEmpty())){
             for (Sim sim : waktuTidakBuangAir.keySet()){
-                if (sim.getNamaLengkap().equalsIgnoreCase(name)){
-                    int currentTime = waktuTidakBuangAir.get(sim);
+                int reduceCurrentTime = waktuTidakBuangAir.get(sim) - waktu;
+                if (reduceCurrentTime <= 0){
+                    sim.efekTidakBuangAir();
                     waktuTidakBuangAir.remove(sim);
-                    waktuTidakBuangAir.put(sim , currentTime - waktu);
+                    waktuTidakBuangAir.put(sim , 240);
+                } else {
+                    waktuTidakBuangAir.put(sim , reduceCurrentTime);
                 }
+                
+                
             }
         }
-        
     }
+ 
 
     //Mengurangi Nilai integer berdasarkan paramater String simname pada hashmap waktuTidakTidur
     public void reduceWaktuTidakTidur(String name , int waktu){
@@ -858,11 +886,12 @@ public class World{
     public void checkWaktuSetelahAksi(String nama,int waktuAksi)
     {
         addWaktuDunia(waktuAksi);
-        reduceWaktuTidakBuangAir(nama, waktuAksi);
+        // reduceWaktuTidakBuangAir(nama, waktuAksi);
+        //Udah aku tangani di checkWaktuTidakBuangAir
         reduceWaktuTidakTidur(nama, waktuAksi);
         kurangiWaktuUpgrade(waktuAksi);
         checkUpgradeRoom();  
-        checkWaktuTidakBuangAir();
+        checkWaktuTidakBuangAir(nama , waktuAksi);
         checkWaktuTidakTidur();
         kurangiWaktuDeliveryItemFurniture(waktuAksi);
         kurangiWaktuDeliveryItemBahanMakanan(waktuAksi);
