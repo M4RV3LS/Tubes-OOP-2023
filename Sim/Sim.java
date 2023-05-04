@@ -376,7 +376,7 @@ public class Sim {
 
     //getter isDead sim
     public Boolean isDead(){
-        if(this.getKekenyangan() <= 0 || this.getKesehatan() <= 0 || this.getMood() < 0=){
+        if(this.getKekenyangan() <= 0 || this.getKesehatan() <= 0 || this.getMood() <= 0){
 
             // //menghapus sim dari list of Sim di world
             // world.removeSim(this.getNamaLengkap());
@@ -441,7 +441,7 @@ public class Sim {
         System.out.println("Hari ke-" + world.getHariDunia() + ", Sisa waktu Sim: " + world.getWaktuSim());
         if (upgradeHouse != null) {
             int waktuUpgrade = upgradeHouse.getWaktuUpgrade();
-            System.out.println("Waktu tersisa untuk upgrade rumah: " + waktuUpgrade + " menit");
+            System.out.println("Waktu tersisa untuk upgrade rumah: " + waktuUpgrade + " detik");
         }
         if (!world.getDeliveryItemsFurniture().isEmpty()) {
             System.out.println("Delivery Furniture:");
@@ -450,7 +450,7 @@ public class Sim {
                 DeliveryItem<Furniture> deliveryItem = iterator.next();
                 int waktuDelivery = deliveryItem.getWaktu();
                 String namaObjek = deliveryItem.getNamaObjek();
-                System.out.println("- " + namaObjek + " (" + waktuDelivery + " menit)");
+                System.out.println("- " + namaObjek + " (" + waktuDelivery + " detik)");
             }
         }
         if (!world.getDeliveryItemsBahanMakanan().isEmpty()) {
@@ -556,13 +556,10 @@ public class Sim {
                             System.out.println("Hari telah berganti , sekarang sudah hari ke-" + world.getHariDunia());
                         }
                     }
-
-                        
                         // System.out.println("Kekenyangan anda sekarang: " + getKekenyangan());
                         // System.out.println("Mood anda sekarang: " + getMood());
                         // System.out.println("Uang anda sekarang: " + getUang());
                         // System.out.println(" ");
-                    }
                 }
             });
             thread.run();
@@ -963,7 +960,6 @@ public class Sim {
                         System.out.println("SIM telah meninggal");
                     } else {
                         setStatus("Sedang Buang Air");
-                        printStat();
                         world.addWaktuDunia(10);
                         world.kurangiWaktuUpgrade(10);
                         world.updateWaktuTidakBuangAir(getNamaLengkap(), 240);
@@ -1013,6 +1009,7 @@ public class Sim {
      public void mainGame(int lamaMain)
      {
          if (lamaMain > 0){
+            world.checkIsGantiHari(lamaMain);
              thread = new Thread(new Runnable() {
                  public void run(){
                      try {
@@ -1047,6 +1044,7 @@ public class Sim {
                          int kekenyanganTurun = getKekenyangan() - (lamaMain/20);
                          setKekenyangan(kekenyanganTurun);
  
+                         printStat();
                          if (isDead()){
                              System.out.println("SIM telah meninggal");
                         }
@@ -1054,12 +1052,14 @@ public class Sim {
                         //  {
                         //     world.
                         //  }
-                          else {
-                             setStatus("Main Game");
-                             printStat();
-                             world.checkWaktuSetelahAksi(getNamaLengkap(), lamaMain);
-                         }
-                     }
+                        setStatus("Main Game");
+                        world.checkWaktuSetelahAksi(getNamaLengkap(), lamaMain);
+
+                        //melakukan print hari sudah berganti jika isGantiHari pada class world bernilai true
+                        if (world.getIsGantiHari()){
+                            System.out.println("Hari telah berganti , sekarang sudah hari ke-" + world.getHariDunia());
+                        }
+                    }
                  }
              });
              thread.run();

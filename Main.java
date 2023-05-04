@@ -132,6 +132,28 @@ public class Main {
         }
         
     }
+
+    public void changeSimIfDead(Sim sim , World world , House house , Room room){
+        if(sim.isDead()){
+            System.out.println("Sim kamu telah Mati !!!");
+            System.out.println("Silahkan gunakan Sim yang lain");
+            if (world.getSimList().isEmpty()) {
+                if(!(world.getIsAddSim())){
+                    this.addSim();
+                    this.changeSim(sim , house , room);
+                    world.setIsAddSim(true);
+                }
+                else{
+                    System.out.println("Tidak ada Sim yang tersedia");
+                    System.out.println("Game Over");
+                    this.exit();
+                }
+            }
+            else {
+                this.changeSim(sim , house , room);
+            }
+        }
+    }
     
     public static void main(String[] args) throws InterruptedException{
         Main obj = new Main();       
@@ -214,26 +236,7 @@ public class Main {
             obj.printMenu();
 
             while(!exit){
-            world.checkIsDead(); //Ini harusnya dimasukkin ke method Sim jadi setiap aksi akan ngecek Sim nya mati atau ngga 
-            if(sim.isDead()){
-                obj.print("Sim kamu telah Mati !!!");
-                obj.print("Silahkan gunakan Sim yang lain");
-                if (world.getSimList().isEmpty()) {
-                    if(!(world.getIsAddSim())){
-                        obj.addSim();
-                        obj.changeSim(sim , house , room);
-                        world.setIsAddSim(true);
-                    }
-                    else{
-                        obj.print("Tidak ada Sim yang tersedia");
-                        obj.print("Game Over");
-                        obj.exit();
-                    }
-                }
-                else {
-                    obj.changeSim(sim , house , room);
-                }
-            }
+            
             obj.print("");
             obj.print("Masukkan Help atau Menu untuk menampilkan menu permainan");
             System.out.print("Masukkan Angka atau Aksi yang diiginkan: ");
@@ -550,8 +553,9 @@ public class Main {
                 int x = scanner.nextInt();
                 System.out.print("Y : ");
                 int y = scanner.nextInt();
-                sim.moveToObject(x,y);
+                sim.moveToObject(y , x);
                 scanner.nextLine();
+                obj.changeSimIfDead(sim , world , house , room);
                 // Scanner input = new Scanner(System.in);
                 //     String objName = sim.getRoom().getLayoutContent(x , y);
                 //     //Melakukan Cek apakah masukan melebihi peta layout [5] [5] 
@@ -730,13 +734,16 @@ public class Main {
                         sim.kerja(waktuKerja);
                         scanner.nextLine();
                         action = true;
+                        obj.changeSimIfDead(sim , world , house , room);
                     }
                     else if(menuInput.equals("2")|| menuInput.equalsIgnoreCase("Olahraga")){
                         action = true;
+                        obj.changeSimIfDead(sim , world , house , room);
                     }
                     else if(menuInput.equals("3")|| menuInput.equalsIgnoreCase("Tidur")){
                         System.out.println("Kunjungi Objek Kasur apapun di Suatu Ruangan !");
                         action = true;
+                        
                     }
                     else if(menuInput.equals("4")|| menuInput.equalsIgnoreCase("Makan")){
                         System.out.println("Kunjungi Objek Meja dan Kursi di Suatu Ruangan !");
@@ -745,6 +752,7 @@ public class Main {
                     else if(menuInput.equals("5")|| menuInput.equalsIgnoreCase("Memasak")){
                         System.out.println("Kunjungi Objek Kompor Gas atau Listrik di Suatu Ruangan !");
                         action = true;
+
                     }
                     else if(menuInput.equals("6")|| menuInput.equalsIgnoreCase("Berkunjung")){
                         action = true;
