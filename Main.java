@@ -320,15 +320,10 @@ public class Main {
                     System.out.print("Masukkan Koordinat Y : ");
                     int y = scanner.nextInt();
                     scanner.nextLine();
-                    Boolean inputValid2 = false;
-                    String input2 = "";
-                    while(!inputValid2){
-                        System.out.print("Masukan Arah Letak Benda (Right/Left/Up/Down) :");
-                        input2 = scanner.nextLine();
-                        if(room.isFurnitureValid(input2)){
-                            inputValid2 = true;
-                        }
-                    }
+                    System.out.print("Masukan Arah Letak Benda (Right/Left/Up/Down) :");
+                    String input2 = scanner.nextLine();
+                    
+                    
                     
                     // Boolean right = false;
                     // Boolean left = false;
@@ -388,7 +383,7 @@ public class Main {
                     
                         Boolean valid;
                         // System.out.println(direction);
-                        Furniture furniture = Furniture.valueOf(input2.toUpperCase());
+                        Furniture furniture = Furniture.valueOf(input.toUpperCase());
                         // int length = furniture.getDimensi().getLength();
                         // int width = furniture.getDimensi().getWidth();
                         // System.out.println(length + " , " + width);
