@@ -559,6 +559,8 @@ public class World{
                     System.out.println("");
                 }
                 sim.setUpgradeHouse(null);
+                //hapus sim dari arrayList daftarUpgradeHouse
+                daftarUpgradeRumah.remove(upgradeHouse);
             }
         }
     }

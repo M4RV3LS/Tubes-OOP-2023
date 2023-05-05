@@ -112,21 +112,29 @@ public class Main {
         }
     }
 
-    public void changeSim(Sim sim , House house , Room room){
+    public void changeSim(World world , Sim sim , House house , Room room){
         Scanner scanner = new Scanner(System.in);
         System.out.println("Berikut adalah SIM yang tersedia:");
         for ( Sim daftarSim : world.getSimList()) {
             System.out.println("- " + daftarSim.getNamaLengkap());
         }
-        System.out.println("Masukkan nama SIM yang ingin anda gunakan : ");
+        
         Boolean findSim = false;
         while(!findSim){
+            System.out.print("Masukkan nama SIM yang ingin anda gunakan : ");
             String nama = scanner.nextLine();
             for(Sim s : world.getSimList()){
                 if(s.getNamaLengkap().equalsIgnoreCase(nama)){
                     sim = s;
                     house = sim.getHouse();
                     room = house.getRoom("Living Room");
+                    findSim = true;
+                    System.out.println("Sim anda sekarang adalah " + sim.getNamaLengkap());
+                    System.out.println("Selamat melanjutkan permainan");
+                    break;
+                }
+                else{
+                    System.out.println("Sim tidak ditemukan");
                 }
             }
         }
@@ -140,7 +148,7 @@ public class Main {
             if (world.getSimList().isEmpty()) {
                 if(!(world.getIsAddSim())){
                     this.addSim();
-                    this.changeSim(sim , house , room);
+                    this.changeSim(world, sim , house , room);
                     world.setIsAddSim(true);
                 }
                 else{
@@ -150,7 +158,7 @@ public class Main {
                 }
             }
             else {
-                this.changeSim(sim , house , room);
+                this.changeSim(world , sim , house , room);
             }
         }
     }
@@ -280,7 +288,17 @@ public class Main {
                     obj.print("");
                     world.printAllUpgradeHouse();
                 }
-                
+                else{
+                    obj.print("Upgrade rumah bisa hanya bisa dilakukan saat berada di rumah sendiri");
+                    //melakukan print untuk menunjukan bahwa user sedang berada di rumah sim yang sedang dikunjungi 
+                    for(Sim simDikunjungi : world.getSimList()){
+                        if(simDikunjungi.getOwnHouse() == sim.getHouse()){
+                            obj.print("Saat ini anda sedang berada di rumah " + simDikunjungi.getOwnHouse().getHouseName());
+                            break;
+                        }
+                        
+                    }
+                }
             }
             else if(menuInput.equals("5")|| menuInput.equalsIgnoreCase("Move Room")){
                 obj.print("Berikut ini adalah pilihan ruangan yang bisa anda kunjungi dirumah ini: ");
@@ -298,6 +316,7 @@ public class Main {
                         sim.setRoom(room);
                 }
             }
+            room.printRoom();
             }
             else if(menuInput.equals("6")|| menuInput.equalsIgnoreCase("Edit Room")){
                 //mengecek apakah Sim sedang berada di rumahnya 
@@ -485,7 +504,8 @@ public class Main {
                         //     inputValid = room.checkFurnitureData(menuInput , koorX , koorY);
                         // }
                         if(inputValid){
-                            Furniture furniture = Furniture.valueOf(menuInput.toUpperCase());
+                            // Furniture furniture = Furniture.valueOf(menuInput.toUpperCase());
+                            Furniture furniture = room.createFurniture(menuInput);
                             furnitureData = room.getFurnitureData(menuInput); 
                             System.out.println("Furniture yang ingin anda hapus adalah " + furnitureData.getFurnitureName());
                             room.removeFurniture(furnitureData.getStartX(), furnitureData.getStartY(), furnitureData.getDimension(),furnitureData.getFurnitureName(),furnitureData.getInitialName(), furnitureData.getDirection());
