@@ -1,5 +1,11 @@
 package Inventory;
 import java.util.*;
+import Sim.*;
+import java.util.*;
+import Inventory.*;
+import Fitur.*;
+import Map.*;
+
 public enum Masakan {
     NASI_AYAM("Nasi Ayam", Arrays.asList(BahanMakanan.NASI, BahanMakanan.AYAM), 16),
     NASI_KARI("Nasi Kari", Arrays.asList(BahanMakanan.NASI, BahanMakanan.KENTANG, BahanMakanan.WORTEL, BahanMakanan.SAPI), 30),

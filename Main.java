@@ -208,11 +208,18 @@ public class Main {
         
         if(menuInput.equals("1") || menuInput.equalsIgnoreCase("Start The Game")){
             
-            System.out.println("Masukkan nama SIM: ");
+            System.out.print("Masukkan nama SIM: ");
             String nama = scanner.nextLine();
             Sim firstSim = new Sim(nama);
             world.addSim(firstSim);
             world.addWaktuTidakTidur(firstSim , 600);
+
+            System.out.println("");
+            System.out.print("Masukkan nama SIM: ");
+            String nama2 = scanner.nextLine();
+            Sim secondSim = new Sim(nama2);
+            world.addSim(secondSim);
+            world.addWaktuTidakTidur(secondSim , 600);
             // world.addWaktuTidakBuangAir(firstSim , 0);
             sim = firstSim;
             System.out.println("Selamat datang " + nama + "!");
@@ -302,6 +309,8 @@ public class Main {
                     System.out.print("Masukkan Pilihan Anda : ");
                     menuInput = scanner.nextLine();
                     if (menuInput.equals("1") || menuInput.equalsIgnoreCase("Place Furniture")) {
+                    obj.print("");
+                    room.printRoom();
                     obj.print("Berikut ini adalah list barang anda: ");
                     sim.getInventoryFurniture().printInventory();
                     System.out.print("Masukkan nama Furniture: ");
@@ -549,6 +558,9 @@ public class Main {
                 room.printObjectCounts();
             }
             else if(menuInput.equals("10")|| menuInput.equalsIgnoreCase("Go To Object")){
+                sim.printFurnitureAksi();
+                obj.print("");
+                room.printFurnitureData();
                 System.out.println("Masukkan Koordinat Objek Yang Dituju: ");
                 System.out.print("X : ");
                 int x = scanner.nextInt();
@@ -714,16 +726,23 @@ public class Main {
             }
             else if(menuInput.equals("11")|| menuInput.equalsIgnoreCase("Action")){
                 obj.print("Berikut ini adalah beberapa aksi yang bisa dilakukan oleh SIM : ");
-                obj.print("1. Kerja");
-                obj.print("2. Olahraga");
-                obj.print("3. Tidur");
-                obj.print("4. Makan");
-                obj.print("5. Memasak");
-                obj.print("6. Berkunjung");
-                obj.print("7. Buang Air");
-                obj.print("8. Duduk");
-                obj.print("9. Melihat Waktu");
-                
+                obj.print("1.  Kerja");
+                obj.print("2.  Olahraga");
+                obj.print("3.  Tidur");
+                obj.print("4.  Makan");
+                obj.print("5.  Memasak");
+                obj.print("6.  Berkunjung");
+                obj.print("7.  Buang Air");
+                obj.print("8.  Duduk");
+                obj.print("9.  Melihat Waktu");
+                obj.print("10. Main Game");
+                obj.print("11. Santet");
+                obj.print("12. Berobat");
+                obj.print("13. Karaoke");
+                obj.print("14. Puasa");
+                obj.print("15. Bersih-Bersih");
+                obj.print("16. Melawak");
+
                 
                 Boolean action = false;
                 while(!action){
@@ -738,6 +757,10 @@ public class Main {
                         obj.changeSimIfDead(sim , world , house , room);
                     }
                     else if(menuInput.equals("2")|| menuInput.equalsIgnoreCase("Olahraga")){
+                        System.out.print("Masukkan waktu olahraga: ");
+                        int waktuOlahraga = scanner.nextInt();
+                        scanner.nextLine();
+                        sim.olahraga(waktuOlahraga);
                         action = true;
                         obj.changeSimIfDead(sim , world , house , room);
                     }
@@ -756,7 +779,9 @@ public class Main {
 
                     }
                     else if(menuInput.equals("6")|| menuInput.equalsIgnoreCase("Berkunjung")){
+                        sim.Berkunjung();
                         action = true;
+                        obj.changeSimIfDead(sim , world , house , room);
                     }
                     else if(menuInput.equals("7")|| menuInput.equalsIgnoreCase("Buang Air")){
                         System.out.println("Kunjungi Objek Toilet di Suatu Ruangan !");
@@ -767,6 +792,34 @@ public class Main {
                     }
                     else if(menuInput.equals("9")|| menuInput.equalsIgnoreCase("Melihat Waktu")){
                         System.out.println("Kunjungi Objek Jam di Suatu Ruangan !");
+                        action = true;
+                    }
+                    else if(menuInput.equals("10")|| menuInput.equalsIgnoreCase("Main Game")){
+                        System.out.println("Kunjungi Objek Komputer di Suatu Ruangan !");
+                        action = true;
+                    }
+                    else if(menuInput.equals("11")|| menuInput.equalsIgnoreCase("Santet")){
+                        System.out.println("Kunjungi Objek Bola Kristal di Suatu Ruangan !");
+                        action = true;
+                    }
+                    else if(menuInput.equals("12")|| menuInput.equalsIgnoreCase("Berobat")){
+                        System.out.println("Kunjungi Objek Kotak Obat di Suatu Ruangan !");
+                        action = true;
+                    }
+                    else if(menuInput.equals("13")|| menuInput.equalsIgnoreCase("Karaoke")){
+                        System.out.println("Kunjungi Objek Microphone di Suatu Ruangan !");
+                        action = true;
+                    }
+                    else if(menuInput.equals("14")|| menuInput.equalsIgnoreCase("Puasa")){
+                        System.out.println("Kunjungi Objek Kitab Suci di Suatu Ruangan !");
+                        action = true;
+                    }
+                    else if(menuInput.equals("15")|| menuInput.equalsIgnoreCase("Bersih-Bersih")){
+                        System.out.println("Kunjungi Objek Sapu di Suatu Ruangan !");
+                        action = true;
+                    }
+                    else if(menuInput.equals("16")|| menuInput.equalsIgnoreCase("Melawak")){
+                        System.out.println("Kunjungi Objek Sofa di Suatu Ruangan !");
                         action = true;
                     }
                     else{

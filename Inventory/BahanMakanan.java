@@ -1,5 +1,7 @@
 package Inventory;
 
+import Map.MyObject;
+
 public enum BahanMakanan {
     NASI("Nasi", 5, 5),
     KENTANG("Kentang", 3, 4),

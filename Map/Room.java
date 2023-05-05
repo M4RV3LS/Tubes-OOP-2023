@@ -1,7 +1,9 @@
 package Map;
-import java.util.ArrayList;
 import java.util.*;
 import Inventory.*;
+import Map.*;
+import Fitur.*;
+import Sim.*;
 
 public class Room {
     private int width = 6;
@@ -771,8 +773,15 @@ public class Room {
         return furnitureData;
     }
 
-    //Menaruh Objek yang berhasil dimasukkan ke Map ke dalam HashMap<MyObject, Integer> objectCounts dengan menciptakan MyObject terlebih dahulu
-
+   //ngecek apakah inputan user dalam mencari furniture aman
+   public boolean isFurnitureValid(String furnitureName) {
+    for (Furniture furniture : Furniture.values()) {
+        if (furniture.getName().equalsIgnoreCase(furnitureName)) {
+            return true;
+        }
+    }
+    return false;
+}
     
     
 }

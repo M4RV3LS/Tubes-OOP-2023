@@ -154,7 +154,7 @@ public class World{
     //Mendapatkan atribut Sim berdasarkan parameter string nama sim
     public Sim getSimByName(String simName) {
         for (Sim sim : this.getSimList()) {
-            if (sim.getNamaLengkap().equals(simName)) {
+            if (sim.getNamaLengkap().equalsIgnoreCase(simName)) {
                 return sim;
             }
         }
@@ -288,6 +288,14 @@ public class World{
         if(!(waktuTidakBuangAir.isEmpty())){
             for (Sim sim : waktuTidakBuangAir.keySet()){
                 waktuTidakBuangAir.remove(sim);
+            }
+        }
+
+        //mereset semua waktu Tidak Tidur sim pada hashmap waktuTidakTidur menjadi 600
+        if(!(waktuTidakTidur.isEmpty())){
+            for (Sim sim : waktuTidakTidur.keySet()){
+                waktuTidakTidur.remove(sim);
+                waktuTidakTidur.put(sim , 600);
             }
         }
         
@@ -520,13 +528,13 @@ public class World{
     public void checkUpgradeRoom() {
         for (Sim sim : simList) {
             // System.out.println(sim.getUpgradeHouse().getWaktuUpgrade());
-            System.out.println("Check upgrade Room 1");
+            // System.out.println("Check upgrade Room 1");
             UpgradeHouse upgradeHouse = sim.getUpgradeHouse();
             if (upgradeHouse != null && upgradeHouse.getWaktuUpgrade() <= 0) {
-                System.out.println("Check Upgrade Room 2");
+                // System.out.println("Check Upgrade Room 2");
                 Room newRoom = new Room(upgradeHouse.getNewRoom(), null, null, null, null);
                 if (upgradeHouse.getDirection().equalsIgnoreCase("Top")) {
-                    System.out.println("Check Upgrade Room 3");
+                    // System.out.println("Check Upgrade Room 3");
                     upgradeHouse.getRoomAcuan().setRoomUp(newRoom);
                     newRoom.setRoomDown(upgradeHouse.getRoomAcuan());
                     sim.getHouse().getRooms().add(newRoom);
@@ -798,6 +806,7 @@ public class World{
         for (Sim sim : simList) {
             if (getWaktuTidakTidur(sim.getNamaLengkap()) <= 0) {
                 sim.efekTidakTidur();
+                System.out.println(sim.getNamaLengkap() + " tidak tidur dalam 10 menit di hari ini " + "( hari ke-" + getHariDunia() + " )");
             }
         }
     }
@@ -844,20 +853,23 @@ public class World{
  
 
     //Mengurangi Nilai integer berdasarkan paramater String simname pada hashmap waktuTidakTidur
-    public void reduceWaktuTidakTidur(String name , int waktu){
+    public void reduceWaktuTidakTidur(String name, int waktu) {
         //ngecek apakah waktuTidakTidur empty atau tidak
-
-        if(!( waktuTidakTidur.isEmpty())){
-            for (Sim sim : waktuTidakTidur.keySet()){
-                if (sim.getNamaLengkap().equals(name)){
-                    int currentTime = waktuTidakTidur.get(sim);
-                    waktuTidakTidur.remove(sim);
-                    waktuTidakTidur.put(sim , currentTime - waktu);
-                }
+        if (!(waktuTidakTidur.isEmpty())) {
+            Iterator<Map.Entry<Sim, Integer>> iterator = waktuTidakTidur.entrySet().iterator();
+            while (iterator.hasNext()) {
+            Map.Entry<Sim, Integer> entry = iterator.next();
+            if (entry.getKey().getNamaLengkap().equals(name)) {
+                int currentTime = entry.getValue();
+                iterator.remove();
+                waktuTidakTidur.put(entry.getKey(), currentTime - waktu);
             }
         }
-       
+        }
+        
     }
+    
+    
 
     //Menambah Nilai integer berdasarkan paramater String simname pada hashmap waktuTidakBuangAir
     public void increaseWaktuTidakBuangAir(String name , int waktu){

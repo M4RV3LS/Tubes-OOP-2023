@@ -1,5 +1,10 @@
 package Inventory;
+import Sim.*;
 import java.util.*;
+import Inventory.*;
+import Fitur.*;
+import Map.*;
+
 
 public enum Furniture {
     KASUR_SINGLE("Kasur Single", new Dimension(4, 1), 50, "Tidur","KSS"),

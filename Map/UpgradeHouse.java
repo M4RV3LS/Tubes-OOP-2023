@@ -4,7 +4,7 @@ import Inventory.*;
 import Fitur.*;
 import java.util.*;
 
-public class UpgradeHouse {
+public class UpgradeHouse extends WaktuProgress {
     private Sim sim ;
     private int waktuUpgrade;
     private House house;
@@ -112,6 +112,12 @@ public class UpgradeHouse {
     //kurangin waktu upgrade
     public void kurangWaktuUpgrade(int waktu){
         this.waktuUpgrade -= waktu;
+    }
+
+    @Override
+    public void printWaktuProgress() {
+        // langsung implementasi di lihatWaktu()
+        System.out.println("Waktu tersisa untuk upgrade rumah: " + getWaktuUpgrade() + " detik.");
     }
 }
 
