@@ -1,4 +1,4 @@
-package Polymorphism1;
+package Trial;
 
 public class Masakan {
     
