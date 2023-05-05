@@ -3,12 +3,13 @@ package Sim;
 import java.util.*;
 import Inventory.*;
 import Map.*;
+import Sim.AksiTambahan;
 import Fitur.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class Sim {
+public class Sim extends AksiUtama implements AksiTambahan {
     private static Thread thread;
     private String namaLengkap;
     // private String pekerjaan;
