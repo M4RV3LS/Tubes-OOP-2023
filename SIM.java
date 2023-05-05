@@ -1394,15 +1394,19 @@ public class Sim {
                     System.out.print("Apakah anda ingin melakukan aksi tiudr ? (y/n)");
                     Scanner input = new Scanner(System.in);
                     String jawaban = input.nextLine();
-                    while(!(jawaban.equalsIgnoreCase("y")) || !(jawaban.equalsIgnoreCase("n"))){
+                    Boolean inputYN = false;
+                    while(!(inputYN)){
                         if (jawaban.equalsIgnoreCase("y")){
-                            int number = readInteger(scanner);
+                            int number = readInteger(input);
                             tidur(number);
+                            inputYN = true;
                         } else if(jawaban.equalsIgnoreCase("n")) {
                             System.out.println("Anda tidak ingin melakukan aksi tidur");
+                            inputYN = true;
                         }
                         else{
                             System.out.println("Masukan tidak valid");
+                            inputYN = false;
                         }
                     }
                         break;
@@ -1412,15 +1416,19 @@ public class Sim {
                         System.out.print("Apakah anda ingin melakukan aksi tidur ? (y/n)");
                         Scanner input2 = new Scanner(System.in);
                         String jawaban2 = input2.nextLine();
-                        while(!(jawaban2.equalsIgnoreCase("y")) || !(jawaban2.equalsIgnoreCase("n"))){
+                        Boolean inputYN = false;
+                        while(!(inputYN)){
                             if (jawaban2.equalsIgnoreCase("y")){
-                                int number = readInteger(scanner);
+                                int number = readInteger(input2);
                                 tidur(number);
+                                inputYN = true;
                             } else if(jawaban2.equalsIgnoreCase("n")) {
                                 System.out.println("Anda tidak ingin melakukan aksi tidur");
+                                inputYN = true;
                             }
                             else{
                                 System.out.println("Masukan tidak valid");
+                                inputYN = false;
                             }
                         }
                         break;
@@ -1429,15 +1437,19 @@ public class Sim {
                     System.out.print("Apakah anda ingin melakukan aksi tidur ? (y/n)");
                     Scanner input3 = new Scanner(System.in);
                     String jawaban3 = input3.nextLine();
-                    while(!(jawaban3.equalsIgnoreCase("y")) || !(jawaban3.equalsIgnoreCase("n"))){
+                    Boolean inputYN = false;
+                    while(!(inputYN)){
                         if (jawaban3.equalsIgnoreCase("y")){
-                            int number = readInteger(scanner);
+                            int number = readInteger(input3);
                             tidur(number);
+                            inputYN = true;
                         } else if(jawaban3.equalsIgnoreCase("n")) {
                             System.out.println("Anda tidak ingin melakukan aksi tidur");
+                            inputYN = true;
                         }
                         else{
                             System.out.println("Masukan tidak valid");
+                            inputYN = false;
                         }
                     }
                         break;
@@ -1468,14 +1480,18 @@ public class Sim {
                     System.out.print("Apakah anda ingin melakukan aksi masak ? (y/n)");
                     Scanner input5 = new Scanner(System.in);
                     String jawaban5 = input5.nextLine();
-                    while(!(jawaban5.equalsIgnoreCase("y")) || !(jawaban5.equalsIgnoreCase("n"))){
+                    Boolean inputYN = false;
+                    while(!(inputYN)){
                         if (jawaban5.equalsIgnoreCase("y")){
-                            // masak();
+                            masak();
+                            inputYN = true;
                         } else if(jawaban5.equalsIgnoreCase("n")) {
                             System.out.println("Anda tidak ingin melakukan aksi masak");
+                            inputYN = true;
                         }
                         else{
                             System.out.println("Masukan tidak valid");
+                            inputYN = false;
                         }
                     }
                         break;
@@ -1485,14 +1501,18 @@ public class Sim {
                         System.out.print("Apakah anda ingin melakukan aksi masak ? (y/n)");
                         Scanner input6 = new Scanner(System.in);
                         String jawaban6 = input6.nextLine();
-                        while(!(jawaban6.equalsIgnoreCase("y")) || !(jawaban6.equalsIgnoreCase("n"))){
+                        Boolean inputYN = false;
+                        while(!(inputYN)){
                             if (jawaban6.equalsIgnoreCase("y")){
-                                // masak();
+                                masak();
+                                inputYN = true;
                             } else if(jawaban6.equalsIgnoreCase("n")) {
                                 System.out.println("Anda tidak ingin melakukan aksi masak");
+                                inputYN = true;
                             }
                             else{
                                 System.out.println("Masukan tidak valid");
+                                inputYN = false;
                             }
                         }
                         break;
@@ -1502,14 +1522,17 @@ public class Sim {
                         System.out.print("Apakah anda ingin melakukan aksi makan ? (y/n)");
                         Scanner input7 = new Scanner(System.in);   
                         String jawaban7 = input7.nextLine();
-                        while(!(jawaban7.equalsIgnoreCase("y")) || !(jawaban7.equalsIgnoreCase("n"))){
+                        while(!(inputYN)){
                             if (jawaban7.equalsIgnoreCase("y")){
-                                // this.makan();
+                                makan();
+                                inputYN = true;
                             } else if(jawaban7.equalsIgnoreCase("n")) {
                                 System.out.println("Anda tidak ingin melakukan aksi makan");
+                                inputYN = true;
                             }
                             else{
                                 System.out.println("Masukan tidak valid");
+                                inputYN = true;
                             }
                         }
                         break;
@@ -1519,7 +1542,7 @@ public class Sim {
                         System.out.print("Apakah anda ingin melakukan aksi melihat waktu ? (y/n)");
                         Scanner input8 = new Scanner(System.in);
                         String jawaban8 = input8.nextLine();
-                        inputYN = false;
+                        Boolean inputYN = false;
                         while(!(inputYN)){
                             if (jawaban8.equalsIgnoreCase("y")){
                                 lihatWaktu();
@@ -1530,6 +1553,163 @@ public class Sim {
                             }
                             else{
                                 System.out.println("Masukan tidak valid");
+                            }
+                        }
+                        break;
+                    
+                    case "KOM":
+                        //main game
+                        System.out.print("Apakah anda ingin melakukan aksi main game ? (y/n)");
+                        Scanner input9 = new Scanner(System.in);
+                        String jawaban9 = input9.nextLine();
+                        Boolean inputYN = false;
+                        while(!(inputYN)){
+                            if (jawaban9.equalsIgnoreCase("y")){
+                                int number = readInteger(input9);
+                                mainGame(number);
+                                inputYN = true;
+                            } else if(jawaban9.equalsIgnoreCase("n")) {
+                                System.out.println("Anda tidak ingin melakukan aksi main game");
+                                inputYN = true;
+                            }
+                            else{
+                                System.out.println("Masukan tidak valid");
+                                inputYN = false;
+                            }
+                        }
+                            break;
+                    
+                    case "KRS":
+                        //santet
+                        System.out.print("Apakah anda ingin melakukan aksi santet ? (y/n)");
+                        Scanner input10 = new Scanner(System.in);
+                        String jawaban10 = input10.nextLine();
+                        Boolean inputYN = false;
+                        while(!(inputYN)){
+                            if (jawaban10.equalsIgnoreCase("y")){
+                                String namaSim = input10.nextLine();
+                                if (world.getSimByName(namaSim) != null) {
+                                    santet(world.getSimByName(namaSim));
+                                    inputYN = true;
+                                } else {
+                                    System.out.println("Nama sim tidak ditemukan");
+                                    inputYN = true;
+                                }
+                            } else if(jawaban10.equalsIgnoreCase("n")) {
+                                System.out.println("Anda tidak ingin melakukan aksi santet");
+                                inputYN = true;
+                            }
+                            else{
+                                System.out.println("Masukan tidak valid");
+                                inputYN = false;
+                            }
+                        }
+                        break;
+                    
+                    case "MED":
+                        //berobat
+                        System.out.print("Apakah anda ingin melakukan aksi berobat ? (y/n)");
+                        Scanner input11 = new Scanner(System.in);
+                        String jawaban11 = input11.nextLine();
+                        Boolean inputYN = false;
+                        while(!(inputYN)){
+                            if (jawaban11.equalsIgnoreCase("y")){
+                                int number = readInteger(input11);
+                                berobat(number);
+                                inputYN = true;
+                            } else if(jawaban11.equalsIgnoreCase("n")) {
+                                System.out.println("Anda tidak ingin melakukan aksi berobat");
+                                inputYN = true;
+                            }
+                            else{
+                                System.out.println("Masukan tidak valid");
+                                inputYN = false;
+                            }
+                        }
+                        break;
+                    
+                    case "MIC":
+                        //karaoke
+                        System.out.print("Apakah anda ingin melakukan aksi karaoke ? (y/n)");
+                        Scanner input12 = new Scanner(System.in);
+                        String jawaban12 = input12.nextLine();
+                        Boolean inputYN = false;
+                        while(!(inputYN)){
+                            if (jawaban12.equalsIgnoreCase("y")){
+                                int number = readInteger(input12);
+                                karaoke(number);
+                                inputYN = true;
+                            } else if(jawaban12.equalsIgnoreCase("n")) {
+                                System.out.println("Anda tidak ingin melakukan aksi karaoke");
+                                inputYN = true;
+                            }
+                            else{
+                                System.out.println("Masukan tidak valid");
+                                inputYN = false;
+                            }
+                        }
+                        break;
+
+                    case "KTB":
+                        //puasa
+                        System.out.print("Apakah anda ingin melakukan aksi puasa ? (y/n)");
+                        Scanner input13 = new Scanner(System.in);
+                        String jawaban13 = input13.nextLine();
+                        Boolean inputYN = false;
+                        while(!(inputYN)){
+                            if (jawaban13.equalsIgnoreCase("y")){
+                                puasa();
+                                inputYN = true;
+                            } else if(jawaban13.equalsIgnoreCase("n")) {
+                                System.out.println("Anda tidak ingin melakukan aksi puasa");
+                                inputYN = true;
+                            }
+                            else{
+                                System.out.println("Masukan tidak valid");
+                                inputYN = false;
+                            }
+                        }
+                        break;
+
+                    case "SPU":
+                        //bersih-bersih
+                        System.out.print("Apakah anda ingin melakukan aksi bersih-bersih ? (y/n)");
+                        Scanner input14 = new Scanner(System.in);
+                        String jawaban14 = input14.nextLine();
+                        Boolean inputYN = false;
+                        while(!(inputYN)){
+                            if (jawaban14.equalsIgnoreCase("y")){
+                                int number = readInteger(input14);
+                                bersihBersih(number);
+                                inputYN = true;
+                            } else if(jawaban14.equalsIgnoreCase("n")) {
+                                System.out.println("Anda tidak ingin melakukan aksi bersih-bersih");
+                                inputYN = true;
+                            }
+                            else{
+                                System.out.println("Masukan tidak valid");
+                                inputYN = false;
+                            }
+                        }
+                        break;
+
+                    case "SOF":
+                        //melawak
+                        System.out.print("Apakah anda ingin melakukan aksi melawak ? (y/n)");
+                        Scanner input15 = new Scanner(System.in);
+                        String jawaban15 = input15.nextLine();
+                        Boolean inputYN = false;
+                        while(!(inputYN)){
+                            if (jawaban15.equalsIgnoreCase("y")){
+                                melawak();
+                                inputYN = true;
+                            } else if(jawaban15.equalsIgnoreCase("n")) {
+                                System.out.println("Anda tidak ingin melakukan aksi melawak");
+                                inputYN = true;
+                            }
+                            else{
+                                System.out.println("Masukan tidak valid");
+                                inputYN = false;
                             }
                         }
                         break;
