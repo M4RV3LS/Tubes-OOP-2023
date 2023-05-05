@@ -1048,13 +1048,20 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                 String namaSim = input.nextLine();
                 
                     
-                        if(world.findSim(namaSim) && !(namaSim.equalsIgnoreCase(getNamaLengkap()))){
-                            inputValid = true;
-                            simYangDikunjungi = world.getSimByName(namaSim);
-                            adaTetangga = true;
-                        }
-                        else if(namaSim.equalsIgnoreCase(getNamaLengkap())){
-                            System.out.println("Anda sudah berada di rumah sendiri");
+                        if(world.findSim(namaSim)  ){
+                            if((getHouse() != getOwnHouse())){
+                                inputValid = true;
+                                simYangDikunjungi = world.getSimByName(namaSim);
+                                adaTetangga = true;
+                            }
+                            else if((getHouse() == getOwnHouse()) && !(namaSim.equalsIgnoreCase(getNamaLengkap()))){
+                                inputValid = true;
+                                simYangDikunjungi = world.getSimByName(namaSim);
+                                adaTetangga = true;
+                            }
+                            else if((getHouse() == getOwnHouse()) && !(namaSim.equalsIgnoreCase(getNamaLengkap()))){
+                                System.out.println("Tidak dapat berkunjung ke rumah sendiri");
+                            }
                         }
                         else {
                             System.out.println("Sim tidak ditemukan");

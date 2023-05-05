@@ -6,7 +6,7 @@ import java.util.*;
 import Inventory.*;
 
 
-public class DeliveryItem<T> {
+public class DeliveryItem<T> extends WaktuProgress {
     private Sim sim;
     private int waktu;
     private T tipeObjek;
@@ -65,5 +65,12 @@ public class DeliveryItem<T> {
     //method kurangi waktu delivery item
     public void kurangiWaktu(int waktu){
         this.waktu -= waktu;
+    }
+
+    @Override
+    public void printWaktuProgress(){
+        // implementasi di while loop lihatWaktu()
+        // setelah DeliveryItem<T> deliveryItem = iterator.next();
+        System.out.println("- " + getNamaObjek() + " (" + getWaktu() + ") detik");
     }
 }

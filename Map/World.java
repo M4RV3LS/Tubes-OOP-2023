@@ -294,7 +294,6 @@ public class World{
         //mereset semua waktu Tidak Tidur sim pada hashmap waktuTidakTidur menjadi 600
         if(!(waktuTidakTidur.isEmpty())){
             for (Sim sim : waktuTidakTidur.keySet()){
-                waktuTidakTidur.remove(sim);
                 waktuTidakTidur.put(sim , 600);
             }
         }
@@ -325,7 +324,7 @@ public class World{
         if(!(waktuTidakTidur.isEmpty())){
             for (Sim sim : waktuTidakTidur.keySet()){
                 if (sim.getNamaLengkap().equals(name)){
-                    waktuTidakTidur.remove(sim);
+                    // waktuTidakTidur.remove(sim);
                     waktuTidakTidur.put(sim , waktu);
                 }
             }
@@ -338,7 +337,7 @@ public class World{
         if (!(waktuTidakBuangAir.isEmpty())){
             for (Sim sim : waktuTidakBuangAir.keySet()){
                 if (sim.getNamaLengkap().equals(name)){
-                    waktuTidakBuangAir.remove(sim);
+                    // waktuTidakBuangAir.remove(sim);
                     waktuTidakBuangAir.put(sim , waktu);
                 }
             }
@@ -840,7 +839,7 @@ public class World{
                 int reduceCurrentTime = waktuTidakBuangAir.get(sim) - waktu;
                 if (reduceCurrentTime <= 0){
                     sim.efekTidakBuangAir();
-                    waktuTidakBuangAir.remove(sim);
+                    // waktuTidakBuangAir.remove(sim);
                     waktuTidakBuangAir.put(sim , 240);
                 } else {
                     waktuTidakBuangAir.put(sim , reduceCurrentTime);
@@ -875,7 +874,7 @@ public class World{
         for (Sim sim : waktuTidakBuangAir.keySet()){
             if (sim.getNamaLengkap().equals(name)){
                 int currentTime = waktuTidakBuangAir.get(sim);
-                waktuTidakBuangAir.remove(sim);
+                // waktuTidakBuangAir.remove(sim);
                 waktuTidakBuangAir.put(sim , currentTime + waktu);
             }
         }
@@ -886,7 +885,7 @@ public class World{
         for (Sim sim : waktuTidakTidur.keySet()){
             if (sim.getNamaLengkap().equals(name)){
                 int currentTime = waktuTidakBuangAir.get(sim);
-                waktuTidakBuangAir.remove(sim);
+                // waktuTidakBuangAir.remove(sim);
                 waktuTidakBuangAir.put(sim , currentTime + waktu);
             }
         }

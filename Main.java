@@ -405,7 +405,7 @@ public class Main {
                             System.out.println("Tidak dapat meletakkan furniture di koordinat (" + x + "," + y + ")");
                         }
                         room.printRoom();
-                    
+
                     }
 
                     else if (menuInput.equals("2") || menuInput.equalsIgnoreCase("Edit Furniture")) {
@@ -470,7 +470,7 @@ public class Main {
                         int koorX = scanner.nextInt();
                         System.out.print("Masukkan koordinat Y : ");
                         int koorY = scanner.nextInt();
-                        // scanner.nextLine();
+                        scanner.nextLine();
                         // System.out.println(menuInput);
                         // System.out.println(koorX);
                         // System.out.println(koorY);
@@ -773,6 +773,10 @@ public class Main {
                         obj.changeSimIfDead(sim , world , house , room);
                     }
                     else if(menuInput.equals("3")|| menuInput.equalsIgnoreCase("Tidur")){
+                        System.out.print("Masukkan waktu tidur: ");
+                        int waktuTidur = scanner.nextInt();
+                        scanner.nextLine();
+                        sim.tidur(waktuTidur);
                         System.out.println("Kunjungi Objek Kasur apapun di Suatu Ruangan !");
                         action = true;
                         
