@@ -14,7 +14,7 @@ public abstract class AksiUtama {
     public abstract void tidur(int lamaTidur);
     public abstract void masak();
     public abstract void makan();
-    public abstract void berkunjung(House visitedHouse, Room visitedRoom);
+    public abstract void Berkunjung();
     public abstract void buangAir();
     
     public void kerja(int lamaKerja){

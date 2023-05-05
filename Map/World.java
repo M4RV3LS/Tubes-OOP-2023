@@ -854,20 +854,19 @@ public class World{
 
     //Mengurangi Nilai integer berdasarkan paramater String simname pada hashmap waktuTidakTidur
     public void reduceWaktuTidakTidur(String name, int waktu) {
-        //ngecek apakah waktuTidakTidur empty atau tidak
-        if (!(waktuTidakTidur.isEmpty())) {
+       
             Iterator<Map.Entry<Sim, Integer>> iterator = waktuTidakTidur.entrySet().iterator();
             while (iterator.hasNext()) {
-            Map.Entry<Sim, Integer> entry = iterator.next();
-            if (entry.getKey().getNamaLengkap().equals(name)) {
-                int currentTime = entry.getValue();
-                iterator.remove();
-                waktuTidakTidur.put(entry.getKey(), currentTime - waktu);
+                Map.Entry<Sim, Integer> entry = iterator.next();
+                if (entry.getKey().getNamaLengkap().equals(name)) {
+                    int currentTime = entry.getValue();
+                    // iterator.remove(); // hapus entry dengan iterator
+                    waktuTidakTidur.put(entry.getKey(), currentTime - waktu); // tambahkan kembali entry dengan nilai baru
+                }
             }
-        }
-        }
         
     }
+    
     
     
 

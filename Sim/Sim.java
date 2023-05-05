@@ -238,12 +238,12 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
         if(getHouse() != getOwnHouse())
         {
              setInHouse(false);
-             return false;
+          
         }
         else
         {
              setInHouse(true);
-             return true;
+             
         }
      }
  
