@@ -257,6 +257,21 @@ public class World{
         return 0;
     }
 
+    public void printAllWaktuTidakTidurDanBuangAir() {
+        System.out.println("Waktu Tidak Tidur:");
+        for (Sim sim : waktuTidakTidur.keySet()) {
+            int waktu = waktuTidakTidur.get(sim);
+            System.out.println("Sim " + sim.getNamaLengkap() + " sudah tidak tidur selama " + waktu + " jam");
+        }
+        
+        System.out.println("Waktu Tidak Buang Air:");
+        for (Sim sim : waktuTidakBuangAir.keySet()) {
+            int waktu = waktuTidakBuangAir.get(sim);
+            System.out.println("Sim " + sim.getNamaLengkap() + " sudah tidak buang air besar selama " + waktu + " jam");
+        }
+    }
+    
+
     //getter isGantiHari
     public boolean getIsGantiHari(){
         return isGantiHari;

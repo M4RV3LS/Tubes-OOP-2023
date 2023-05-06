@@ -251,8 +251,8 @@ public class Main {
         // game logic goes here
         
         Boolean inputAwalValid = false;
+        scanner.nextLine();
         while(!inputAwalValid){
-            scanner.nextLine();
         System.out.println("");
         System.out.println("Pilihlah Salah Satu Menu Dibawah ini: ");
         System.out.println("1. Start The Game");
@@ -363,9 +363,12 @@ public class Main {
                     if (house.getRooms().get(i).getRoomName().equals(menuInput) || (menuInput.matches("\\d+") && Integer.parseInt(menuInput) == i + 1) ) {
                         room = house.getRooms().get(i);
                         sim.setRoom(room);
+                        room.printRoom();
+                    }
+                    else{
+                        obj.print("Ruangan tidak ditemukan");
+                    }
                 }
-            }
-            room.printRoom();
             }
             else if(menuInput.equals("6")|| menuInput.equalsIgnoreCase("Edit Room")){
                 //mengecek apakah Sim sedang berada di rumahnya 
@@ -449,14 +452,20 @@ public class Main {
                     // }
 
                     
-                        Boolean valid;
+                        Boolean valid = false;
+                        Furniture furniture = sim.createFurniture(input);
                         // System.out.println(direction);
-                        Furniture furniture = Furniture.valueOf(input.toUpperCase());
-                        // int length = furniture.getDimensi().getLength();
-                        // int width = furniture.getDimensi().getWidth();
-                        // System.out.println(length + " , " + width);
-                        // System.out.println(x + " , " + y);
-                        valid = room.placeFurniture(x , y , furniture.getDimensi() ,furniture.getName() , furniture.getNamaInisial() , input2);
+                        if(sim.checkInputFurniture(input)){
+                            furniture = Furniture.valueOf(input.toUpperCase());
+                            // int length = furniture.getDimensi().getLength();
+                            // int width = furniture.getDimensi().getWidth();
+                            // System.out.println(length + " , " + width);
+                            // System.out.println(x + " , " + y);
+                            valid = room.placeFurniture(x , y , furniture.getDimensi() ,furniture.getName() , furniture.getNamaInisial() , input2);
+                        }
+                        else{
+                            System.out.println("Furniture tidak ditemukan");
+                        }
                         if(valid){
                             sim.getInventoryFurniture().kurangiStock(furniture,1);
                             room.addFurnitureData(valid, x, y, furniture.getDimensi(),furniture.getName() , furniture.getNamaInisial() , input2);
@@ -472,35 +481,26 @@ public class Main {
                     }
 
                     else if (menuInput.equals("2") || menuInput.equalsIgnoreCase("Edit Furniture")) {
-                    room.printFurnitureData();
-                    System.out.print("Masukkan nama furniture yang ingin anda edit : ");
-                    menuInput = scanner.nextLine();
-                    System.out.print("Masukkan koordinat X : ");
-                    int koorX = scanner.nextInt();
-                    System.out.print("Masukkan koordinat Y : ");
-                    int koorY = scanner.nextInt();
-                    Boolean inputValid = room.checkFurnitureData(menuInput , koorX , koorY);
-
-                    
-                    
-                        if(inputValid) {
-                            furnitureData = room.getFurnitureData(menuInput); 
-                            System.out.println("Furniture yang ingin anda edit adalah " + furnitureData.getFurnitureName());
-                            room.removeFurniture(furnitureData.getStartX(), furnitureData.getStartY(), furnitureData.getDimension(),furnitureData.getFurnitureName(),furnitureData.getInitialName(), furnitureData.getDirection());
-                            room.removeFurnitureData(room.getFurnitureDataList() , room.getFurnitureDataWithParameter(furnitureData.getStartX(), furnitureData.getStartY(), furnitureData.getDimension(),furnitureData.getFurnitureName(),furnitureData.getInitialName(), furnitureData.getDirection()));
-                            System.out.println("Masukkan koordinat yang baru : ");
+                        if(room.getFurnitureDataList().size() == 0)
+                        {
+                            System.out.println("Tidak ada furniture yang dapat di edit");
+                        }
+                        else
+                        {
+                            room.printFurnitureData();
+                            System.out.print("Masukkan nama furniture yang ingin anda edit : ");
+                            menuInput = scanner.nextLine();
                             System.out.print("Masukkan koordinat X : ");
-                            koorX = scanner.nextInt();
+                            int koorX = scanner.nextInt();
                             System.out.print("Masukkan koordinat Y : ");
-                            koorY = scanner.nextInt();
-                            scanner.nextLine();
-                            System.out.print("Masukan Arah Letak Benda (Right/Left/Up/Down) :");
-                            String input2 = scanner.nextLine();
-                            Boolean validInput = false;
+                            int koorY = scanner.nextInt();
+                            Boolean inputValid = room.checkFurnitureData(menuInput , koorX , koorY);
 
-                            validInput = room.placeFurniture(koorX , koorY , furnitureData.getDimension() ,furnitureData.getFurnitureName() , furnitureData.getInitialName() , input2);
-                            while(!validInput){
-                                System.out.println("Koordinat yang anda masukkan tidak valid");
+                            if(inputValid) {
+                                furnitureData = room.getFurnitureData(menuInput); 
+                                System.out.println("Furniture yang ingin anda edit adalah " + furnitureData.getFurnitureName());
+                                room.removeFurniture(furnitureData.getStartX(), furnitureData.getStartY(), furnitureData.getDimension(),furnitureData.getFurnitureName(),furnitureData.getInitialName(), furnitureData.getDirection());
+                                room.removeFurnitureData(room.getFurnitureDataList() , room.getFurnitureDataWithParameter(furnitureData.getStartX(), furnitureData.getStartY(), furnitureData.getDimension(),furnitureData.getFurnitureName(),furnitureData.getInitialName(), furnitureData.getDirection()));
                                 System.out.println("Masukkan koordinat yang baru : ");
                                 System.out.print("Masukkan koordinat X : ");
                                 koorX = scanner.nextInt();
@@ -508,77 +508,90 @@ public class Main {
                                 koorY = scanner.nextInt();
                                 scanner.nextLine();
                                 System.out.print("Masukan Arah Letak Benda (Right/Left/Up/Down) :");
-                                input2 = scanner.nextLine();
+                                String input2 = scanner.nextLine();
+                                Boolean validInput = false;
+
                                 validInput = room.placeFurniture(koorX , koorY , furnitureData.getDimension() ,furnitureData.getFurnitureName() , furnitureData.getInitialName() , input2);
-                            }
-                            if(validInput){
-                                room.addFurnitureData(validInput, koorX, koorY, furnitureData.getDimension(),furnitureData.getFurnitureName() , furnitureData.getInitialName() , input2);
-                                System.out.println("Furniture berhasil diletakkan di koordinat (" + koorX + "," + koorY + ")");
+                                while(!validInput){
+                                    System.out.println("Koordinat yang anda masukkan tidak valid");
+                                    System.out.println("Masukkan koordinat yang baru : ");
+                                    System.out.print("Masukkan koordinat X : ");
+                                    koorX = scanner.nextInt();
+                                    System.out.print("Masukkan koordinat Y : ");
+                                    koorY = scanner.nextInt();
+                                    scanner.nextLine();
+                                    System.out.print("Masukan Arah Letak Benda (Right/Left/Up/Down) :");
+                                    input2 = scanner.nextLine();
+                                    validInput = room.placeFurniture(koorX , koorY , furnitureData.getDimension() ,furnitureData.getFurnitureName() , furnitureData.getInitialName() , input2);
+                                }
+                                if(validInput){
+                                    room.addFurnitureData(validInput, koorX, koorY, furnitureData.getDimension(),furnitureData.getFurnitureName() , furnitureData.getInitialName() , input2);
+                                    System.out.println("Furniture berhasil diletakkan di koordinat (" + koorX + "," + koorY + ")");
+                                }
+                                else{
+                                    System.out.println("Tidak dapat meletakkan furniture di koordinat (" + koorX + "," + koorY + ")");
+                                }
+                                room.printRoom();
                             }
                             else{
-                                System.out.println("Tidak dapat meletakkan furniture di koordinat (" + koorX + "," + koorY + ")");
+                                System.out.println("Furniture tidak ditemukan");
                             }
-                            room.printRoom();
-                        }
-                        else{
-                            System.out.println("Furniture tidak ditemukan");
                         }
                     }
 
                     else if (menuInput.equals("3") || menuInput.equalsIgnoreCase("Remove Furniture")) {
-                        room.printFurnitureData();
-                        System.out.print("Masukkan nama furniture yang ingin anda hapus : ");
-                        menuInput = scanner.nextLine();
-                        System.out.print("Masukkan koordinat X : ");
-                        int koorX = scanner.nextInt();
-                        System.out.print("Masukkan koordinat Y : ");
-                        int koorY = scanner.nextInt();
-                        scanner.nextLine();
-                        // System.out.println(menuInput);
-                        // System.out.println(koorX);
-                        // System.out.println(koorY);
-        
-                        Boolean inputValid = room.checkFurnitureData(menuInput , koorX , koorY);
-        
-                        // while(!inputValid){
-                        //     System.out.println("");
-                        //     System.out.println("Furniture tidak ditemukan");
-                        //     System.out.print("Masukkan nama furniture yang ingin anda hapus : ");
-                        //     scanner.nextLine();
-                        //     menuInput = scanner.nextLine();
-                        //     System.out.print("Masukkan koordinat X : ");
-                        //     koorX = scanner.nextInt();
-                        //     System.out.print("Masukkan koordinat Y : ");
-                        //     koorY = scanner.nextInt();
-                        //     inputValid = room.checkFurnitureData(menuInput , koorX , koorY);
-                        // }
-                        if(inputValid){
-                            // Furniture furniture = Furniture.valueOf(menuInput.toUpperCase());
-                            // Furniture furniture = room.createFurniture(menuInput);
-                            furnitureData = room.getFurnitureData(menuInput); 
-                            System.out.println("Furniture yang ingin anda hapus adalah " + furnitureData.getFurnitureName());
-                            room.removeFurniture(furnitureData.getStartX(), furnitureData.getStartY(), furnitureData.getDimension(),furnitureData.getFurnitureName(),furnitureData.getInitialName(), furnitureData.getDirection());
-                            room.removeFurnitureData(room.getFurnitureDataList() , room.getFurnitureDataWithParameter(furnitureData.getStartX(), furnitureData.getStartY(), furnitureData.getDimension(),furnitureData.getFurnitureName(),furnitureData.getInitialName(), furnitureData.getDirection()));
-                            MyObject myObject = room.getMyObject(furnitureData.getFurnitureName());
-                            room.removeObject(myObject);
-                            sim.getInventoryFurniture().tambahStock(sim.createFurniture(menuInput),1);
-                            System.out.println("Furniture berhasil dihapus");
-                            room.printRoom();
+                        if(room.getFurnitureDataList().size() == 0)
+                        {
+                            System.out.println("Tidak ada furniture yang dapat di hapus");
                         }
-                        else{
-                            System.out.println("Furniture tidak ditemukan");
+                        else
+                        {
+                            room.printFurnitureData();
+                            System.out.print("Masukkan nama furniture yang ingin anda hapus : ");
+                            menuInput = scanner.nextLine();
+                            System.out.print("Masukkan koordinat X : ");
+                            int koorX = scanner.nextInt();
+                            System.out.print("Masukkan koordinat Y : ");
+                            int koorY = scanner.nextInt();
+                            scanner.nextLine();
+                            // System.out.println(menuInput);
+                            // System.out.println(koorX);
+                            // System.out.println(koorY);
+            
+                            Boolean inputValid = room.checkFurnitureData(menuInput , koorX , koorY);
+            
+                            // while(!inputValid){
+                            //     System.out.println("");
+                            //     System.out.println("Furniture tidak ditemukan");
+                            //     System.out.print("Masukkan nama furniture yang ingin anda hapus : ");
+                            //     scanner.nextLine();
+                            //     menuInput = scanner.nextLine();
+                            //     System.out.print("Masukkan koordinat X : ");
+                            //     koorX = scanner.nextInt();
+                            //     System.out.print("Masukkan koordinat Y : ");
+                            //     koorY = scanner.nextInt();
+                            //     inputValid = room.checkFurnitureData(menuInput , koorX , koorY);
+                            // }
+                            if(inputValid){
+                                // Furniture furniture = Furniture.valueOf(menuInput.toUpperCase());
+                                // Furniture furniture = room.createFurniture(menuInput);
+                                furnitureData = room.getFurnitureData(menuInput); 
+                                System.out.println("Furniture yang ingin anda hapus adalah " + furnitureData.getFurnitureName());
+                                room.removeFurniture(furnitureData.getStartX(), furnitureData.getStartY(), furnitureData.getDimension(),furnitureData.getFurnitureName(),furnitureData.getInitialName(), furnitureData.getDirection());
+                                room.removeFurnitureData(room.getFurnitureDataList() , room.getFurnitureDataWithParameter(furnitureData.getStartX(), furnitureData.getStartY(), furnitureData.getDimension(),furnitureData.getFurnitureName(),furnitureData.getInitialName(), furnitureData.getDirection()));
+                                MyObject myObject = room.getMyObject(furnitureData.getFurnitureName());
+                                room.removeObject(myObject);
+                                sim.getInventoryFurniture().tambahStock(sim.createFurniture(menuInput),1);
+                                System.out.println("Furniture berhasil dihapus");
+                                room.printRoom();
+                            }
+                            else{
+                                System.out.println("Furniture tidak ditemukan");
+                            }
                         }
-                    
                     }
                 }
-                    else{
-                        obj.print("Sim tidak sedang berada di rumahnya sendiri , oleh sebab itu tidak bisa menggunakan fitur ini");
-                        obj.print("Kembali ke rumah anda untuk mengaktifkan fitur ini dengan menggunakan aksi berkunjung");
-                    }
-                
-                }
-                
-                   
+            }
 
             
         
@@ -825,10 +838,10 @@ public class Main {
                         sim = obj.changeSimIfDead(sim , world , house , room);
                     }
                     else if(menuInput.equals("3")|| menuInput.equalsIgnoreCase("Tidur")){
-                        System.out.print("Masukkan waktu tidur: ");
-                        int waktuTidur = scanner.nextInt();
-                        scanner.nextLine();
-                        sim.tidur(waktuTidur);
+                        // System.out.print("Masukkan waktu tidur: ");
+                        // int waktuTidur = scanner.nextInt();
+                        // scanner.nextLine();
+                        // sim.tidur(waktuTidur);
                         System.out.println("Kunjungi Objek Kasur apapun di Suatu Ruangan !");
                         action = true;
                         
