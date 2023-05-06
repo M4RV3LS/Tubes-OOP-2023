@@ -148,24 +148,31 @@ public class Load {
             }
 
             // set roomUp roomDown roomLeft roomRight
+            int count = 0;
             for (int j = 0; j < roomQ; j++) {
                 String[] sideRooms = br.readLine().split(",");
                 for (String el : sideRooms) {
                     for (int k = 0; k < roomQ; k++){
                         Room temp;
                         if (el.equals("null")) {
-                            temp = null;
+                            switch (count) {
+                                case 0 : rooms[j].setRoomUp(null);
+                                case 1 : rooms[j].setRoomDown(null);
+                                case 2 : rooms[j].setRoomLeft(null);
+                                case 3 : rooms[j].setRoomRight(null);
+                            }
                         }
                         else if (el.equals(rooms[k].getRoomName())) {
-                            temp = rooms[k];
+                            switch (count) {
+                                case 0 : rooms[j].setRoomUp(rooms[k]);
+                                case 1 : rooms[j].setRoomDown(rooms[k]);
+                                case 2 : rooms[j].setRoomLeft(rooms[k]);
+                                case 3 : rooms[j].setRoomRight(rooms[k]);
+                            }
                         }
-                        switch (k) {
-                            case 0 : rooms[j].setRoomUp(temp);
-                            case 1 : rooms[j].setRoomDown(temp);
-                            case 2 : rooms[j].setRoomLeft(temp);
-                            case 3 : rooms[j].setRoomRight(temp);
-                        }
+                        
                     }
+                    count++;
                 }
             }
 
