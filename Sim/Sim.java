@@ -249,41 +249,77 @@ public Furniture createFurniture(String input) {
 }
 
 //Mengecek Inputan user dalam 
-public boolean checkInputFurniture(String input) {
+// public boolean checkInputFurniture(String input) {
+//     if (input.equals("KASUR_SINGLE")) {
+//     return true;
+//     } else if (input.equals("KASUR_QUEEN_SIZE")) {
+//     return true;
+//     } else if (input.equals("KASUR_KING_SIZE")) {
+//     return true;
+//     } else if (input.equals("TOILET")) {
+//     return true;
+//     } else if (input.equals("KOMPOR_GAS")) {
+//     return true;
+//     } else if (input.equals("KOMPOR_LISTRIK")) {
+//     return true;
+//     } else if (input.equals("MEJA_KURSI")) {
+//     return true;
+//     } else if (input.equals("JAM")) {
+//     return true;
+//     } else if (input.equals("KOMPUTER")) {
+//     return true;
+//     } else if (input.equals("BOLA_KRISTAL")) {
+//     return true;
+//     } else if (input.equals("KOTAK_OBAT")) {
+//     return true;
+//     } else if (input.equals("MICROPHONE")) {
+//     return true;
+//     } else if (input.equals("KITAB_SUCI")) {
+//     return true;
+//     } else if (input.equals("SAPU")) {
+//     return true;
+//     } else if (input.equals("SOFA")) {
+//     return true;
+//     } else {
+//     return false;
+//     }
+//     }
+
+public boolean checkInputFurniture(String input) throws Exception {
     if (input.equals("KASUR_SINGLE")) {
-    return true;
+        return true;
     } else if (input.equals("KASUR_QUEEN_SIZE")) {
-    return true;
+        return true;
     } else if (input.equals("KASUR_KING_SIZE")) {
-    return true;
+        return true;
     } else if (input.equals("TOILET")) {
-    return true;
+        return true;
     } else if (input.equals("KOMPOR_GAS")) {
-    return true;
+        return true;
     } else if (input.equals("KOMPOR_LISTRIK")) {
-    return true;
+        return true;
     } else if (input.equals("MEJA_KURSI")) {
-    return true;
+        return true;
     } else if (input.equals("JAM")) {
-    return true;
+        return true;
     } else if (input.equals("KOMPUTER")) {
-    return true;
+        return true;
     } else if (input.equals("BOLA_KRISTAL")) {
-    return true;
+        return true;
     } else if (input.equals("KOTAK_OBAT")) {
-    return true;
+        return true;
     } else if (input.equals("MICROPHONE")) {
-    return true;
+        return true;
     } else if (input.equals("KITAB_SUCI")) {
-    return true;
+        return true;
     } else if (input.equals("SAPU")) {
-    return true;
+        return true;
     } else if (input.equals("SOFA")) {
-    return true;
+        return true;
     } else {
-    return false;
+        throw new Exception("Input furniture tidak valid");
     }
-    }
+}
 
 
     //getter kekenyangan sim

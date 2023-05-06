@@ -146,6 +146,20 @@ public class Main {
         return null;
     }
 
+    public void makeSimNull(Sim sim){
+        sim.setNamaLengkap(null);
+        sim.setPekerjaan(null);
+        sim.setInventoryBahanMakanan(null);
+        sim.setInventoryFurniture(null);
+        sim.setInventoryMasakan(null);
+        sim.setWorld(null);
+        sim.setHouse(null);
+        sim.setRoom(null);
+        sim.setUpgradeHouse(null);
+        sim.setOwnHouse(null);
+        sim.setIsInHouse(null);
+    }
+
     public Sim changeSimIfDead(Sim sim , World world , House house , Room room){
         Sim changeSim = null;
         if(sim.isDead()){
@@ -156,6 +170,7 @@ public class Main {
                     addSim(world);
                     changeSim = changeSim(world, sim , house , room);
                     world.setIsAddSim(true);
+                    makeSimNull(sim);
                     return changeSim;
                 }
                 else{
@@ -166,13 +181,14 @@ public class Main {
             }
             else {
                 changeSim = changeSim(world , sim , house , room);
+                makeSimNull(sim);
                 return changeSim;
             }
         }
         else{
             return sim;
         }
-        return changeSim;
+        return sim;
     }
 
     //Method untuk mengganti pekerjaan seorang sim dengan parameter berupa Sim sim
@@ -1054,7 +1070,9 @@ public class Main {
             else if(menuInput.equals("17")|| menuInput.equalsIgnoreCase("Lihat Waktu")){
                 sim.lihatWaktu();
             }
-
+            else if(menuInput.equals("18")|| menuInput.equalsIgnoreCase("Lihat Waktu Efek")){
+                world.printAllWaktuTidakTidurDanBuangAir();
+            }
             else if(menuInput.equalsIgnoreCase("Help") || menuInput.equalsIgnoreCase("Menu")){
                 obj.printMenu();
             }
