@@ -48,7 +48,7 @@ public class Sim extends AksiUtama implements AksiTambahan{
     public Sim(String namaLengkap) {
         this.namaLengkap = namaLengkap;
         this.uang = 2000;
-        this.kekenyangan = 2;
+        this.kekenyangan = 100;
         this.mood = 80;
         this.kesehatan = 80;
         this.inventoryBahanMakanan = new Inventory<>();
