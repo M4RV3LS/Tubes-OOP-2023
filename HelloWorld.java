@@ -48,7 +48,87 @@ class HelloWorld {
 
         System.out.printf("-----------------------------------------------%n");
     }
+
+    public static void printMenu(){
+        System.out.println("");
+        System.out.println("=================== MENU GAME ======================================================");
+        System.out.println("1.View Sim Info         : Menampilkan informasi kondisi Sim saat ini");
+        System.out.println("2.View Current Location : Menampilkan informasi posisi Sim saat ini");
+        System.out.println("3.View Inventory        : Menampilkan isi inventory yang dimiliki oleh Sim");
+        System.out.println("4.Upgrade House         : Melakukan perbaikan rumah berupa penambahan ruangan");
+        System.out.println("5.Move Room             : Berpindah menuju ruangan lain");
+        System.out.println("6.Edit Room             : Melakukan perubahan terhadap ruangan saat ini");
+        System.out.println("7.Add Sim               : Menciptakan karakter Sim baru");
+        System.out.println("8.Change Sim            : Mengganti karakter Sim yang dimainkan");
+        System.out.println("9.List Object           : Menampilkan daftar objek yang terdapat di dalam ruangan");
+        System.out.println("10.Go To Object         : Pergi menuju objek yang terdapat di dalam ruangan");
+        System.out.println("11.Action               : Melakukan aksi pada suatu objek");
+        System.out.println("12.Change Job           : Melakukan penggantian pekerjaan Sim");
+        System.out.println("13.Beli barang          : Melakukan pembelian barang pada Shop");
+        System.out.println("14.Print Room           : Menampilkan informasi terkait ruangan");
+        System.out.println("15.Print Map            : Menampilkan informasi peta pada Sim-Plicity");
+        System.out.println("16.Exit                 : Keluar dari permainan");
+        System.out.println("17.Lihat Waktu          : Menampilkan waktu pada dunia Sim-Plicity");
+    }
+
+    public static void printASCII(){
+        // 1. main game
+        System.out.println(" ██████   █████  ███    ███ ███████      ██████  ███    ██ ██ ");
+        System.out.println("██       ██   ██ ████  ████ ██          ██    ██ ████   ██ ██ ");
+        System.out.println("██   ███ ███████ ██ ████ ██ █████       ██    ██ ██ ██  ██ ██ ");
+        System.out.println("██    ██ ██   ██ ██  ██  ██ ██          ██    ██ ██  ██ ██    ");
+        System.out.println(" ██████  ██   ██ ██      ██ ███████      ██████  ██   ████ ██ ");
+        System.out.println("");
+
+        // 2. santet
+        System.out.println("██████   █████   █████  ██     ██ ██████  ██████  ");
+        System.out.println("██   ██ ██   ██ ██   ██ ██     ██ ██   ██ ██   ██ ");
+        System.out.println("██████  ███████ ███████ ██  █  ██ ██████  ██████  ");
+        System.out.println("██   ██ ██   ██ ██   ██ ██ ███ ██ ██   ██ ██   ██ ");
+        System.out.println("██   ██ ██   ██ ██   ██  ███ ███  ██   ██ ██   ██ ");
+        System.out.println("");
+
+        // 3. berobat
+        System.out.println("██   ██ ███████  █████  ██      ██ ███    ██  ██████           ");
+        System.out.println("██   ██ ██      ██   ██ ██      ██ ████   ██ ██                ");
+        System.out.println("███████ █████   ███████ ██      ██ ██ ██  ██ ██   ███          ");
+        System.out.println("██   ██ ██      ██   ██ ██      ██ ██  ██ ██ ██    ██          ");
+        System.out.println("██   ██ ███████ ██   ██ ███████ ██ ██   ████  ██████  ██ ██ ██");
+        System.out.println("");
+
+        // 4. karaoke
+        System.out.println("██   ██  █████  ██████   █████   ██████  ██   ██ ███████ ██");
+        System.out.println("██  ██  ██   ██ ██   ██ ██   ██ ██    ██ ██  ██  ██      ██ ");
+        System.out.println("█████   ███████ ██████  ███████ ██    ██ █████   █████   ██ ");
+        System.out.println("██  ██  ██   ██ ██   ██ ██   ██ ██    ██ ██  ██  ██         ");
+        System.out.println("██   ██ ██   ██ ██   ██ ██   ██  ██████  ██   ██ ███████ ██ ");
+        System.out.println("");
+
+        // 5. puasa
+        System.out.println("██████  ██    ██  █████  ███████  █████           ");
+        System.out.println("██   ██ ██    ██ ██   ██ ██      ██   ██          ");
+        System.out.println("██████  ██    ██ ███████ ███████ ███████          ");
+        System.out.println("██      ██    ██ ██   ██      ██ ██   ██          ");
+        System.out.println("██       ██████  ██   ██ ███████ ██   ██ ██ ██ ██ ");
+        System.out.println("");
+
+        // 6. bersih-bersih
+        System.out.println(" ██████ ██      ███████  █████  ███    ██ ██ ███    ██  ██████           ");
+        System.out.println("██      ██      ██      ██   ██ ████   ██ ██ ████   ██ ██                ");
+        System.out.println("██      ██      █████   ███████ ██ ██  ██ ██ ██ ██  ██ ██   ███          ");
+        System.out.println("██      ██      ██      ██   ██ ██  ██ ██ ██ ██  ██ ██ ██    ██          ");
+        System.out.println(" ██████ ███████ ███████ ██   ██ ██   ████ ██ ██   ████  ██████  ██ ██ ██ ");
+        System.out.println("");
+
+        // 7. melawak
+        System.out.println("██   ██  █████  ██   ██  █████  ██   ██  █████   ██ ");
+        System.out.println("██   ██ ██   ██ ██   ██ ██   ██ ██   ██ ██   ██  ██ ");
+        System.out.println("███████ ███████ ███████ ███████ ███████ ███████  ██ ");
+        System.out.println("██   ██ ██   ██ ██   ██ ██   ██ ██   ██ ██   ██     ");
+        System.out.println("██   ██ ██   ██ ██   ██ ██   ██ ██   ██ ██   ██  ██ ");
+        System.out.println("");
+    }
     public static void main(String[] args) {
-        printFurnitureAksi();
+        printASCII();
     }
 }
