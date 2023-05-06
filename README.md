@@ -29,6 +29,10 @@
 #### 5. Pemain harus memperhatikan level kebutuhan setiap Sim dan segera memberikan perintah yang tepat untuk menghindari kematian yang disebabkan oleh kelaparan sakit, dan depresi pada Sim
 #### 6. Permainan berakhir jika semua sim meninggal atau pemain memilih opsi EXIT
 
+## Cara Compile 
+#### 1.Javac *.java di terminal CMD pada folder utama , bukan folder branch
+#### 2.Java Main di terminal CMD pada folder utama , bukan folder branch
+#### 3.Selamat Bermain
 
 
 ## Anggota Kelompok :
