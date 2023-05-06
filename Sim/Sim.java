@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 public class Sim extends AksiUtama implements AksiTambahan{
     private static Thread thread;
     private String namaLengkap;
-    // private String pekerjaan;
     private Job pekerjaan;
     private int uang;
     private Inventory<BahanMakanan> inventoryBahanMakanan;
@@ -28,8 +27,7 @@ public class Sim extends AksiUtama implements AksiTambahan{
     private UpgradeHouse upgradeHouse;
     private Boolean isInHouse;
     private House ownHouse;
-    // private DeliveryItem<Furniture> deliveryFurniture;
-    // private DeliveryItem<BahanMakanan> deliveryBahanMakanan;
+
     
     // Reset saat ganti kerja
     private int totalWaktuKerja;
@@ -47,17 +45,17 @@ public class Sim extends AksiUtama implements AksiTambahan{
 
     public Sim(String namaLengkap) {
         this.namaLengkap = namaLengkap;
-        this.uang = 2000;
-        this.kekenyangan = 100;
+        this.uang = 100;
+        this.kekenyangan = 80;
         this.mood = 80;
         this.kesehatan = 80;
         this.inventoryBahanMakanan = new Inventory<>();
         this.inventoryFurniture = new Inventory<>();
         //Menambah Objek yang wajib ada saat pertama kali objek Sim di instantiasi
         for (Furniture furniture : Furniture.values()) {
-            // if (!(furniture.getName().equalsIgnoreCase("Komputer")) && !(furniture.getName().equalsIgnoreCase("Bola Kristal")) && !(furniture.getName().equalsIgnoreCase("Kitab Suci")) && !(furniture.getName().equalsIgnoreCase("Sapu")) && !(furniture.getName().equalsIgnoreCase("Sofa")) && !(furniture.getName().equalsIgnoreCase("Kotak Obat")) && !(furniture.getName().equalsIgnoreCase("Microphone"))){
-            //     inventoryFurniture.tambahStock(furniture,1);
-            // } 
+            if (!(furniture.getName().equalsIgnoreCase("Komputer")) && !(furniture.getName().equalsIgnoreCase("Bola Kristal")) && !(furniture.getName().equalsIgnoreCase("Kitab Suci")) && !(furniture.getName().equalsIgnoreCase("Sapu")) && !(furniture.getName().equalsIgnoreCase("Sofa")) && !(furniture.getName().equalsIgnoreCase("Kotak Obat")) && !(furniture.getName().equalsIgnoreCase("Microphone"))){
+                inventoryFurniture.tambahStock(furniture,1);
+            } 
             inventoryFurniture.tambahStock(furniture,1);
             
         }
@@ -69,8 +67,6 @@ public class Sim extends AksiUtama implements AksiTambahan{
         //     } 
         // }
         this.status = "Tidak melakukan apa-apa";
-        // this.pekerjaan = getRandomPekerjaan();
-        // this.job = Job.valueOf(pekerjaan.toUpperCase().replace(" ", "_"));
         this.pekerjaan = getRandomJob();
         this.world = World.getInstance();
         this.house = generateRandomHouse();
@@ -81,21 +77,10 @@ public class Sim extends AksiUtama implements AksiTambahan{
         this.ownHouse = this.house;
         this.isGantiKerja = false;
         this.totalWaktuKerja = 0;
-        // this.deliveryFurniture = new DeliveryItem<>();
-        // this.deliveryBahanMakanan = new DeliveryItem<>();
+
     }
 
-    // //fitur ngecek apakah input merupakan integer
-    // public int readInteger(Scanner scanner) {
-    //     System.out.print("Enter an integer: ");
-    //     while (!scanner.hasNextInt()) {
-    //         System.out.print("Invalid input. Please enter an integer: ");
-    //         scanner.nextLine();
-    //     }
-    //     int number = scanner.nextInt();
-    //     scanner.nextLine();
-    //     return number;
-    // }
+
 
     //fitur mengecek apakah sebuah string hanya mengandung angka 
     public boolean isNumeric(String str) {
@@ -203,13 +188,6 @@ public class Sim extends AksiUtama implements AksiTambahan{
         this.uang = uang;
     }
 
-    // public Inventory getInventory() {
-    //     return inventory;
-    // }
-
-    // public void setInventory(Inventory inventory) {
-    //         this.inventory = inventory;
-    //     }
 
     //membuat objek furniture berdasarkan input string dari user
 public Furniture createFurniture(String input) {
@@ -248,42 +226,6 @@ public Furniture createFurniture(String input) {
     }
 }
 
-//Mengecek Inputan user dalam 
-// public boolean checkInputFurniture(String input) {
-//     if (input.equals("KASUR_SINGLE")) {
-//     return true;
-//     } else if (input.equals("KASUR_QUEEN_SIZE")) {
-//     return true;
-//     } else if (input.equals("KASUR_KING_SIZE")) {
-//     return true;
-//     } else if (input.equals("TOILET")) {
-//     return true;
-//     } else if (input.equals("KOMPOR_GAS")) {
-//     return true;
-//     } else if (input.equals("KOMPOR_LISTRIK")) {
-//     return true;
-//     } else if (input.equals("MEJA_KURSI")) {
-//     return true;
-//     } else if (input.equals("JAM")) {
-//     return true;
-//     } else if (input.equals("KOMPUTER")) {
-//     return true;
-//     } else if (input.equals("BOLA_KRISTAL")) {
-//     return true;
-//     } else if (input.equals("KOTAK_OBAT")) {
-//     return true;
-//     } else if (input.equals("MICROPHONE")) {
-//     return true;
-//     } else if (input.equals("KITAB_SUCI")) {
-//     return true;
-//     } else if (input.equals("SAPU")) {
-//     return true;
-//     } else if (input.equals("SOFA")) {
-//     return true;
-//     } else {
-//     return false;
-//     }
-//     }
 
 public boolean checkInputFurniture(String input) throws Exception {
     if (input.equals("KASUR_SINGLE")) {
@@ -722,7 +664,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                         System.out.println("  ");
                         
                         // Thread.sleep(lamaKerja*1000);
-                        Thread.sleep(1*1000);
+                        
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -838,7 +780,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
         
                         // Nunggu waktu lari
                         // Thread.sleep(lamaOlahraga*1000);
-                        Thread.sleep(1*1000);
+                        
                         System.out.println(" ");
                     } 
                     catch (InterruptedException e) {
@@ -909,7 +851,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
 
                         // Nunggu Tidur
                         // Thread.sleep(lamaTidur*1000);
-                        Thread.sleep(1*1000);
+                        
                         System.out.println(" ");
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -1048,7 +990,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                     // Nunggu Masak
                     double waktuMasak = 1.5 * diMasak.getKekenyangan();
                     // Thread.sleep((long)waktuMasak);
-                    Thread.sleep(1*1000);
+                    
         
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -1061,7 +1003,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                     System.out.println("Masakan " + diMasak.getNama() + " berhasil dimasak");
         
                     // Check aksi pasif
-                    setStatus("Makan");
+                    setStatus("Masak");
                     world.checkWaktuSetelahAksi(getNamaLengkap(), (int)waktuMasak);
                     printStat();
                 }
@@ -1143,7 +1085,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                         
                         // Makan selama 30 detik
                         // Thread.sleep(30*1000);
-                        Thread.sleep(1*1000);
+                        
 
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -1307,7 +1249,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
 
                         // Tunggu 
                         // Thread.sleep(waktuPerjalananSim*1000);
-                        Thread.sleep(1*1000);
+                        
 
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -1385,7 +1327,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                         
                     // Tunggu 10 detik
                     // Thread.sleep(10*1000);
-                    Thread.sleep(1*1000);
+                    
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -1472,7 +1414,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                         System.out.println(" ██████  ██   ██ ██      ██ ███████      ██████  ██   ████ ██ ");
                         System.out.println("");
                         //  Thread.sleep(lamaMain*1000);
-                        Thread.sleep(1*1000);
+                        
                      } catch (InterruptedException e) {
                          e.printStackTrace();
                      } finally {
@@ -1526,7 +1468,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                         System.out.println("██   ██ ██   ██ ██   ██  ███ ███  ██   ██ ██   ██ ");
                         System.out.println("");
                         //  Thread.sleep(waktuDibutuhkan*1000);
-                        Thread.sleep(1*1000);
+                        
                      } catch (InterruptedException e) {
                          e.printStackTrace();
                      } finally {
@@ -1587,7 +1529,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                             System.out.println("██   ██ ███████ ██   ██ ███████ ██ ██   ████  ██████  ██ ██ ██");
                             System.out.println("");
                         //  Thread.sleep(lamaBerobat*1000);
-                        Thread.sleep(1*1000);
+                        
                      } catch (InterruptedException e) {
                          e.printStackTrace();
                      } finally {
@@ -1636,7 +1578,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                         System.out.println("██   ██ ██   ██ ██   ██ ██   ██  ██████  ██   ██ ███████ ██ ");
                         System.out.println("");
                         //  Thread.sleep(lamaKaraoke*1000);
-                        Thread.sleep(1*1000);
+                        
                      } catch (InterruptedException e) {
                          e.printStackTrace();
                      } finally {
@@ -1685,7 +1627,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                     System.out.println("██       ██████  ██   ██ ███████ ██   ██ ██ ██ ██ ");
                     System.out.println("");
                     //  Thread.sleep(waktuDibutuhkan*1000);
-                    Thread.sleep(1*1000);
+                    
                  } catch (InterruptedException e) {
                      e.printStackTrace();
                  } finally {
@@ -1728,7 +1670,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                         System.out.println(" ██████ ███████ ███████ ██   ██ ██   ████ ██ ██   ████  ██████  ██ ██ ██ ");
                         System.out.println("");
                         //  Thread.sleep(lamaBersihBersih*1000);
-                        Thread.sleep(1*1000);
+                        
                      } catch (InterruptedException e) {
                          e.printStackTrace();
                      } finally {
@@ -1776,7 +1718,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                     System.out.println("██   ██ ██   ██ ██   ██ ██   ██ ██   ██ ██   ██  ██ ");
                     System.out.println("");
                     //  Thread.sleep(waktuDibutuhkan*1000);
-                    Thread.sleep(1*1000);
+                    
                  } catch (InterruptedException e) {
                      e.printStackTrace();
                  } finally {

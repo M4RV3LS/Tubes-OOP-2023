@@ -834,7 +834,7 @@ public class World{
     //check waktu tidak tidur 
     public void checkWaktuTidakTidur() {
         for (Sim sim : simList) {
-            if (getWaktuTidakTidur(sim.getNamaLengkap()) <= 0) {
+            if ((waktuTidakTidur.containsKey(sim)) && getWaktuTidakTidur(sim.getNamaLengkap()) <= 0) {
                 sim.efekTidakTidur();
                 waktuTidakTidur.remove(sim);
                 System.out.println(sim.getNamaLengkap() + " tidak tidur dalam 10 menit di hari ini " + "( hari ke-" + getHariDunia() + " )");

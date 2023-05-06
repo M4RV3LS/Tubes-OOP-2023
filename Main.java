@@ -146,18 +146,18 @@ public class Main {
         return null;
     }
 
-    public void makeSimNull(Sim sim){
+    public Sim makeSimNull(Sim sim){
         sim.setNamaLengkap(null);
         sim.setPekerjaan(null);
         sim.setInventoryBahanMakanan(null);
         sim.setInventoryFurniture(null);
         sim.setInventoryMasakan(null);
-        sim.setWorld(null);
         sim.setHouse(null);
         sim.setRoom(null);
         sim.setUpgradeHouse(null);
         sim.setOwnHouse(null);
-        sim.setIsInHouse(null);
+        sim.setInHouse(null);
+        return sim;
     }
 
     public Sim changeSimIfDead(Sim sim , World world , House house , Room room){
@@ -170,7 +170,7 @@ public class Main {
                     addSim(world);
                     changeSim = changeSim(world, sim , house , room);
                     world.setIsAddSim(true);
-                    makeSimNull(sim);
+                    sim = makeSimNull(sim);
                     return changeSim;
                 }
                 else{
@@ -181,7 +181,7 @@ public class Main {
             }
             else {
                 changeSim = changeSim(world , sim , house , room);
-                makeSimNull(sim);
+                sim = makeSimNull(sim);
                 return changeSim;
             }
         }
@@ -471,17 +471,31 @@ public class Main {
                         Boolean valid = false;
                         Furniture furniture = sim.createFurniture(input);
                         // System.out.println(direction);
-                        if(sim.checkInputFurniture(input)){
-                            furniture = Furniture.valueOf(input.toUpperCase());
-                            // int length = furniture.getDimensi().getLength();
-                            // int width = furniture.getDimensi().getWidth();
-                            // System.out.println(length + " , " + width);
-                            // System.out.println(x + " , " + y);
-                            valid = room.placeFurniture(x , y , furniture.getDimensi() ,furniture.getName() , furniture.getNamaInisial() , input2);
+                        try{
+                            if(sim.checkInputFurniture(input)){
+                                furniture = Furniture.valueOf(input.toUpperCase());
+                                // int length = furniture.getDimensi().getLength();
+                                // int width = furniture.getDimensi().getWidth();
+                                // System.out.println(length + " , " + width);
+                                // System.out.println(x + " , " + y);
+                                valid = room.placeFurniture(x , y , furniture.getDimensi() ,furniture.getName() , furniture.getNamaInisial() , input2);
+                            }
                         }
-                        else{
-                            System.out.println("Furniture tidak ditemukan");
-                        }
+                            catch (Exception e) {
+                                System.out.println(e.getMessage());
+                            }
+                        
+                        // if(sim.checkInputFurniture(input)){
+                        //     furniture = Furniture.valueOf(input.toUpperCase());
+                        //     // int length = furniture.getDimensi().getLength();
+                        //     // int width = furniture.getDimensi().getWidth();
+                        //     // System.out.println(length + " , " + width);
+                        //     // System.out.println(x + " , " + y);
+                        //     valid = room.placeFurniture(x , y , furniture.getDimensi() ,furniture.getName() , furniture.getNamaInisial() , input2);
+                        // }
+                        // else{
+                        //     System.out.println("Furniture tidak ditemukan");
+                        // }
                         if(valid){
                             sim.getInventoryFurniture().kurangiStock(furniture,1);
                             room.addFurnitureData(valid, x, y, furniture.getDimensi(),furniture.getName() , furniture.getNamaInisial() , input2);
@@ -658,6 +672,8 @@ public class Main {
                 sim.moveToObject(y , x);
                 scanner.nextLine();
                 sim = obj.changeSimIfDead(sim , world , house , room);
+                house = sim.getHouse();
+                room = sim.getRoom();
                 // Scanner input = new Scanner(System.in);
                 //     String objName = sim.getRoom().getLayoutContent(x , y);
                 //     //Melakukan Cek apakah masukan melebihi peta layout [5] [5] 
@@ -844,6 +860,8 @@ public class Main {
                         scanner.nextLine();
                         action = true;
                         sim = obj.changeSimIfDead(sim , world , house , room);
+                        house = sim.getHouse();
+                        room = sim.getRoom();
                     }
                     else if(menuInput.equals("2")|| menuInput.equalsIgnoreCase("Olahraga")){
                         System.out.print("Masukkan waktu olahraga: ");
@@ -852,6 +870,8 @@ public class Main {
                         sim.olahraga(waktuOlahraga);
                         action = true;
                         sim = obj.changeSimIfDead(sim , world , house , room);
+                        house = sim.getHouse();
+                        room = sim.getRoom();
                     }
                     else if(menuInput.equals("3")|| menuInput.equalsIgnoreCase("Tidur")){
                         // System.out.print("Masukkan waktu tidur: ");
@@ -875,6 +895,8 @@ public class Main {
                         sim.Berkunjung();
                         action = true;
                         sim = obj.changeSimIfDead(sim , world , house , room);
+                        house = sim.getHouse();
+                        room = sim.getRoom();
                     }
                     else if(menuInput.equals("7")|| menuInput.equalsIgnoreCase("Buang Air")){
                         System.out.println("Kunjungi Objek Toilet di Suatu Ruangan !");
