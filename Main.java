@@ -10,12 +10,17 @@ import Inventory.*;
 import Sim.*;
 import java.io.IOException;
 import Fitur.*;
+import Inventory.*;
 
 public class Main {
 
     private Sim sim;
     private World world;
     
+    // public Main(World world , Sim sim){
+    //     this.world = world;
+    //     this.sim = sim;
+    // }
 
     // public void changeSim(String nama){
     //     for(Sim s : world.simList){
@@ -31,19 +36,18 @@ public class Main {
     }
 
     public void help(){
-        System.out.println("-Help-");
+        System.out.println("========== HELP ==========");
         System.out.println("Sim-Plicity adalah permainan simulasi kehidupan yang berbasis Command Line Interface (CLI).");
         System.out.println("Pemain akan mengendalikan sejumlah sim yang harus dijaga kesejahteraannya agar tidak depresi dan mati.");
         System.out.println("Pemain harus memenuhi kebutuhan mood, kekenyangan, dan kesehatan dari setiap sim untuk menjaga kesejahteraannya.");
-        System.out.println("Jumlah sim yang dapat dimainkan tergantung dari berapa sim yang dibuat pada awal permainan.");
         System.out.println();
         System.out.println("Aturan Permainan");
-        System.out.println("1. Masukkan jumlah sim yang ingin dimainkan, kemudian masukkan nama-nama sim yang ingin dibuat");
+        System.out.println("1. Permainan dimulai ketika Sim pertama dibuat. Pemain dapat menambahkan Sim dan mengganti Sim yang dimainkan");
         System.out.println("2. Setiap sim akan memiliki kebutuhan berupa mood, kekenyangan, dan kesehatan");
         System.out.println("3. Pemain harus memenuhi kebutuhan tersebut dengan memberi perintah yang tepat melalui CLI");
         System.out.println("4. Pemain dapat memberikan perintah untuk memberi makan, minum, membersihkan, merawat kesehatan, atau memberikan hiburan kepada setiap sim");
-        System.out.println("5. Pemain harus memperhatikan level kebutuhan setiap sim dan segera memberikan perintah yang tepat untuk menghindari kematian atau depresi pada sim");
-        System.out.println("6. Permainan berakhir jika semua sim meninggal atau depresi");
+        System.out.println("5. Pemain harus memperhatikan level kebutuhan setiap Sim dan segera memberikan perintah yang tepat untuk menghindari kematian yang disebabkan oleh kelaparan, sakit, dan depresi pada Sim");
+        System.out.println("6. Permainan berakhir jika semua sim meninggal atau pemain memilih opsi EXIT");
         System.out.println();
         System.out.println("Selamat bermain Sim-Plicity!");
         }
@@ -73,25 +77,26 @@ public class Main {
     }
 
     public void printMenu(){
-            System.out.println("");
-            System.out.println("Menu: ");
-            System.out.println("1.View Sim Info");
-            System.out.println("2.View Current Location");
-            System.out.println("3.View Inventory");
-            System.out.println("4.Upgrade House");
-            System.out.println("5.Move Room");
-            System.out.println("6.Edit Room");
-            System.out.println("7.Add Sim");
-            System.out.println("8.Change Sim");
-            System.out.println("9.List Object");
-            System.out.println("10.Go To Object");
-            System.out.println("11.Action");
-            System.out.println("12.Exit");
-            System.out.println("13.Beli barang");
-            System.out.println("14.Print Room");
-            System.out.println("15.Print Map");
-            System.out.println("16.Lihat Waktu");
-    }
+        System.out.println("");
+        System.out.println("=================== MENU GAME ======================================================");
+        System.out.println("1.View Sim Info         : Menampilkan informasi kondisi Sim saat ini");
+        System.out.println("2.View Current Location : Menampilkan informasi posisi Sim saat ini");
+        System.out.println("3.View Inventory        : Menampilkan isi inventory yang dimiliki oleh Sim");
+        System.out.println("4.Upgrade House         : Melakukan perbaikan rumah berupa penambahan ruangan");
+        System.out.println("5.Move Room             : Berpindah menuju ruangan lain");
+        System.out.println("6.Edit Room             : Melakukan perubahan terhadap ruangan saat ini");
+        System.out.println("7.Add Sim               : Menciptakan karakter Sim baru");
+        System.out.println("8.Change Sim            : Mengganti karakter Sim yang dimainkan");
+        System.out.println("9.List Object           : Menampilkan daftar objek yang terdapat di dalam ruangan");
+        System.out.println("10.Go To Object         : Pergi menuju objek yang terdapat di dalam ruangan");
+        System.out.println("11.Action               : Melakukan aksi pada suatu objek");
+        System.out.println("12.Change Job           : Melakukan penggantian pekerjaan Sim");
+        System.out.println("13.Beli barang          : Melakukan pembelian barang pada Shop");
+        System.out.println("14.Print Room           : Menampilkan informasi terkait ruangan");
+        System.out.println("15.Print Map            : Menampilkan informasi peta pada Sim-Plicity");
+        System.out.println("16.Exit                 : Keluar dari permainan");
+        System.out.println("17.Lihat Waktu          : Menampilkan waktu pada dunia Sim-Plicity");
+}
 
     public void addSim(){
         Scanner scanner = new Scanner(System.in);
@@ -104,7 +109,7 @@ public class Main {
             if (!world.findSim(newSim.getNamaLengkap())) {
                 isExists = false;
                 world.addSim(newSim);
-                world.addWaktuTidakTidur(newSim, 600);
+                world.addWaktuTidakTidur(newSim, 60);
                 System.out.println("Objek SIM " + nama + " berhasil ditambahkan ke dalam list!");
             } else {
                 System.out.println("Objek SIM " + nama + " sudah ada di dalam list, silahkan masukkan nama lain!");
@@ -112,7 +117,7 @@ public class Main {
         }
     }
 
-    public void changeSim(World world , Sim sim , House house , Room room){
+    public Sim changeSim(World world , Sim sim , House house , Room room){
         Scanner scanner = new Scanner(System.in);
         System.out.println("Berikut adalah SIM yang tersedia:");
         for ( Sim daftarSim : world.getSimList()) {
@@ -131,47 +136,86 @@ public class Main {
                     findSim = true;
                     System.out.println("Sim anda sekarang adalah " + sim.getNamaLengkap());
                     System.out.println("Selamat melanjutkan permainan");
-                    break;
+                    return sim;
                 }
                 else{
                     System.out.println("Sim tidak ditemukan");
                 }
             }
         }
-        
+        return null;
     }
 
-    public void changeSimIfDead(Sim sim , World world , House house , Room room){
+    public Sim changeSimIfDead(Sim sim , World world , House house , Room room){
+        Sim changeSim = null;
         if(sim.isDead()){
             System.out.println("Sim kamu telah Mati !!!");
             System.out.println("Silahkan gunakan Sim yang lain");
             if (world.getSimList().isEmpty()) {
                 if(!(world.getIsAddSim())){
-                    this.addSim();
-                    this.changeSim(world, sim , house , room);
+                    addSim();
+                    changeSim = changeSim(world, sim , house , room);
                     world.setIsAddSim(true);
+                    return changeSim;
                 }
                 else{
                     System.out.println("Tidak ada Sim yang tersedia");
                     System.out.println("Game Over");
-                    this.exit();
+                    exit();
                 }
             }
             else {
-                this.changeSim(world , sim , house , room);
+                changeSim = changeSim(world , sim , house , room);
+                return changeSim;
+            }
+        }
+        else{
+            return sim;
+        }
+        return changeSim;
+    }
+
+    //Method untuk mengganti pekerjaan seorang sim dengan parameter berupa Sim sim
+    public void changeJob(Sim sim){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Berikut adalah daftar pekerjaan yang tersedia:");
+        System.out.println("");
+        sim.printAllJobs();
+        Boolean findJob = false;
+        while(!findJob){
+            System.out.print("Masukkan nama pekerjaan yang ingin anda gunakan : ");
+            String nama = scanner.nextLine();
+            if(sim.validateJob(nama)){
+
+                //masalah set job
+                int uangLama = sim.getUang();
+                sim.setPekerjaan(sim.createJob(nama));
+                sim.setIsGantiKerja(true);
+
+                //masalah uang
+                int gajiBaru = sim.getPekerjaan().getDailySalary();
+                int kurangiUang = sim.getUang() - (gajiBaru/2);
+                sim.setUang(kurangiUang);
+                System.out.println("Pekerjaan kamu telah diganti ke " + sim.getPekerjaan().getName());
+                System.out.println("Uang anda berkurang dari " + uangLama + " menjadi " + kurangiUang + " karena mendapatkan potongan 1/2 dari gaji " + sim.getPekerjaan().getName() +" yaitu gaji sebesar " + gajiBaru);
+                System.out.println("Selamat melanjutkan permainan");
+                findJob = true;
+            }
+            else{
+                System.out.println("Pekerjaan tidak ditemukan");
             }
         }
     }
     
     public static void main(String[] args) throws InterruptedException{
-        Main obj = new Main();       
+        Main obj = new Main(); 
         PrintASCII ascii = new PrintASCII();
         World world = World.getInstance();
         House house;
         Room room;
         FurnitureData furnitureData;
         Shop shop = Shop.getInstance();
-        Sim sim = obj.getSim();
+        Sim sim ;
         
         // Ascii Welcome
         ascii.printTitle();
@@ -205,29 +249,33 @@ public class Main {
         }
         
         // game logic goes here
+        
+        Boolean inputAwalValid = false;
+        while(!inputAwalValid){
+            scanner.nextLine();
         System.out.println("");
         System.out.println("Pilihlah Salah Satu Menu Dibawah ini: ");
         System.out.println("1. Start The Game");
         System.out.println("2. Help");
         System.out.println("3. Exit");
 
-        scanner.nextLine();
+        System.out.println("");
+        System.out.print("Masukkan angka atau menu yang diinginkan: ");
         String menuInput = scanner.nextLine();
-        
         if(menuInput.equals("1") || menuInput.equalsIgnoreCase("Start The Game")){
-            
+            inputAwalValid = true;
             System.out.print("Masukkan nama SIM: ");
             String nama = scanner.nextLine();
             Sim firstSim = new Sim(nama);
             world.addSim(firstSim);
-            world.addWaktuTidakTidur(firstSim , 600);
+            world.addWaktuTidakTidur(firstSim , 60);
 
-            System.out.println("");
-            System.out.print("Masukkan nama SIM: ");
-            String nama2 = scanner.nextLine();
-            Sim secondSim = new Sim(nama2);
-            world.addSim(secondSim);
-            world.addWaktuTidakTidur(secondSim , 600);
+            // System.out.println("");
+            // System.out.print("Masukkan nama SIM: ");
+            // String nama2 = scanner.nextLine();
+            // Sim secondSim = new Sim(nama2);
+            // world.addSim(secondSim);
+            // world.addWaktuTidakTidur(secondSim , 60);
             // world.addWaktuTidakBuangAir(firstSim , 0);
             sim = firstSim;
             System.out.println("Selamat datang " + nama + "!");
@@ -254,6 +302,7 @@ public class Main {
             
             obj.print("");
             obj.print("Masukkan Help atau Menu untuk menampilkan menu permainan");
+            obj.print("Masukkan Exit untuk keluar dari permainan");
             System.out.print("Masukkan Angka atau Aksi yang diiginkan: ");
             menuInput = scanner.nextLine();
 
@@ -293,7 +342,7 @@ public class Main {
                     //melakukan print untuk menunjukan bahwa user sedang berada di rumah sim yang sedang dikunjungi 
                     for(Sim simDikunjungi : world.getSimList()){
                         if(simDikunjungi.getOwnHouse() == sim.getHouse()){
-                            obj.print("Saat ini anda sedang berada di rumah " + simDikunjungi.getOwnHouse().getHouseName());
+                            obj.print("Saat ini anda sedang berada di rumah " + simDikunjungi.getNamaLengkap());
                             break;
                         }
                         
@@ -505,14 +554,14 @@ public class Main {
                         // }
                         if(inputValid){
                             // Furniture furniture = Furniture.valueOf(menuInput.toUpperCase());
-                            Furniture furniture = room.createFurniture(menuInput);
+                            // Furniture furniture = room.createFurniture(menuInput);
                             furnitureData = room.getFurnitureData(menuInput); 
                             System.out.println("Furniture yang ingin anda hapus adalah " + furnitureData.getFurnitureName());
                             room.removeFurniture(furnitureData.getStartX(), furnitureData.getStartY(), furnitureData.getDimension(),furnitureData.getFurnitureName(),furnitureData.getInitialName(), furnitureData.getDirection());
                             room.removeFurnitureData(room.getFurnitureDataList() , room.getFurnitureDataWithParameter(furnitureData.getStartX(), furnitureData.getStartY(), furnitureData.getDimension(),furnitureData.getFurnitureName(),furnitureData.getInitialName(), furnitureData.getDirection()));
                             MyObject myObject = room.getMyObject(furnitureData.getFurnitureName());
                             room.removeObject(myObject);
-                            sim.getInventoryFurniture().tambahStock(furniture,1);
+                            sim.getInventoryFurniture().tambahStock(sim.createFurniture(menuInput),1);
                             System.out.println("Furniture berhasil dihapus");
                             room.printRoom();
                         }
@@ -560,19 +609,7 @@ public class Main {
                 if (world.getSimList().isEmpty()) {
                     System.out.println("Tidak ada SIM yang tersedia.");
                 } else {
-                    System.out.println("Berikut adalah SIM yang tersedia:");
-                for ( Sim daftarSim : world.getSimList()) {
-                    System.out.println("- " + daftarSim.getNamaLengkap());
-                }
-                System.out.println("Masukkan nama SIM yang ingin anda gunakan : ");
-                nama = scanner.nextLine();
-                for(Sim s : world.getSimList()){
-                     if(s.getNamaLengkap().equals(nama)){
-                         sim = s;
-                         house = sim.getHouse();
-                         room = house.getRoom("Living Room");
-                     }
-                 }
+                    sim = obj.changeSim(world , sim , house , room);
                 }
             }
 
@@ -591,7 +628,7 @@ public class Main {
                 int y = scanner.nextInt();
                 sim.moveToObject(y , x);
                 scanner.nextLine();
-                obj.changeSimIfDead(sim , world , house , room);
+                sim = obj.changeSimIfDead(sim , world , house , room);
                 // Scanner input = new Scanner(System.in);
                 //     String objName = sim.getRoom().getLayoutContent(x , y);
                 //     //Melakukan Cek apakah masukan melebihi peta layout [5] [5] 
@@ -777,7 +814,7 @@ public class Main {
                         sim.kerja(waktuKerja);
                         scanner.nextLine();
                         action = true;
-                        obj.changeSimIfDead(sim , world , house , room);
+                        sim = obj.changeSimIfDead(sim , world , house , room);
                     }
                     else if(menuInput.equals("2")|| menuInput.equalsIgnoreCase("Olahraga")){
                         System.out.print("Masukkan waktu olahraga: ");
@@ -785,7 +822,7 @@ public class Main {
                         scanner.nextLine();
                         sim.olahraga(waktuOlahraga);
                         action = true;
-                        obj.changeSimIfDead(sim , world , house , room);
+                        sim = obj.changeSimIfDead(sim , world , house , room);
                     }
                     else if(menuInput.equals("3")|| menuInput.equalsIgnoreCase("Tidur")){
                         System.out.print("Masukkan waktu tidur: ");
@@ -808,7 +845,7 @@ public class Main {
                     else if(menuInput.equals("6")|| menuInput.equalsIgnoreCase("Berkunjung")){
                         sim.Berkunjung();
                         action = true;
-                        obj.changeSimIfDead(sim , world , house , room);
+                        sim = obj.changeSimIfDead(sim , world , house , room);
                     }
                     else if(menuInput.equals("7")|| menuInput.equalsIgnoreCase("Buang Air")){
                         System.out.println("Kunjungi Objek Toilet di Suatu Ruangan !");
@@ -854,9 +891,10 @@ public class Main {
                     }
                 }
             }
-            else if(menuInput.equals("12")|| menuInput.equalsIgnoreCase("Exit")){
-                obj.exit();
+            else if(menuInput.equals("12") || menuInput.equalsIgnoreCase("Change Job")){
+                obj.changeJob(sim);
             }
+    
             else if(menuInput.equals("13")|| menuInput.equalsIgnoreCase("Beli barang")){
                 ascii.printShop();
                 
@@ -997,7 +1035,10 @@ public class Main {
             else if(menuInput.equals("15")|| menuInput.equalsIgnoreCase("Print Map")){
                 world.printWorld();;
             }
-            else if(menuInput.equals("16")|| menuInput.equalsIgnoreCase("Lihat Waktu")){
+            else if(menuInput.equals("16")|| menuInput.equalsIgnoreCase("Exit")){
+                obj.exit();
+            }
+            else if(menuInput.equals("17")|| menuInput.equalsIgnoreCase("Lihat Waktu")){
                 sim.lihatWaktu();
             }
 
@@ -1021,6 +1062,7 @@ public class Main {
         else{
             System.out.println("Input tidak valid.");
         }
+    }
     }
 }
 

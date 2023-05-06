@@ -4,6 +4,7 @@ import Inventory.*;
 import Map.*;
 import Fitur.*;
 import Sim.*;
+import Inventory.Furniture;
 
 public class Room {
     private int width = 6;
@@ -794,42 +795,42 @@ public class Room {
     return false;
 }
  
-//membuat objek furniture berdasarkan input string dari user
-public Furniture createFurniture(String input) {
-    if (input.equalsIgnoreCase("Kasur Single")) {
-        return Furniture.KASUR_SINGLE;
-    } else if (input.equalsIgnoreCase("Kasur Queen Size")) {
-        return Furniture.KASUR_QUEEN_SIZE;
-    } else if (input.equalsIgnoreCase("Kasur King Size")) {
-        return Furniture.KASUR_KING_SIZE;
-    } else if (input.equalsIgnoreCase("Toilet")) {
-        return Furniture.TOILET;
-    } else if (input.equalsIgnoreCase("Kompor Gas")) {
-        return Furniture.KOMPOR_GAS;
-    } else if (input.equalsIgnoreCase("Kompor Listrik")) {
-        return Furniture.KOMPOR_LISTRIK;
-    } else if (input.equalsIgnoreCase("Meja dan Kursi")) {
-        return Furniture.MEJA_KURSI;
-    } else if (input.equalsIgnoreCase("Jam")) {
-        return Furniture.JAM;
-    } else if (input.equalsIgnoreCase("Komputer")) {
-        return Furniture.KOMPUTER;
-    } else if (input.equalsIgnoreCase("Bola Kristal")) {
-        return Furniture.BOLA_KRISTAL;
-    } else if (input.equalsIgnoreCase("Kotak Obat")) {
-        return Furniture.KOTAK_OBAT;
-    } else if (input.equalsIgnoreCase("Microphone")) {
-        return Furniture.MICROPHONE;
-    } else if (input.equalsIgnoreCase("Kitab Suci")) {
-        return Furniture.KITAB_SUCI;
-    } else if (input.equalsIgnoreCase("Sapu")) {
-        return Furniture.SAPU;
-    } else if (input.equalsIgnoreCase("Sofa")) {
-        return Furniture.SOFA;
-    } else {
-        return null;
-    }
-}
+// //membuat objek furniture berdasarkan input string dari user
+// public Furniture createFurniture(String input) {
+//     if (input.equalsIgnoreCase("Kasur Single")) {
+//         return Furniture.KASUR_SINGLE;
+//     } else if (input.equalsIgnoreCase("Kasur Queen Size")) {
+//         return Furniture.KASUR_QUEEN_SIZE;
+//     } else if (input.equalsIgnoreCase("Kasur King Size")) {
+//         return Furniture.KASUR_KING_SIZE;
+//     } else if (input.equalsIgnoreCase("Toilet")) {
+//         return Furniture.TOILET;
+//     } else if (input.equalsIgnoreCase("Kompor Gas")) {
+//         return Furniture.KOMPOR_GAS;
+//     } else if (input.equalsIgnoreCase("Kompor Listrik")) {
+//         return Furniture.KOMPOR_LISTRIK;
+//     } else if (input.equalsIgnoreCase("Meja dan Kursi")) {
+//         return Furniture.MEJA_KURSI;
+//     } else if (input.equalsIgnoreCase("Jam")) {
+//         return Furniture.JAM;
+//     } else if (input.equalsIgnoreCase("Komputer")) {
+//         return Furniture.KOMPUTER;
+//     } else if (input.equalsIgnoreCase("Bola Kristal")) {
+//         return Furniture.BOLA_KRISTAL;
+//     } else if (input.equalsIgnoreCase("Kotak Obat")) {
+//         return Furniture.KOTAK_OBAT;
+//     } else if (input.equalsIgnoreCase("Microphone")) {
+//         return Furniture.MICROPHONE;
+//     } else if (input.equalsIgnoreCase("Kitab Suci")) {
+//         return Furniture.KITAB_SUCI;
+//     } else if (input.equalsIgnoreCase("Sapu")) {
+//         return Furniture.SAPU;
+//     } else if (input.equalsIgnoreCase("Sofa")) {
+//         return Furniture.SOFA;
+//     } else {
+//         return null;
+//     }
+// }
 
     
 }

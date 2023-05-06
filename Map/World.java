@@ -129,6 +129,17 @@ public class World{
         house = null;
     }
     
+    // Mendapatkan pemilik rumah dengan memanfaatkan atribut ownHouse pada setiap sim dan simList 
+    public Sim getHouseOwner(House house) {
+        for (Sim s : getSimList()) {
+            if (s.getOwnHouse() != null && s.getOwnHouse().getHouseName().equalsIgnoreCase(house.getHouseName()) ) {
+                return s;
+            }
+        }
+        return null;
+    }
+    
+    
     //Mencari sebuah objek Sim didalam simList
     public Boolean findSim(String name){
         if(!(simList.isEmpty())){
@@ -294,7 +305,7 @@ public class World{
         //mereset semua waktu Tidak Tidur sim pada hashmap waktuTidakTidur menjadi 600
         if(!(waktuTidakTidur.isEmpty())){
             for (Sim sim : waktuTidakTidur.keySet()){
-                waktuTidakTidur.put(sim , 600);
+                waktuTidakTidur.put(sim , 60);
             }
         }
         
@@ -364,7 +375,7 @@ public class World{
 
     //getter hari dunia
     public int getHariDunia() {
-        return ((waktuDunia / 720) + 1);
+        return ((waktuDunia / 90) + 1);
     }
 
     //setter hari dunia
@@ -374,7 +385,7 @@ public class World{
 
     //getter waktu sim
     public int getWaktuSim() {
-        return (720 - (waktuDunia % 720));
+        return (90 - (waktuDunia % 91));
     }
 
     //setter waktu sim
@@ -758,8 +769,10 @@ public class World{
     public void checkIsDead() {
         Iterator<Sim> iterator = simList.iterator();
         while (iterator.hasNext()) {
+            // System.out.println("Masuk Sini");
             Sim sim = iterator.next();
             if (sim.getKekenyangan() <= 0 || sim.getKesehatan() <= 0 || sim.getMood() <= 0) {
+                // System.out.println("Masuk Sini 2");
                 if (sim.getKekenyangan() <= 0) {
                     System.out.println("Sim " + sim.getNamaLengkap() + " mati karena kelaparan");
                 } else if (sim.getKesehatan() <= 0) {
@@ -769,7 +782,7 @@ public class World{
                 }
                 //set every sim house that have entered died sim house to their ownhouse dengan parameter nama masing masing house
                 for (Sim anotherSim : simList) {
-                    if (anotherSim.getHouse().getHouseName().equalsIgnoreCase(sim.getHouse().getHouseName())) {
+                    if (anotherSim.getHouse().getHouseName().equalsIgnoreCase(sim.getOwnHouse().getHouseName())) {
                         anotherSim.setHouse(anotherSim.getOwnHouse());
                     }
                 }
@@ -807,6 +820,7 @@ public class World{
         for (Sim sim : simList) {
             if (getWaktuTidakTidur(sim.getNamaLengkap()) <= 0) {
                 sim.efekTidakTidur();
+                waktuTidakTidur.remove(sim);
                 System.out.println(sim.getNamaLengkap() + " tidak tidur dalam 10 menit di hari ini " + "( hari ke-" + getHariDunia() + " )");
             }
         }

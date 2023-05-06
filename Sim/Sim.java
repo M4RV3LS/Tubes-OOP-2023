@@ -48,7 +48,7 @@ public class Sim extends AksiUtama implements AksiTambahan{
     public Sim(String namaLengkap) {
         this.namaLengkap = namaLengkap;
         this.uang = 2000;
-        this.kekenyangan = 5;
+        this.kekenyangan = 2;
         this.mood = 80;
         this.kesehatan = 80;
         this.inventoryBahanMakanan = new Inventory<>();
@@ -154,6 +154,45 @@ public class Sim extends AksiUtama implements AksiTambahan{
         this.pekerjaan = pekerjaan;
     }
 
+    //membuat objek Job berdasarkan masukan String pengguna
+    public Job createJob(String jobName) {
+        if (jobName.equalsIgnoreCase("Badut Sulap")) {
+            return Job.BADUT_SULAP;
+        } else if (jobName.equalsIgnoreCase("Koki")) {
+            return Job.KOKI;
+        } else if (jobName.equalsIgnoreCase("Polisi")) {
+            return Job.POLISI;
+        } else if (jobName.equalsIgnoreCase("Programmer")) {
+            return Job.PROGRAMMER;
+        } else if (jobName.equalsIgnoreCase("Dokter")) {
+            return Job.DOKTER;
+        } else {
+            throw new IllegalArgumentException("Job name not recognized.");
+        }
+    }
+
+    //print all job list 
+    public void printAllJobs() {
+        System.out.println("+------------------------------------+");
+        System.out.printf("| %1$-15s | %2$15s |\n", "Job Name", "Daily Salary");
+        System.out.println("+------------------------------------+");
+        for (Job job : Job.values()) {
+            System.out.printf("| %1$-15s | %2$15d |\n", job.getName(), job.getDailySalary());
+        }
+        System.out.println("+------------------------------------+");
+    }
+    
+    //validasi masukan input user apakah string job yang dimasukkan ada di dalam dafta job 
+    public boolean validateJob(String jobName) {
+        for (Job job : Job.values()) {
+            if (job.getName().equalsIgnoreCase(jobName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+
     //getter uang sim
     public int getUang() {
         return uang;
@@ -171,6 +210,43 @@ public class Sim extends AksiUtama implements AksiTambahan{
     // public void setInventory(Inventory inventory) {
     //         this.inventory = inventory;
     //     }
+
+    //membuat objek furniture berdasarkan input string dari user
+public Furniture createFurniture(String input) {
+    if (input.equalsIgnoreCase("Kasur Single")) {
+        return Furniture.KASUR_SINGLE;
+    } else if (input.equalsIgnoreCase("Kasur Queen Size")) {
+        return Furniture.KASUR_QUEEN_SIZE;
+    } else if (input.equalsIgnoreCase("Kasur King Size")) {
+        return Furniture.KASUR_KING_SIZE;
+    } else if (input.equalsIgnoreCase("Toilet")) {
+        return Furniture.TOILET;
+    } else if (input.equalsIgnoreCase("Kompor Gas")) {
+        return Furniture.KOMPOR_GAS;
+    } else if (input.equalsIgnoreCase("Kompor Listrik")) {
+        return Furniture.KOMPOR_LISTRIK;
+    } else if (input.equalsIgnoreCase("Meja dan Kursi")) {
+        return Furniture.MEJA_KURSI;
+    } else if (input.equalsIgnoreCase("Jam")) {
+        return Furniture.JAM;
+    } else if (input.equalsIgnoreCase("Komputer")) {
+        return Furniture.KOMPUTER;
+    } else if (input.equalsIgnoreCase("Bola Kristal")) {
+        return Furniture.BOLA_KRISTAL;
+    } else if (input.equalsIgnoreCase("Kotak Obat")) {
+        return Furniture.KOTAK_OBAT;
+    } else if (input.equalsIgnoreCase("Microphone")) {
+        return Furniture.MICROPHONE;
+    } else if (input.equalsIgnoreCase("Kitab Suci")) {
+        return Furniture.KITAB_SUCI;
+    } else if (input.equalsIgnoreCase("Sapu")) {
+        return Furniture.SAPU;
+    } else if (input.equalsIgnoreCase("Sofa")) {
+        return Furniture.SOFA;
+    } else {
+        return null;
+    }
+}
 
     //getter kekenyangan sim
     public Inventory<BahanMakanan> getInventoryBahanMakanan() {
@@ -412,7 +488,16 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
         System.out.println("Kesehatan: " + kesehatan);
         System.out.println("Status: " + status);
         System.out.println("Rumah: " + house.getHouseName());
+        if(world.getHouseOwner(getHouse()) != null){
+            System.out.println("Owner Rumah: " + world.getHouseOwner(getHouse()).getNamaLengkap());
+        }
         System.out.println("Ruangan: " + room.getRoomName());
+        if(world.getWaktuTidakTidur().containsKey(this)){
+            System.out.println("Waktu tidak tidur: " + world.getWaktuTidakTidur(getNamaLengkap()));
+        }
+        if(world.getWaktuTidakBuangAir().containsKey(this)){
+            System.out.println("Waktu tidak buang air: " + world.getWaktuTidakBuangAir(getNamaLengkap()));
+        } 
     }
 
     //print sim stat
@@ -423,7 +508,9 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
         System.out.println("Kesehatan anda sekarang: " + getKesehatan());
         System.out.println("Kekenyangan anda sekarang: " + getKekenyangan());
         System.out.println("Uang anda sekarang: " + getUang());
-        System.out.println("Waktu tidak tidur: " + world.getWaktuTidakTidur(getNamaLengkap()));
+        if(world.getWaktuTidakTidur().containsKey(this)){
+            System.out.println("Waktu tidak tidur: " + world.getWaktuTidakTidur(getNamaLengkap()));
+        }
         if(world.getWaktuTidakBuangAir().containsKey(this)){
             System.out.println("Waktu tidak buang air: " + world.getWaktuTidakBuangAir(getNamaLengkap()));
         }     
@@ -560,8 +647,8 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                         // System.out.println("   | |     #      | |");
                         System.out.println("  ");
                         
-                        Thread.sleep(lamaKerja*1000);
-            
+                        // Thread.sleep(lamaKerja*1000);
+                        Thread.sleep(1*1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -621,9 +708,9 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                         
 
                         // Tambahin Waktu ke World
-                        if (isDead()){
-                            System.out.println("SIM telah meninggal");
-                        } 
+                        // if (isDead()){
+                        //     System.out.println("SIM telah meninggal");
+                        // } 
                     }
                         // System.out.println("Kekenyangan anda sekarang: " + getKekenyangan());
                         // System.out.println("Mood anda sekarang: " + getMood());
@@ -676,7 +763,8 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                         // System.out.println("                               \\___)");
         
                         // Nunggu waktu lari
-                        Thread.sleep(lamaOlahraga*1000);
+                        // Thread.sleep(lamaOlahraga*1000);
+                        Thread.sleep(1*1000);
                         System.out.println(" ");
                     } 
                     catch (InterruptedException e) {
@@ -746,7 +834,8 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                         System.out.println("                                          ");
 
                         // Nunggu Tidur
-                        Thread.sleep(lamaTidur*1000);
+                        // Thread.sleep(lamaTidur*1000);
+                        Thread.sleep(1*1000);
                         System.out.println(" ");
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -884,7 +973,8 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                     
                     // Nunggu Masak
                     double waktuMasak = 1.5 * diMasak.getKekenyangan();
-                    Thread.sleep((long)waktuMasak);
+                    // Thread.sleep((long)waktuMasak);
+                    Thread.sleep(1*1000);
         
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -978,7 +1068,8 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                         System.out.println(" ");
                         
                         // Makan selama 30 detik
-                        Thread.sleep(30*1000);
+                        // Thread.sleep(30*1000);
+                        Thread.sleep(1*1000);
 
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -1049,17 +1140,17 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                 
                     
                         if(world.findSim(namaSim)  ){
-                            if((getHouse() != getOwnHouse())){
+                            if((getHouse() != world.getSimByName(namaSim).getOwnHouse())){
                                 inputValid = true;
                                 simYangDikunjungi = world.getSimByName(namaSim);
                                 adaTetangga = true;
                             }
-                            else if((getHouse() == getOwnHouse()) && !(namaSim.equalsIgnoreCase(getNamaLengkap()))){
-                                inputValid = true;
-                                simYangDikunjungi = world.getSimByName(namaSim);
-                                adaTetangga = true;
-                            }
-                            else if((getHouse() == getOwnHouse()) && !(namaSim.equalsIgnoreCase(getNamaLengkap()))){
+                            // else if((getHouse().equals(getOwnHouse())) && !(namaSim.equalsIgnoreCase(getNamaLengkap()))){
+                            //     inputValid = true;
+                            //     simYangDikunjungi = world.getSimByName(namaSim);
+                            //     adaTetangga = true;
+                            // }
+                            else if((getHouse().equals(world.getSimByName(namaSim).getOwnHouse()))){
                                 System.out.println("Tidak dapat berkunjung ke rumah sendiri");
                             }
                         }
@@ -1089,13 +1180,13 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
             while(!(inputValid2)){
                 Scanner input = new Scanner(System.in);
                 System.out.println("Berikut ini adalah daftar ruangan yang terdapat pada rumah " + simYangDikunjungi.getNamaLengkap());
-                for (Room room : simYangDikunjungi.getHouse().getRooms()) {
+                for (Room room : simYangDikunjungi.getOwnHouse().getRooms()) {
                     System.out.println("- " + room.getRoomName());
                 }
                 System.out.println("");
                 System.out.print("Masukkan nama ruangan yang ingin dikunjungi: ");
                 String namaRuangan = input.nextLine();
-                for (Room room : simYangDikunjungi.getHouse().getRooms()) {
+                for (Room room : simYangDikunjungi.getOwnHouse().getRooms()) {
                     if(room.getRoomName().equalsIgnoreCase(namaRuangan)){
                         inputValid2 = true;
                         roomYangDikunjungi = room;
@@ -1141,7 +1232,8 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                         // System.out.println("  ");
 
                         // Tunggu 
-                        Thread.sleep(waktuPerjalananSim*1000);
+                        // Thread.sleep(waktuPerjalananSim*1000);
+                        Thread.sleep(1*1000);
 
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -1151,9 +1243,10 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                         int kenyangTurun = getKekenyangan() + waktuPerjalananSim/30*(-10);
                         setKekenyangan(kenyangTurun);
 
-                        setHouse(simYangSedangDikunjungi.getHouse());
+                        setHouse(simYangSedangDikunjungi.getOwnHouse());
                         setRoom(roomSekarang);
-
+                        System.out.println(getHouse().getHouseName());
+                        System.out.println(getNamaLengkap() + " Berkunjung ke rumah " + simYangSedangDikunjungi.getNamaLengkap());
                         setStatus("Berkunjung");
                          
                         checkIsInHouse();
@@ -1217,7 +1310,8 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                     // System.out.println(" ");
                         
                     // Tunggu 10 detik
-                    Thread.sleep(10*1000);
+                    // Thread.sleep(10*1000);
+                    Thread.sleep(1*1000);
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -1296,26 +1390,15 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                  public void run(){
                      try {
                          System.out.println("==========SIM SEDANG MAIN GAME==========");
-                        //  System.out.println(" _n_________________");
-                        //  System.out.println("|_|_______________|_|");
-                        //  System.out.println("|  ,-------------.  |");
-                        //  System.out.println("| |  .---------.  | |");
-                        //  System.out.println("| |  |         |  | |");
-                        //  System.out.println("| |  |         |  | |");
-                        //  System.out.println("| |  |         |  | |");
-                        //  System.out.println("| |  |         |  | |");
-                        //  System.out.println("| |  `---------'  | |");
-                        //  System.out.println("| `---------------' |");
-                        //  System.out.println("|   _ GAME BOY      |");
-                        //  System.out.println("| _| |_         ,-. |");
-                        //  System.out.println("||_ O _|   ,-. "._,"|");
-                        //  System.out.println("|  |_|    "._,"   A | hjw");
-                        //  System.out.println("|    _  _    B      | `97");
-                        //  System.out.println("|   // //           |");
-                        //  System.out.println("|  // //    ///////  |");
-                        //  System.out.println("|  `  `      /////// ,");
-                        //  System.out.println("|________...______,\"");
-                         Thread.sleep(lamaMain*1000);
+                         // 1. main game
+                        System.out.println(" ██████   █████  ███    ███ ███████      ██████  ███    ██ ██ ");
+                        System.out.println("██       ██   ██ ████  ████ ██          ██    ██ ████   ██ ██ ");
+                        System.out.println("██   ███ ███████ ██ ████ ██ █████       ██    ██ ██ ██  ██ ██ ");
+                        System.out.println("██    ██ ██   ██ ██  ██  ██ ██          ██    ██ ██  ██ ██    ");
+                        System.out.println(" ██████  ██   ██ ██      ██ ███████      ██████  ██   ████ ██ ");
+                        System.out.println("");
+                        //  Thread.sleep(lamaMain*1000);
+                        Thread.sleep(1*1000);
                      } catch (InterruptedException e) {
                          e.printStackTrace();
                      } finally {
@@ -1361,16 +1444,15 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                  public void run(){
                      try {
                          System.out.println("==========SIM SEDANG MENYANTET==========");
-                        //  System.out.println("    .-')     ('-.         .-') _  .-') _     ('-.   .-') _    ");
-                        //  System.out.println("    ( OO ).  ( OO ).-.    ( OO ) )(  OO) )  _(  OO) (  OO) )   ");
-                        //  System.out.println("   (_)---\_) / . --. /,--./ ,--,' /     '._(,------./     '._  ");
-                        //  System.out.println("   /    _ |  | \-.  \ |   \ |  |\ |'--...__)|  .---'|'--...__) ");
-                        //  System.out.println("   \  :` `..-'-'  |  ||    \|  | )'--.  .--'|  |    '--.  .--' ");
-                        //  System.out.println("    '..`''.)\| |_.'  ||  .     |/    |  |  (|  '--.    |  |    ");
-                        //  System.out.println("   .-._)   \ |  .-.  ||  |\    |     |  |   |  .--'    |  |    ");
-                        //  System.out.println("   \       / |  | |  ||  | \   |     |  |   |  `---.   |  |    ");
-                        //  System.out.println("    `-----'  `--' `--'`--'  `--'     `--'   `------'   `--'    ");
-                         Thread.sleep(waktuDibutuhkan*1000);
+                                // 2. santet
+                        System.out.println("██████   █████   █████  ██     ██ ██████  ██████  ");
+                        System.out.println("██   ██ ██   ██ ██   ██ ██     ██ ██   ██ ██   ██ ");
+                        System.out.println("██████  ███████ ███████ ██  █  ██ ██████  ██████  ");
+                        System.out.println("██   ██ ██   ██ ██   ██ ██ ███ ██ ██   ██ ██   ██ ");
+                        System.out.println("██   ██ ██   ██ ██   ██  ███ ███  ██   ██ ██   ██ ");
+                        System.out.println("");
+                        //  Thread.sleep(waktuDibutuhkan*1000);
+                        Thread.sleep(1*1000);
                      } catch (InterruptedException e) {
                          e.printStackTrace();
                      } finally {
@@ -1423,18 +1505,15 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                  public void run(){
                      try {
                          System.out.println("==========SIM SEDANG BEROBAT==========");
-                         System.out.println("          .         .                                                                       ");
-                         System.out.println("         ,8.       ,8.          8 8888888888   8 888888888o.       8 8888     ,o888888o.    ");
-                         System.out.println("        ,888.     ,888.         8 8888         8 8888    `^888.    8 8888    8888     `88.  ");
-                         System.out.println("       .`8888.   .`8888.        8 8888         8 8888        `88.  8 8888 ,8 8888       `8. ");
-                         System.out.println("      ,8.`8888. ,8.`8888.       8 8888         8 8888         `88  8 8888 88 8888           ");
-                         System.out.println("     ,8'8.`8888,8^8.`8888.      8 888888888888 8 8888          88  8 8888 88 8888           ");
-                         System.out.println("    ,8' `8.`8888' `8.`8888.     8 8888         8 8888          88  8 8888 88 8888           ");
-                         System.out.println("   ,8'   `8.`88'   `8.`8888.    8 8888         8 8888         ,88  8 8888 88 8888           ");
-                         System.out.println("  ,8'     `8.`'     `8.`8888.   8 8888         8 8888        ,88'  8 8888 `8 8888       .8' ");
-                         System.out.println(" ,8'       `8        `8.`8888.  8 8888         8 8888    ,o88P'    8 8888    8888     ,88'  ");
-                         System.out.println(",8'         `         `8.`8888. 8 888888888888 8 888888888P'       8 8888     `8888888P'    ");
-                         Thread.sleep(lamaBerobat*1000);
+                                 // 3. berobat
+                            System.out.println("██   ██ ███████  █████  ██      ██ ███    ██  ██████           ");
+                            System.out.println("██   ██ ██      ██   ██ ██      ██ ████   ██ ██                ");
+                            System.out.println("███████ █████   ███████ ██      ██ ██ ██  ██ ██   ███          ");
+                            System.out.println("██   ██ ██      ██   ██ ██      ██ ██  ██ ██ ██    ██          ");
+                            System.out.println("██   ██ ███████ ██   ██ ███████ ██ ██   ████  ██████  ██ ██ ██");
+                            System.out.println("");
+                        //  Thread.sleep(lamaBerobat*1000);
+                        Thread.sleep(1*1000);
                      } catch (InterruptedException e) {
                          e.printStackTrace();
                      } finally {
@@ -1475,11 +1554,15 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                  public void run(){
                      try {
                          System.out.println("==========SIM SEDANG KARAOKE==========");
-                         System.out.println("     __                            __          ");
-                         System.out.println("    |  |--.---.-.----.---.-.-----.|  |--.-----.");
-                         System.out.println("    |    <|  _  |   _|  _  |  _  ||    <|  -__|");
-                         System.out.println("    |__|__|___._|__| |___._|_____||__|__|_____|");
-                         Thread.sleep(lamaKaraoke*1000);
+                        // 4. karaoke
+                        System.out.println("██   ██  █████  ██████   █████   ██████  ██   ██ ███████ ██");
+                        System.out.println("██  ██  ██   ██ ██   ██ ██   ██ ██    ██ ██  ██  ██      ██ ");
+                        System.out.println("█████   ███████ ██████  ███████ ██    ██ █████   █████   ██ ");
+                        System.out.println("██  ██  ██   ██ ██   ██ ██   ██ ██    ██ ██  ██  ██         ");
+                        System.out.println("██   ██ ██   ██ ██   ██ ██   ██  ██████  ██   ██ ███████ ██ ");
+                        System.out.println("");
+                        //  Thread.sleep(lamaKaraoke*1000);
+                        Thread.sleep(1*1000);
                      } catch (InterruptedException e) {
                          e.printStackTrace();
                      } finally {
@@ -1520,13 +1603,15 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
              public void run(){
                  try {
                      System.out.println("==========SIM SEDANG PUASA==========");
-                     System.out.println("d8888b. db    db  .d8b.  .d8888.  .d8b.  ");
-                     System.out.println("88  `8D 88    88 d8' `8b 88'  YP d8' `8b ");
-                     System.out.println("88oodD' 88    88 88ooo88 `8bo.   88ooo88 ");
-                     System.out.println("88~~~   88    88 88~~~88   `Y8b. 88~~~88 ");
-                     System.out.println("88      88b  d88 88   88 db   8D 88   88 ");
-                     System.out.println("88      ~Y8888P' YP   YP `8888Y' YP   YP ");
-                     Thread.sleep(waktuDibutuhkan*1000);
+                             // 5. puasa
+                    System.out.println("██████  ██    ██  █████  ███████  █████           ");
+                    System.out.println("██   ██ ██    ██ ██   ██ ██      ██   ██          ");
+                    System.out.println("██████  ██    ██ ███████ ███████ ███████          ");
+                    System.out.println("██      ██    ██ ██   ██      ██ ██   ██          ");
+                    System.out.println("██       ██████  ██   ██ ███████ ██   ██ ██ ██ ██ ");
+                    System.out.println("");
+                    //  Thread.sleep(waktuDibutuhkan*1000);
+                    Thread.sleep(1*1000);
                  } catch (InterruptedException e) {
                      e.printStackTrace();
                  } finally {
@@ -1561,18 +1646,15 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                  public void run(){
                      try {
                         //  System.out.println("==========SIM SEDANG BERSIH-BERSIH==========");
-                        //  System.out.println("         888                            d8b                   ");
-                        //  System.out.println("         888                            Y8P                   ");
-                        //  System.out.println("         888                                                  ");
-                        //  System.out.println(".d8888b  888  .d88b.   8888b.  88888b.  888 88888b.   .d88b.  ");
-                        //  System.out.println("d88P"    888 d8P  Y8b     "88b 888 "88b 888 888 "88b d88P"88b ");
-                        //  System.out.println("888      888 88888888 .d888888 888  888 888 888  888 888  888 ");
-                        //  System.out.println("Y88b.    888 Y8b.     888  888 888  888 888 888  888 Y88b 888 ");
-                        //  System.out.println(""Y8888P  888  "Y8888  "Y888888 888  888 888 888  888  "Y88888 ");
-                        //  System.out.println("                                                     888 ");
-                        //  System.out.println("                                                Y8b d88P ");
-                        //  System.out.println("                                                 \"Y88P\"  ");
-                         Thread.sleep(lamaBersihBersih*1000);
+                                // 6. bersih-bersih
+                        System.out.println(" ██████ ██      ███████  █████  ███    ██ ██ ███    ██  ██████           ");
+                        System.out.println("██      ██      ██      ██   ██ ████   ██ ██ ████   ██ ██                ");
+                        System.out.println("██      ██      █████   ███████ ██ ██  ██ ██ ██ ██  ██ ██   ███          ");
+                        System.out.println("██      ██      ██      ██   ██ ██  ██ ██ ██ ██  ██ ██ ██    ██          ");
+                        System.out.println(" ██████ ███████ ███████ ██   ██ ██   ████ ██ ██   ████  ██████  ██ ██ ██ ");
+                        System.out.println("");
+                        //  Thread.sleep(lamaBersihBersih*1000);
+                        Thread.sleep(1*1000);
                      } catch (InterruptedException e) {
                          e.printStackTrace();
                      } finally {
@@ -1612,18 +1694,15 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
              public void run(){
                  try {
                      System.out.println("==========SIM SEDANG MELAWAK==========");
-                     System.out.println("     ▄         ▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄         ▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄         ▄  ▄▄▄▄▄▄▄▄▄▄▄ ");
-                     System.out.println("    ▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌");
-                     System.out.println("    ▐░▌       ▐░▌▐░█▀▀▀▀▀▀▀█░▌▐░▌       ▐░▌▐░█▀▀▀▀▀▀▀█░▌▐░▌       ▐░▌▐░█▀▀▀▀▀▀▀█░▌");
-                     System.out.println("    ▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌");
-                     System.out.println("    ▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌");
-                     System.out.println("    ▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌");
-                     System.out.println("    ▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌");
-                     System.out.println("    ▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌");
-                     System.out.println("    ▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌");
-                     System.out.println("    ▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌");
-                     System.out.println("     ▀         ▀  ▀         ▀  ▀         ▀  ▀         ▀  ▀         ▀  ▀         ▀ ");
-                     Thread.sleep(waktuDibutuhkan*1000);
+                             // 7. melawak
+                    System.out.println("██   ██  █████  ██   ██  █████  ██   ██  █████   ██ ");
+                    System.out.println("██   ██ ██   ██ ██   ██ ██   ██ ██   ██ ██   ██  ██ ");
+                    System.out.println("███████ ███████ ███████ ███████ ███████ ███████  ██ ");
+                    System.out.println("██   ██ ██   ██ ██   ██ ██   ██ ██   ██ ██   ██     ");
+                    System.out.println("██   ██ ██   ██ ██   ██ ██   ██ ██   ██ ██   ██  ██ ");
+                    System.out.println("");
+                    //  Thread.sleep(waktuDibutuhkan*1000);
+                    Thread.sleep(1*1000);
                  } catch (InterruptedException e) {
                      e.printStackTrace();
                  } finally {
