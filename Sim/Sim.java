@@ -427,13 +427,6 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
         this.status = status;
     }
 
-    // private String getRandomPekerjaan() {
-    //     // ArrayList<String> pekerjaanList = new ArrayList<>(Arrays.asList("Guru", "Dokter", "Pengacara", "Programmer", "Pengusaha", "Arsitek", "Petani"));
-    //     ArrayList<String> pekerjaanList = this.job;
-    //     Random rand = new Random();
-    //     int index = rand.nextInt(this.job.size());
-    //     return pekerjaanList.get(index);
-    // }
 
     // getter pekerjaan sim
     public House getHouse(){
@@ -480,12 +473,6 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
     public Boolean isDead(){
         if(this.getKekenyangan() <= 0 || this.getKesehatan() <= 0 || this.getMood() <= 0){
 
-            // //menghapus sim dari list of Sim di world
-            // world.removeSim(this.getNamaLengkap());
-
-            // //menghapus rumah Sim dari world
-            // int[] houseLocation = world.getHouseLocation(house);
-            // world.setHouse(houseLocation[0] , houseLocation[1] , this.getHouse())
             return true;
         }
         else{
@@ -533,11 +520,6 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
         
     }
 
-    // // Ganti Hari
-    // public void gantiHari() {
-    //     waktuTidakTidur = 0;
-    //     waktuTidakBuangAir = 0;
-    // }
 
     // Lokasi SIM
     public void lokasiSIM()
@@ -636,7 +618,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
     @Override
     public void kerja(int lamaKerja)
     {   
-        if(!(this.getIsGantiKerja()) && lamaKerja%5 == 0)
+        if(!(this.getIsGantiKerja()) && lamaKerja%120 == 0)
         {
             world.checkIsGantiHari(lamaKerja);
             thread = new Thread(new Runnable() 
@@ -661,9 +643,9 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                         // System.out.println("   | \\  \\ \\ / /   / |");
                         // System.out.println("   | |   \\ * /    | |");
                         // System.out.println("   | |     #      | |");
-                        System.out.println("  ");
+                        // System.out.println("  ");
                         
-                        // Thread.sleep(lamaKerja*1000);
+                        Thread.sleep(lamaKerja*1000);
                         
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -676,39 +658,38 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
             
                         totalWaktuKerja += lamaKerja;
                         
-                        if(totalWaktuKerja >= 10)
+                        if(totalWaktuKerja >= 240)
                         {
                             if(pekerjaan.getName().equalsIgnoreCase("Badut Sulap"))
                             {
-                                int tambahGaji = getUang() + (totalWaktuKerja/10) * getPekerjaan().getDailySalary();
+                                int tambahGaji = getUang() + (totalWaktuKerja/240) * getPekerjaan().getDailySalary();
                                 setUang(tambahGaji);
                             }
                             else if(pekerjaan.getName().equalsIgnoreCase("Koki"))
                             {
-                                int tambahGaji = getUang() + (totalWaktuKerja/10) * getPekerjaan().getDailySalary();
+                                int tambahGaji = getUang() + (totalWaktuKerja/240) * getPekerjaan().getDailySalary();
                                 setUang(tambahGaji);
                             }
                             else if(pekerjaan.getName().equalsIgnoreCase("Polisi"))
                             {
-                                int tambahGaji = getUang() + (totalWaktuKerja/10) *getPekerjaan().getDailySalary();
+                                int tambahGaji = getUang() + (totalWaktuKerja/240) *getPekerjaan().getDailySalary();
                                 setUang(tambahGaji);
                             }
                             else if(pekerjaan.getName().equalsIgnoreCase("Programmer"))
                             {
-                                int tambahGaji = getUang() + (totalWaktuKerja/10) * getPekerjaan().getDailySalary();
+                                int tambahGaji = getUang() + (totalWaktuKerja/240) * getPekerjaan().getDailySalary();
                                 setUang(tambahGaji);
                             }
                             else if(pekerjaan.getName().equalsIgnoreCase("Dokter"))
                             {
-                                int tambahGaji = getUang() + (totalWaktuKerja/10) *getPekerjaan().getDailySalary();
+                                int tambahGaji = getUang() + (totalWaktuKerja/240) *getPekerjaan().getDailySalary();
                                 setUang(tambahGaji);
                             }
                             //nyimpen sisa waktu kerja
-                            totalWaktuKerja = totalWaktuKerja - ((totalWaktuKerja/10)*10);
+                            totalWaktuKerja = totalWaktuKerja - ((totalWaktuKerja/240)*240);
                         }
 
-                        // print stats
-                        // System.out.println("=========SIM SELESAI BEKERJA=========");
+ 
                         setStatus("Bekerja");
                         
                         
@@ -723,15 +704,8 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                         System.out.println("Anda bekerja selama " + lamaKerja + " detik");
                         
 
-                        // Tambahin Waktu ke World
-                        // if (isDead()){
-                        //     System.out.println("SIM telah meninggal");
-                        // } 
                     }
-                        // System.out.println("Kekenyangan anda sekarang: " + getKekenyangan());
-                        // System.out.println("Mood anda sekarang: " + getMood());
-                        // System.out.println("Uang anda sekarang: " + getUang());
-                        // System.out.println(" ");
+
                 }
             });
             thread.run();
@@ -779,7 +753,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                         // System.out.println("                               \\___)");
         
                         // Nunggu waktu lari
-                        // Thread.sleep(lamaOlahraga*1000);
+                        Thread.sleep(lamaOlahraga*1000);
                         
                         System.out.println(" ");
                     } 
@@ -810,10 +784,8 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                         System.out.println("Anda bekerja selama " + lamaOlahraga + " detik");
                         
 
-                        // Tambahin Waktu ke World
-                        if (isDead()){
-                            System.out.println("SIM telah meninggal");
-                        } 
+
+
                     }
                }
             });
@@ -850,7 +822,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                         System.out.println("                                          ");
 
                         // Nunggu Tidur
-                        // Thread.sleep(lamaTidur*1000);
+                        Thread.sleep(lamaTidur*1000);
                         
                         System.out.println(" ");
                     } catch (InterruptedException e) {
@@ -864,14 +836,9 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                         setKesehatan(kesehatanNaik);
                     
                         sisaWaktuTidur += (lamaTidur - ((lamaTidur/240)*240));
-                        
-                        // print stats
-                        // System.out.println("=========SIM SEDANG TIDUR=========");
-                        // System.out.println("Anda tidur selama " + lamaTidur + " detik");
-                        // System.out.println("Mood anda sekarang: " + getMood());
-                        // System.out.println("Kesehatan anda sekarang: " + getKesehatan());
+
                         setStatus("Tidur");
-                        // Tambahin Waktu ke World
+                        
                         
                         
                         world.checkWaktuSetelahAksi(getNamaLengkap(), lamaTidur);
@@ -901,9 +868,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                     }
 
                     printStat();
-                    if (isDead()){
-                            System.out.println("SIM telah meninggal");
-                        } 
+
                 }
             });
             thread.run();        
@@ -989,7 +954,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                     
                     // Nunggu Masak
                     double waktuMasak = 1.5 * diMasak.getKekenyangan();
-                    // Thread.sleep((long)waktuMasak);
+                    Thread.sleep((int)waktuMasak * 1000);
                     
         
                 } catch (InterruptedException e) {
@@ -1084,7 +1049,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                         System.out.println(" ");
                         
                         // Makan selama 30 detik
-                        // Thread.sleep(30*1000);
+                        Thread.sleep(30*1000);
                         
 
                     } catch (InterruptedException e) {
@@ -1119,11 +1084,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                         }
 
                         printStat();
-                        // ngecek mati atau ngga
-                        if (isDead()){
-                            System.out.println("SIM telah meninggal");
-                        } 
-                            
+                        
                         
                         
             
@@ -1219,9 +1180,8 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
             int selisihX = Math.abs(houseLocation[0]-currentLocation[0]);
             int selisihY = Math.abs(houseLocation[1]-currentLocation[1]);
             
-            // double waktuPerjalanan = Math.sqrt(Math.pow(selisihX,2) + Math.pow(selisihY,2) );
-            // int waktuPerjalananSim = (int) waktuPerjalanan;
-            int waktuPerjalananSim = 5;
+            double waktuPerjalanan = Math.sqrt(Math.pow(selisihX,2) + Math.pow(selisihY,2) );
+            int waktuPerjalananSim = (int) waktuPerjalanan;
             world.checkIsGantiHari(waktuPerjalananSim);
             Sim simYangSedangDikunjungi = simYangDikunjungi;
             Room roomSekarang = roomYangDikunjungi;
@@ -1248,7 +1208,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                         // System.out.println("  ");
 
                         // Tunggu 
-                        // Thread.sleep(waktuPerjalananSim*1000);
+                        Thread.sleep(waktuPerjalananSim*1000);
                         
 
                     } catch (InterruptedException e) {
@@ -1326,7 +1286,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                     // System.out.println(" ");
                         
                     // Tunggu 10 detik
-                    // Thread.sleep(10*1000);
+                    Thread.sleep(10*1000);
                     
 
                 } catch (InterruptedException e) {
@@ -1350,9 +1310,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                         System.out.println("Hari telah berganti , sekarang sudah hari ke-" + world.getHariDunia());
                     }
                     // Tambahin Waktu ke World
-                    if (isDead()){
-                        System.out.println("SIM telah meninggal");
-                    } 
+                  
                     
                     printStat();
 
@@ -1363,23 +1321,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
             }
         });
         thread.run();
-        // ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-        // executorService.schedule(() -> {
-        //     int moodNaik = getMood() + 10;
-        //     setMood(moodNaik);
-        //     int kesehatanNaik = getKesehatan() + 5;
-        //     setKesehatan(kesehatanNaik);
-        //     int kekenyanganTurun = getKekenyangan() - 3;
-        //     setKekenyangan(kekenyanganTurun);
-    
-        //     if (isDead()) {
-        //         System.out.println("SIM telah meninggal");
-        //     } else {
-        //         setStatus("Melawak");
-        //         printStat();
-        //         world.checkWaktuSetelahAksi(getNamaLengkap(), 10);
-        //     }
-        // }, 10, TimeUnit.SECONDS);
+        
     }
 
     public void efekTidakBuangAir()
@@ -1390,10 +1332,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
             int kenyangTurun = getKekenyangan() - 5;
             setKekenyangan(kenyangTurun);
 
-            // print stats
-            // System.out.println("Anda tidak buang air selama " + world.getWaktuTidakBuangAir(getNamaLengkap()) + " detik");
-            // System.out.println("Mood anda sekarang: " + getMood());
-            // System.out.println("Kekenyangan anda sekarang: " + getKekenyangan());
+           
         
     }
 
@@ -1413,7 +1352,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                         System.out.println("██    ██ ██   ██ ██  ██  ██ ██          ██    ██ ██  ██ ██    ");
                         System.out.println(" ██████  ██   ██ ██      ██ ███████      ██████  ██   ████ ██ ");
                         System.out.println("");
-                        //  Thread.sleep(lamaMain*1000);
+                         Thread.sleep(lamaMain*1000);
                         
                      } catch (InterruptedException e) {
                          e.printStackTrace();
@@ -1426,10 +1365,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                          setKekenyangan(kekenyanganTurun);
  
 
-                        //  else if(!isMakan)
-                        //  {
-                        //     world.
-                        //  }
+                       
                         setStatus("Main Game");
                         world.checkWaktuSetelahAksi(getNamaLengkap(), lamaMain);
 
@@ -1439,9 +1375,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                         }
 
                         printStat();
-                        if (isDead()){
-                            System.out.println("SIM telah meninggal");
-                       }
+                        
                     }
                  }
              });
@@ -1467,7 +1401,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                         System.out.println("██   ██ ██   ██ ██   ██ ██ ███ ██ ██   ██ ██   ██ ");
                         System.out.println("██   ██ ██   ██ ██   ██  ███ ███  ██   ██ ██   ██ ");
                         System.out.println("");
-                        //  Thread.sleep(waktuDibutuhkan*1000);
+                         Thread.sleep(waktuDibutuhkan*1000);
                         
                      } catch (InterruptedException e) {
                          e.printStackTrace();
@@ -1500,9 +1434,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                          printStat();
                          System.out.println("Informasi Sim ( " + simLain.getNamaLengkap() + " ) yang disantet : " );
                          simLain.printStat();
-                         if (isDead()){
-                             System.out.println("SIM telah meninggal");
-                         } 
+                        
                      }
                  }
              });
@@ -1528,7 +1460,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                             System.out.println("██   ██ ██      ██   ██ ██      ██ ██  ██ ██ ██    ██          ");
                             System.out.println("██   ██ ███████ ██   ██ ███████ ██ ██   ████  ██████  ██ ██ ██");
                             System.out.println("");
-                        //  Thread.sleep(lamaBerobat*1000);
+                         Thread.sleep(lamaBerobat*1000);
                         
                      } catch (InterruptedException e) {
                          e.printStackTrace();
@@ -1577,7 +1509,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                         System.out.println("██  ██  ██   ██ ██   ██ ██   ██ ██    ██ ██  ██  ██         ");
                         System.out.println("██   ██ ██   ██ ██   ██ ██   ██  ██████  ██   ██ ███████ ██ ");
                         System.out.println("");
-                        //  Thread.sleep(lamaKaraoke*1000);
+                         Thread.sleep(lamaKaraoke*1000);
                         
                      } catch (InterruptedException e) {
                          e.printStackTrace();
@@ -1626,7 +1558,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                     System.out.println("██      ██    ██ ██   ██      ██ ██   ██          ");
                     System.out.println("██       ██████  ██   ██ ███████ ██   ██ ██ ██ ██ ");
                     System.out.println("");
-                    //  Thread.sleep(waktuDibutuhkan*1000);
+                    Thread.sleep(waktuDibutuhkan*1000);
                     
                  } catch (InterruptedException e) {
                      e.printStackTrace();
@@ -1645,9 +1577,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                         System.out.println("Hari telah berganti , sekarang sudah hari ke-" + world.getHariDunia());
                     }
                     printStat();
-                     if (isDead()) {
-                         System.out.println("SIM telah meninggal");
-                     } 
+                     
                  }
              }
          });
@@ -1669,7 +1599,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                         System.out.println("██      ██      ██      ██   ██ ██  ██ ██ ██ ██  ██ ██ ██    ██          ");
                         System.out.println(" ██████ ███████ ███████ ██   ██ ██   ████ ██ ██   ████  ██████  ██ ██ ██ ");
                         System.out.println("");
-                        //  Thread.sleep(lamaBersihBersih*1000);
+                         Thread.sleep(lamaBersihBersih*1000);
                         
                      } catch (InterruptedException e) {
                          e.printStackTrace();
@@ -1690,9 +1620,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                              System.out.println("Hari telah berganti , sekarang sudah hari ke-" + world.getHariDunia());
                          }   
                          printStat();
-                         if (isDead()) {
-                             System.out.println("SIM telah meninggal");
-                         }  
+                         
                      }
                  }
              });
@@ -1717,7 +1645,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                     System.out.println("██   ██ ██   ██ ██   ██ ██   ██ ██   ██ ██   ██     ");
                     System.out.println("██   ██ ██   ██ ██   ██ ██   ██ ██   ██ ██   ██  ██ ");
                     System.out.println("");
-                    //  Thread.sleep(waktuDibutuhkan*1000);
+                     Thread.sleep(waktuDibutuhkan*1000);
                     
                  } catch (InterruptedException e) {
                      e.printStackTrace();
@@ -1739,9 +1667,7 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                      }
 
                      printStat();
-                     if (isDead()){
-                         System.out.println("SIM telah meninggal");
-                     } 
+                     
                  }
              }
          });

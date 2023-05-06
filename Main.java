@@ -17,19 +17,7 @@ public class Main {
     private Sim sim;
     private World world;
     
-    // public Main(World world , Sim sim){
-    //     this.world = world;
-    //     this.sim = sim;
-    // }
-
-    // public void changeSim(String nama){
-    //     for(Sim s : world.simList){
-    //         if(s.getNamaLengkap().equals(nama)){
-    //             this.sim = s;
-    //             break;
-    //         }
-    //     }
-    // }   
+    
     
     public Sim getSim(){
         return this.sim;
@@ -95,7 +83,7 @@ public class Main {
         System.out.println("14.Print Room           : Menampilkan informasi terkait ruangan");
         System.out.println("15.Print Map            : Menampilkan informasi peta pada Sim-Plicity");
         System.out.println("16.Exit                 : Keluar dari permainan");
-        System.out.println("17.Lihat Waktu          : Menampilkan waktu pada dunia Sim-Plicity");
+        
 }
 
     public void addSim(World world){
@@ -109,7 +97,7 @@ public class Main {
             if (!world.findSim(newSim.getNamaLengkap())) {
                 isExists = false;
                 world.addSim(newSim);
-                world.addWaktuTidakTidur(newSim, 60);
+                world.addWaktuTidakTidur(newSim, 600);
                 System.out.println("Objek SIM " + nama + " berhasil ditambahkan ke dalam list!");
             } else {
                 System.out.println("Objek SIM " + nama + " sudah ada di dalam list, silahkan masukkan nama lain!");
@@ -240,14 +228,14 @@ public class Main {
         boolean started = false;
         boolean exit = false;
         
-        //Loading Bar Features 
-        // int totalTasks = 10;
-        // for(int i = 0; i <= totalTasks; i++) {
-        //     double progressPercentage = (double)i/totalTasks;
-        //     String progressBar = getProgressBar(progressPercentage);
-        //     System.out.print("\r" + progressBar + " " + Math.round(progressPercentage*100) + "%");
-        //     Thread.sleep(1000);
-        // }
+        // Loading Bar Features 
+        int totalTasks = 10;
+        for(int i = 0; i <= totalTasks; i++) {
+            double progressPercentage = (double)i/totalTasks;
+            String progressBar = getProgressBar(progressPercentage);
+            System.out.print("\r" + progressBar + " " + Math.round(progressPercentage*100) + "%");
+            Thread.sleep(1000);
+        }
 
         // print the message and make it blink until user input
         while (!started) {
@@ -284,15 +272,9 @@ public class Main {
             String nama = scanner.nextLine();
             Sim firstSim = new Sim(nama);
             world.addSim(firstSim);
-            world.addWaktuTidakTidur(firstSim , 60);
+            world.addWaktuTidakTidur(firstSim , 600);
 
-            // System.out.println("");
-            // System.out.print("Masukkan nama SIM: ");
-            // String nama2 = scanner.nextLine();
-            // Sim secondSim = new Sim(nama2);
-            // world.addSim(secondSim);
-            // world.addWaktuTidakTidur(secondSim , 60);
-            // world.addWaktuTidakBuangAir(firstSim , 0);
+            
             sim = firstSim;
             System.out.println("Selamat datang " + nama + "!");
             System.out.println("Sekarang kamu tinggal di sebuah rumah yang sangat sederhana.");
@@ -301,12 +283,12 @@ public class Main {
             System.out.println("");
     
             System.out.println("");
-            // for(int i=0; i<4; i++) {
-            //     System.out.print("\rGenerating Sims Map . . . . . ");
-            //     Thread.sleep(1000);
-            //     System.out.print("\r                                 ");
-            //     Thread.sleep(1000);
-            // }
+            for(int i=0; i<4; i++) {
+                System.out.print("\rGenerating Sims Map . . . . . ");
+                Thread.sleep(1000);
+                System.out.print("\r                                 ");
+                Thread.sleep(1000);
+            }
             System.out.println("");
             house = sim.getHouse();
             room = house.getRoom("Living Room");
@@ -625,18 +607,7 @@ public class Main {
 
             
         
-            //     else if(menuInput.equals("7")|| menuInput.equalsIgnoreCase("Add Sim")){
-            //     System.out.println("Masukkan nama SIM: ");
-            //     nama = scanner.nextLine();
-            //     Sim newSim = new Sim(nama);
-            //     world.addSim(newSim);
-            //     world.addWaktuTidakTidur(newSim , 0);
-            //     world.addWaktuTidakBuangAir(newSim , 0);
-            //     System.out.println("Objek SIM " + nama + " berhasil ditambahkan ke dalam list!");
-            //     // for (Sim daftarSim : world.simList) {
-            //     //     System.out.println("- " + daftarSim.getNamaLengkap());
-            //     // }
-            // }
+            
 
             else if(menuInput.equals("7") || menuInput.equalsIgnoreCase("Add Sim")){
                 if(!(world.getIsAddSim())){
@@ -674,159 +645,7 @@ public class Main {
                 sim = obj.changeSimIfDead(sim , world , house , room);
                 house = sim.getHouse();
                 room = sim.getRoom();
-                // Scanner input = new Scanner(System.in);
-                //     String objName = sim.getRoom().getLayoutContent(x , y);
-                //     //Melakukan Cek apakah masukan melebihi peta layout [5] [5] 
-                //     if (x > 5 || y > 5 || x < 0 || y < 0) {
-                //         System.out.println("Posisi yang anda masukkan tidak valid");
-                //     }
-                //     else{
-                //         if (objName != "") {
-                //             // System.out.println("Moving to " + obj.getName() + " at (" + x + "," + y + ")");
-                //             switch(objName) {
-                //                 case "KSS":
-                //                 //Tidur
-                //                 System.out.print("Apakah anda ingin melakukan aksi tiudr ? (y/n)");
-                //                 input = new Scanner(System.in);
-                //                 String jawaban = input.nextLine();
-                //                 while(!(jawaban.equalsIgnoreCase("y")) || !(jawaban.equalsIgnoreCase("n"))){
-                //                     if (jawaban.equalsIgnoreCase("y")){
-                //                         int number = sim.readInteger(scanner);
-                //                         sim.tidur(number);
-                //                     } else if(jawaban.equalsIgnoreCase("n")) {
-                //                         System.out.println("Anda tidak ingin melakukan aksi tidur");
-                //                     }
-                //                     else{
-                //                         System.out.println("Masukan tidak valid");
-                //                     }
-                //                 }
-                //                     break;
-
-                //                 case "KQS":
-                //                     //Tidur
-                //                     System.out.print("Apakah anda ingin melakukan aksi tidur ? (y/n)");
-                //                     Scanner input2 = new Scanner(System.in);
-                //                     String jawaban2 = input2.nextLine();
-                //                     while(!(jawaban2.equalsIgnoreCase("y")) || !(jawaban2.equalsIgnoreCase("n"))){
-                //                         if (jawaban2.equalsIgnoreCase("y")){
-                //                             int number = sim.readInteger(scanner);
-                //                             sim.tidur(number);
-                //                         } else if(jawaban2.equalsIgnoreCase("n")) {
-                //                             System.out.println("Anda tidak ingin melakukan aksi tidur");
-                //                         }
-                //                         else{
-                //                             System.out.println("Masukan tidak valid");
-                //                         }
-                //                     }
-                //                     break;
-                //                 case "KKS":
-                //                 //Tidur
-                //                 System.out.print("Apakah anda ingin melakukan aksi tidur ? (y/n)");
-                //                 Scanner input3 = new Scanner(System.in);
-                //                 String jawaban3 = input3.nextLine();
-                //                 while(!(jawaban3.equalsIgnoreCase("y")) || !(jawaban3.equalsIgnoreCase("n"))){
-                //                     if (jawaban3.equalsIgnoreCase("y")){
-                //                         int number = sim.readInteger(scanner);
-                //                         sim.tidur(number);
-                //                     } else if(jawaban3.equalsIgnoreCase("n")) {
-                //                         System.out.println("Anda tidak ingin melakukan aksi tidur");
-                //                     }
-                //                     else{
-                //                         System.out.println("Masukan tidak valid");
-                //                     }
-                //                 }
-                //                     break;
-                                    
-                //                 case "TLT":
-                //                     //Buang air
-                //                     System.out.print("Apakah anda ingin melakukan aksi buang air ? (y/n)");
-                //                     Scanner input4 = new Scanner(System.in);
-                //                     String jawaban4 = input4.nextLine();
-                //                     while(!(jawaban4.equalsIgnoreCase("y")) || !(jawaban4.equalsIgnoreCase("n"))){
-                //                         if (jawaban4.equalsIgnoreCase("y")){
-                //                             sim.buangAir();
-                //                         } else if(jawaban4.equalsIgnoreCase("n")) {
-                //                             System.out.println("Anda tidak ingin melakukan aksi buang air");
-                //                         }
-                //                         else{
-                //                             System.out.println("Masukan tidak valid");
-                //                         }
-                //                     }
-                //                     break;
-
-                //                 case "KMG":
-                //                 //Masak
-                //                 System.out.print("Apakah anda ingin melakukan aksi masak ? (y/n)");
-                //                 Scanner input5 = new Scanner(System.in);
-                //                 String jawaban5 = input5.nextLine();
-                //                 while(!(jawaban5.equalsIgnoreCase("y")) || !(jawaban5.equalsIgnoreCase("n"))){
-                //                     if (jawaban5.equalsIgnoreCase("y")){
-                //                         // masak();
-                //                     } else if(jawaban5.equalsIgnoreCase("n")) {
-                //                         System.out.println("Anda tidak ingin melakukan aksi masak");
-                //                     }
-                //                     else{
-                //                         System.out.println("Masukan tidak valid");
-                //                     }
-                //                 }
-                //                     break;
-
-                //                 case "KML":
-                //                     //Masak
-                //                     System.out.print("Apakah anda ingin melakukan aksi masak ? (y/n)");
-                //                     Scanner input6 = new Scanner(System.in);
-                //                     String jawaban6 = input6.nextLine();
-                //                     while(!(jawaban6.equalsIgnoreCase("y")) || !(jawaban6.equalsIgnoreCase("n"))){
-                //                         if (jawaban6.equalsIgnoreCase("y")){
-                //                             // masak();
-                //                         } else if(jawaban6.equalsIgnoreCase("n")) {
-                //                             System.out.println("Anda tidak ingin melakukan aksi masak");
-                //                         }
-                //                         else{
-                //                             System.out.println("Masukan tidak valid");
-                //                         }
-                //                     }
-                //                     break;
-
-                //                 case "MDK":
-                //                     //Makan
-                //                     System.out.print("Apakah anda ingin melakukan aksi makan ? (y/n)");
-                //                     Scanner input7 = new Scanner(System.in);   
-                //                     String jawaban7 = input7.nextLine();
-                //                     while(!(jawaban7.equalsIgnoreCase("y")) || !(jawaban7.equalsIgnoreCase("n"))){
-                //                         if (jawaban7.equalsIgnoreCase("y")){
-                //                             // sim.makan();
-                //                         } else if(jawaban7.equalsIgnoreCase("n")) {
-                //                             System.out.println("Anda tidak ingin melakukan aksi makan");
-                //                         }
-                //                         else{
-                //                             System.out.println("Masukan tidak valid");
-                //                         }
-                //                     }
-                //                     break;
-
-                //                 case "JAM":
-                //                     //Melihat Waktu
-                //                     System.out.print("Apakah anda ingin melakukan aksi melihat waktu ? (y/n)");
-                //                     Scanner input8 = new Scanner(System.in);
-                //                     String jawaban8 = input8.nextLine();
-                //                     while(!(jawaban8.equalsIgnoreCase("y")) || !(jawaban8.equalsIgnoreCase("n"))){
-                //                         if (jawaban8.equalsIgnoreCase("y")){
-                //                             sim.lihatWaktu();
-                //                         } else if(jawaban8.equalsIgnoreCase("n")) {
-                //                             System.out.println("Anda tidak ingin melakukan aksi melihat waktu");
-                //                         }
-                //                         else{
-                //                             System.out.println("Masukan tidak valid");
-                //                         }
-                //                     }
-                //                     break;
-                //             }
-                //         }
-                //         else{
-                //             System.out.println("Object not found at (" + x + "," + y + ")");
-                //         }
-                //     }
+                
                 
             }
             else if(menuInput.equals("11")|| menuInput.equalsIgnoreCase("Action")){
@@ -874,10 +693,7 @@ public class Main {
                         room = sim.getRoom();
                     }
                     else if(menuInput.equals("3")|| menuInput.equalsIgnoreCase("Tidur")){
-                        // System.out.print("Masukkan waktu tidur: ");
-                        // int waktuTidur = scanner.nextInt();
-                        // scanner.nextLine();
-                        // sim.tidur(waktuTidur);
+                    
                         System.out.println("Kunjungi Objek Kasur apapun di Suatu Ruangan !");
                         action = true;
                         
@@ -1089,12 +905,6 @@ public class Main {
             else if(menuInput.equals("16")|| menuInput.equalsIgnoreCase("Exit")){
                 obj.exit();
             }
-            else if(menuInput.equals("17")|| menuInput.equalsIgnoreCase("Lihat Waktu")){
-                sim.lihatWaktu();
-            }
-            else if(menuInput.equals("18")|| menuInput.equalsIgnoreCase("Lihat Waktu Efek")){
-                world.printAllWaktuTidakTidurDanBuangAir();
-            }
             else if(menuInput.equalsIgnoreCase("Help") || menuInput.equalsIgnoreCase("Menu")){
                 obj.printMenu();
             }
@@ -1119,80 +929,4 @@ public class Main {
     }
 }
 
-        // //Membuat Objek Baru 
-        // Scanner scanner = new Scanner(System.in);
-        // String input = "";
-        // while (!input.equalsIgnoreCase("exit")) {
-        //     System.out.println("Apakah anda ingin membuat objek SIM baru? (ya/tidak)");
-        //     input = scanner.nextLine();
-        //     if (input.equalsIgnoreCase("ya")) {
-        //         System.out.println("Masukkan nama SIM: ");
-        //         String nama = scanner.nextLine();
-        //         Sim sim = new Sim(nama);
-        //         world.simList.add(sim);
-        //         System.out.println("Objek SIM " + nama + " berhasil ditambahkan ke dalam list!");
-        //     }
-        //     else if(input.equalsIgnoreCase("exit")){
-        //         scanner.close();
-        //         obj.exit();
-        //     }
-        //     else{
-        //         System.out.println("Input tidak valid.");
-        //     }
-
-        //     //Mencari Informasi Sim
-        //     System.out.println("Apakah anda ingin melihat informasi SIM? (ya/tidak)");
-        //     input = scanner.nextLine();
-        //     if (input.equalsIgnoreCase("ya")) {
-        //         if (world.simList.isEmpty()) {
-        //             System.out.println("Tidak ada SIM yang tersedia.");
-        //         } else {
-        //             System.out.println("Berikut adalah SIM yang tersedia:");
-        //         for (Sim sim : world.simList) {
-        //             System.out.println("- " + sim.getNamaLengkap());
-        //         }
-                
-        //         System.out.println("Masukkan nama SIM yang ingin anda lihat informasinya : ");
-        //         String nama = scanner.nextLine();
-        //         Sim sim = null;
-        //         for(Sim s : world.simList){
-        //             if(s.getNamaLengkap().equals(nama)){
-        //                 sim = s;
-        //                 break;
-        //             }
-        //         }
-        //         if(sim != null){
-        //             System.out.println("Informasi detail SIM " + sim.getNamaLengkap() + ":");
-        //             System.out.println("Pekerjaan: " + sim.getPekerjaan().toString());
-        //             System.out.println("Uang: " + sim.getUang());
-        //             System.out.println("Kekenyangan: " + sim.getKekenyangan());
-        //             System.out.println("Mood: " + sim.getMood());
-        //             System.out.println("Kesehatan: " + sim.getKesehatan());
-        //             System.out.println("Status: " + sim.getStatus());
-        //             System.out.println("House: " + sim.getHouse().getHouseName());
-        //             System.out.println("Inventory: ");
-        //             sim.printAllInventory();
-        //             // List<InventoryItem> items = sim.getInventory().getItems();
-        //             // for (InventoryItem item : items) {
-        //             //     System.out.println("- " + item.getItem().toString() + ": " + item.getQuantity());
-        //             // }
-        //             System.out.println("");
-        //             System.out.println("Berikut ini adalah peta dunia sekarang");
-        //             world.printWorld();
-        //             System.out.println("Jumlah rumah sekarang adalah : " + world.getHouseList().size());
-        //         } else {
-        //             System.out.println("SIM dengan nama " + nama + " tidak ditemukan dalam list!");
-        //         }
-        //         }
-        //     }
-        //     else if(input.equalsIgnoreCase("exit")){
-        //         scanner.close();
-        //         obj.exit();
-        //             }
-        //     else{
-        //         System.out.println("Input tidak valid.");
-        //     }
-        // }
-
-
-
+       

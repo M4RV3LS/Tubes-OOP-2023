@@ -55,59 +55,7 @@ public class World{
         }
 
         
-        // int maxWordLength = 3; // maksimum panjang kata 3
-
-        // int boxWidth = maxWordLength + 2; // lebar kotak disesuaikan dengan panjang kata maksimum
         
-
-        // // print baris pertama
-        // for (int allMap = 0 ; allMap < 64 ; allMap++){
-        //     for (int i = 0; i < 64; i++) {
-        //         System.out.print("+");
-        //         for (int j = 0; j < boxWidth - 1; j++) {
-        //             System.out.print("-");
-        //         }
-        //     }
-        //     System.out.println("+");
-
-        //     // print baris kedua sampai satu sebelum terakhir
-            
-        //         for (int i = 0; i < 64; i++) {
-        //             System.out.print("|");
-        //             // Coordinate coordinate = new Coordinate(allMap, i);
-        //             // String value = this.mapData.getOrDefault(coordinate, "");
-        //             // int valueLength = value.length();
-        //             int spaces = (4 - 3) / 2;
-        //             for (int j = 0; j < spaces; j++) {
-        //                 System.out.print(" ");
-        //             }
-        //             if(this.getHouse(allMap , i) != null){
-        //                 System.out.print(this.getHouse(allMap , i).getHouseName());
-        //             }
-        //             else{
-        //                 System.out.print("   ");
-
-        //             }
-                    
-                    
-        //             for (int j = 0; j < 4 - spaces - 3; j++) {
-        //                 System.out.print(" ");
-        //             }
-                    
-        //         }
-        //         System.out.print("|");
-        //         System.out.println();
-                
-            
-        // }
-        // // print baris terakhir
-        // for (int i = 0; i < 64; i++) {
-        //     System.out.print("+");
-        //     for (int j = 0; j < boxWidth - 1; j++) {
-        //         System.out.print("-");
-        //     }
-        // }
-        // System.out.println("+");
     }
 
     //getter house location
@@ -185,10 +133,6 @@ public class World{
     }
     
 
-    //getter waktuUpgrade
-    // public HashMap<Sim , Integer> getWaktuUpgrade(){
-    //     return waktuUpgrade;
-    // }
 
     //getter waktuTidakTidur
     public HashMap<Sim , Integer> getWaktuTidakTidur(){
@@ -200,10 +144,7 @@ public class World{
         return waktuTidakBuangAir;
     }
 
-    // //Menambahkan Sim dan Integer ke dalam HashMap waktu upgrade
-    // public void addWaktuUpgrade(Sim sim , int waktu){
-    //     waktuUpgrade.put(sim , waktu);
-    // }
+ 
 
     //Menambahkan Sim dan Integer ke dalam HashMap waktu tidak tidur
     public void addWaktuTidakTidur(Sim sim , int waktu){
@@ -225,15 +166,7 @@ public class World{
         waktuTidakBuangAir.remove(sim);
     }
 
-    //getter waktu upgrade dengan parameter string sim name
-    // public int getWaktuUpgrade(String name){
-    //     for (Sim sim : waktuUpgrade.keySet()){
-    //         if (sim.getNamaLengkap().equals(name)){
-    //             return waktuUpgrade.get(sim);
-    //         }
-    //     }
-    //     return 0;
-    // }
+
 
     //getter waktu tidak tidur dengan parameter string sim name
     public int getWaktuTidakTidur(String name){
@@ -321,7 +254,7 @@ public class World{
         //mereset semua waktu Tidak Tidur sim pada hashmap waktuTidakTidur menjadi 600
         if(!(waktuTidakTidur.isEmpty())){
             for (Sim sim : waktuTidakTidur.keySet()){
-                waktuTidakTidur.put(sim , 60);
+                waktuTidakTidur.put(sim , 600);
             }
         }
         
@@ -332,19 +265,7 @@ public class World{
         return daftarUpgradeRumah;
     }
 
-    // //Menambahkan Sim dan House ke dalam HashMap daftarUpgradeRumah
-    // public void addDaftarUpgradeRumah(Sim sim , House house){
-    //     daftarUpgradeRumah.put(sim , house);
-    // }
-    // //Mengupdate Nilai integer berdasarkan paramater String simname pada hashmap waktuUpgrade
-    // public void updateWaktuUpgrade(String name , int waktu){
-    //     for (Sim sim : waktuUpgrade.keySet()){
-    //         if (sim.getNamaLengkap().equals(name)){
-    //             waktuUpgrade.remove(sim);
-    //             waktuUpgrade.put(sim , waktu);
-    //         }
-    //     }
-    // }
+
 
     //Mengupdate Nilai integer berdasarkan paramater String simname pada hashmap waktuTidakTidur
     public void updateWaktuTidakTidur(String name , int waktu){
@@ -391,7 +312,7 @@ public class World{
 
     //getter hari dunia
     public int getHariDunia() {
-        return ((waktuDunia / 90) + 1);
+        return ((waktuDunia / 720) + 1);
     }
 
     //setter hari dunia
@@ -401,7 +322,7 @@ public class World{
 
     //getter waktu sim
     public int getWaktuSim() {
-        return (90 - (waktuDunia % 91));
+        return (720 - (waktuDunia % 721));
     }
 
     //setter waktu sim
@@ -411,12 +332,7 @@ public class World{
 
     
 
-//     ArrayList<UpgradeHouse> daftarUpgradeHouse;
-// For(UpgradeHouse up : daftarUpgradeHouse){
-//     up.setWaktuUpgrade(up.getWaktuUpgrade() - durasiAksi);
-//     if(up.getWaktuUpgrade() < 0){
-//         Room 
-//     }
+
 
     //getter daftarUpgradeHouse
     public ArrayList<UpgradeHouse> getDaftarUpgradeHouse(){
@@ -483,7 +399,7 @@ public class World{
                         if(selectedPosition.equals("1") || selectedPosition.equalsIgnoreCase("Top")){
                             if(selectedRoom.getRoomUp() == null){
                                 inputValid2 = true;
-                                UpgradeHouse upgradeHouse = new UpgradeHouse(sim , 60 , sim.getHouse() , selectedRoom,  newrRoom , false , "Top");
+                                UpgradeHouse upgradeHouse = new UpgradeHouse(sim , 1080 , sim.getHouse() , selectedRoom,  newrRoom , false , "Top");
                                 sim.setUpgradeHouse(upgradeHouse);
                             } 
                             else{
@@ -495,7 +411,7 @@ public class World{
                         else if(selectedPosition.equals("2") || selectedPosition.equalsIgnoreCase("Right")){
                             if(selectedRoom.getRoomRight() == null){
                                 inputValid2 = true;
-                                UpgradeHouse upgradeHouse = new UpgradeHouse(sim , 60 , sim.getHouse() , selectedRoom,  newrRoom , false , "Right");
+                                UpgradeHouse upgradeHouse = new UpgradeHouse(sim , 1080 , sim.getHouse() , selectedRoom,  newrRoom , false , "Right");
                                 sim.setUpgradeHouse(upgradeHouse);
                             }
                             else{
@@ -507,7 +423,7 @@ public class World{
                         else if(selectedPosition.equals("3") || selectedPosition.equalsIgnoreCase("Bottom")){
                             if(selectedRoom.getRoomDown() == null){
                                 inputValid2 = true;
-                                UpgradeHouse upgradeHouse = new UpgradeHouse(sim , 60 , sim.getHouse() , selectedRoom,  newrRoom , false , "Bottom");
+                                UpgradeHouse upgradeHouse = new UpgradeHouse(sim , 1080 , sim.getHouse() , selectedRoom,  newrRoom , false , "Bottom");
                                 sim.setUpgradeHouse(upgradeHouse);
                             }
                             else{
@@ -520,7 +436,7 @@ public class World{
                         else if(selectedPosition.equals("4") || selectedPosition.equalsIgnoreCase("Left")){
                             if(selectedRoom.getRoomLeft() == null){
                                 inputValid2 = true;
-                                UpgradeHouse upgradeHouse = new UpgradeHouse(sim , 60 , sim.getHouse() , selectedRoom,  newrRoom , false , "Left");
+                                UpgradeHouse upgradeHouse = new UpgradeHouse(sim , 1080 , sim.getHouse() , selectedRoom,  newrRoom , false , "Left");
                                 sim.setUpgradeHouse(upgradeHouse);
                             }
                             else{
@@ -652,24 +568,7 @@ public class World{
         }
     }
     
-    // public void checkWaktuDeliveryItem() {
-    //     for (DeliveryItem<T> deliveryItem : deliveryItems) {
-    //         int waktu = deliveryItem.getWaktu();
-    //         if (waktu <= 0) {
-    //             T item = deliveryItem.getTipeObjek();
-    //             String namaObjek = deliveryItem.getNamaObjek();
-    //             Sim sim = deliveryItem.getSim();
-    //             int quantity = deliveryItem.getQuantity();
-    //             if (item instanceof BahanMakanan) {
-    //                 sim.getInventoryBahanMakanan().tambahStock((BahanMakanan) item, quantity);
-    //             } else if (item instanceof Furniture) {
-    //                 sim.getInventoryFurniture().tambahStock((Furniture) item, quantity);
-    //             }
-    //             System.out.println(namaObjek + " telah diterima oleh " + sim.getNamaLengkap() + " sejumlah" + quantity);
-    //             deliveryItems.remove(deliveryItem);
-    //         } 
-    //     }
-    // }
+
 
     public void checkWaktuDeliveryItemFurniture() {
         Iterator<DeliveryItem<Furniture>> iterator = deliveryItemsFurniture.iterator();
@@ -730,57 +629,7 @@ public class World{
         }
     }
 
-    // public void checkIsDead() {
-    //     for(Sim sim : simList){
-    //         if (sim.getKekenyangan() <= 0 || sim.getKesehatan() <= 0 || sim.getMood() <= 0) {
-
-    //             if(sim.getKekenyangan() <= 0){
-    //                 System.out.println("Sim " + sim.getNamaLengkap() + " mati karena kelaparan");
-    //             }
-    //             else if(sim.getKesehatan() <= 0){
-    //                 System.out.println("Sim " + sim.getNamaLengkap() + " mati karena sakit");
-    //             }
-    //             else if(sim.getMood() <= 0){
-    //                 System.out.println("Sim " + sim.getNamaLengkap() + " mati karena depresi");
-    //             }
-
-    //             //set every sim house that have entered died sim house to their ownhouse dengan parameter nama masing masing house
-    //             for (Sim anotherSim : simList){
-    //                 if(anotherSim.getHouse().getHouseName().equalsIgnoreCase(sim.getHouse().getHouseName())){
-    //                     anotherSim.setHouse(anotherSim.getOwnHouse());
-    //                 }
-    //             }
-                
-    //             // Remove upgradeHouse from daftarUpgradeRumah if any
-    //             if (sim.getUpgradeHouse() != null) {
-    //                 for (UpgradeHouse uh : daftarUpgradeRumah) {
-    //                     if (uh.getSim().getNamaLengkap().equalsIgnoreCase(sim.getNamaLengkap())) {
-    //                         daftarUpgradeRumah.remove(uh);
-    //                         break;
-    //                     }
-    //                 }
-    //             }
-                
-    //             // Remove delivery items
-    //             deliveryItemsFurniture.removeIf(item -> item.getSim().getNamaLengkap().equalsIgnoreCase(sim.getNamaLengkap()));
-    //             deliveryItemsBahanMakanan.removeIf(item -> item.getSim().getNamaLengkap().equalsIgnoreCase(sim.getNamaLengkap()));
-        
-    //             // Remove sim from waktuTidakTidur and waktuTidakBuangAir maps
-    //             waktuTidakTidur.remove(sim);
-    //             waktuTidakBuangAir.remove(sim);
-        
-    //             //Remove House from map
-    //             int[] houseLocation = getHouseLocation(sim.getHouse());
-    //             setHouse(houseLocation[0] , houseLocation[1] , null);
-
-                
-    //             // Remove sim from simList
-    //             simList.remove(sim);
-                
-    //         }
-    //     }
-        
-    // }
+   
 
     public void checkIsDead() {
         Iterator<Sim> iterator = simList.iterator();
@@ -842,27 +691,7 @@ public class World{
         }
     }
 
-    //Check Waktu Tidak Buang Air
-    // public void checkWaktuTidakBuangAir() {
-    //     for (Sim sim : simList) {
-    //         if (getWaktuTidakBuangAir(sim.getNamaLengkap()) <= 0) {
-    //             sim.efekTidakBuangAir();
-    //         }
-    //     }
-    // }
-    //Mengurangi Nilai integer berdasarkan paramater String simname pada hashmap waktuTidakBuangAir
-    // public void reduceWaktuTidakBuangAir(String name , int waktu){
-    //     //ngecek apakah waktuTidakBuangAir empty atau tidak
-    //     if(!(waktuTidakBuangAir.isEmpty())){
-    //         for (Sim sim : waktuTidakBuangAir.keySet()){
-    //             if (sim.getNamaLengkap().equalsIgnoreCase(name)){
-    //                 int currentTime = waktuTidakBuangAir.get(sim);
-    //                 waktuTidakBuangAir.remove(sim);
-    //                 waktuTidakBuangAir.put(sim , currentTime - waktu);
-    //             }
-    //         }
-    //     }
-    // }
+    
 
     public void checkWaktuTidakBuangAir(String name , int waktu){
         //ngecek apakah waktuTidakBuangAir empty atau tidak
@@ -928,8 +757,6 @@ public class World{
     public void checkWaktuSetelahAksi(String nama,int waktuAksi)
     {
         addWaktuDunia(waktuAksi);
-        // reduceWaktuTidakBuangAir(nama, waktuAksi);
-        //Udah aku tangani di checkWaktuTidakBuangAir
         reduceWaktuTidakTidur(nama, waktuAksi);
         kurangiWaktuUpgrade(waktuAksi);
         checkUpgradeRoom();  
