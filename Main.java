@@ -98,7 +98,7 @@ public class Main {
         System.out.println("17.Lihat Waktu          : Menampilkan waktu pada dunia Sim-Plicity");
 }
 
-    public void addSim(){
+    public void addSim(World world){
         Scanner scanner = new Scanner(System.in);
         boolean isExists = true;
         Sim newSim;
@@ -153,7 +153,7 @@ public class Main {
             System.out.println("Silahkan gunakan Sim yang lain");
             if (world.getSimList().isEmpty()) {
                 if(!(world.getIsAddSim())){
-                    addSim();
+                    addSim(world);
                     changeSim = changeSim(world, sim , house , room);
                     world.setIsAddSim(true);
                     return changeSim;
@@ -597,7 +597,7 @@ public class Main {
 
             else if(menuInput.equals("7") || menuInput.equalsIgnoreCase("Add Sim")){
                 if(!(world.getIsAddSim())){
-                    obj.addSim();
+                    obj.addSim(world);
                     world.setIsAddSim(true);
                 }
                 else{

@@ -1945,8 +1945,18 @@ public void setUpgradeHouse(UpgradeHouse inputUpgradeHouse) {
                         inputYN = false;
                         while(!(inputYN)){
                             if (jawaban10.equalsIgnoreCase("y")){
+                                System.out.println("Berikut adalah SIM yang tersedia:");
+                                for ( Sim daftarSim : world.getSimList()) {
+                                    System.out.println("- " + daftarSim.getNamaLengkap());
+                                }
+                                System.out.println("");
+                                System.out.print("Masukan nama sim yang ingin disantet");
                                 String namaSim = input10.nextLine();
-                                if (world.getSimByName(namaSim) != null && !(namaSim.equalsIgnoreCase(getNamaLengkap()))) {
+                                if(world.getSimList().isEmpty()){
+                                    inputYN = true;
+                                    System.out.println("Sim lain tidak tersedia");
+                                }
+                                else if (world.getSimByName(namaSim) != null && !(namaSim.equalsIgnoreCase(getNamaLengkap()))) {
                                     santet(world.getSimByName(namaSim));
                                     inputYN = true;
                                 } else if (world.getSimByName(namaSim) == null){

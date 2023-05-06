@@ -54,6 +54,7 @@ public class World{
             System.out.println();
         }
 
+        
         // int maxWordLength = 3; // maksimum panjang kata 3
 
         // int boxWidth = maxWordLength + 2; // lebar kotak disesuaikan dengan panjang kata maksimum
